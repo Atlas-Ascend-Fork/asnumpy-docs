@@ -1,2 +1,0 @@
-# asnumpy-docs
-
