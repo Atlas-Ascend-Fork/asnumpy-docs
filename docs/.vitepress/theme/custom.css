@@ -1,0 +1,165 @@
+/* AsNumpy Custom Theme Styles */
+
+:root {
+  /* Primary colors - matching the original docsify theme */
+  --vp-c-brand-1: #667eea;
+  --vp-c-brand-2: #764ba2;
+  --vp-c-brand-3: #5a67d8;
+  --vp-c-brand-soft: rgba(102, 126, 234, 0.14);
+
+  /* Gradient for buttons and accents */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-card: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Dark mode adjustments */
+.dark {
+  --vp-c-brand-1: #818cf8;
+  --vp-c-brand-2: #a78bfa;
+  --vp-c-brand-3: #6366f1;
+  --gradient-card: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+/* Hero section styling */
+.VPHero {
+  padding-bottom: 64px !important;
+}
+
+.VPHero .name {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.VPHero .tagline {
+  color: var(--vp-c-text-2);
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+}
+
+/* Action buttons */
+.VPHero .actions .action-button {
+  background: var(--gradient-primary);
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.VPHero .actions .action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Feature cards */
+.feature-card {
+  background: var(--gradient-card);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.feature-card h3 {
+  margin: 0.5rem 0;
+  color: var(--vp-c-text-1);
+  font-size: 1.2rem;
+}
+
+.feature-card p {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Sidebar styling */
+.VPSidebar .group .title {
+  font-weight: 600;
+}
+
+/* Navigation bar */
+.VPNavBar {
+  backdrop-filter: blur(12px);
+}
+
+/* Footer links */
+.VPFooter a {
+  color: var(--vp-c-brand-1);
+  transition: color 0.3s ease;
+}
+
+.VPFooter a:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/* Code blocks */
+.vp-code-group .tabs label {
+  font-weight: 500;
+}
+
+/* Table styling */
+.vp-doc table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vp-doc th {
+  background: var(--vp-c-bg-soft);
+  font-weight: 600;
+}
+
+/* API documentation specific styles */
+.api-method {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.api-method.numpy {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.api-method.ascend {
+  background: rgba(118, 75, 162, 0.1);
+  color: #764ba2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .VPHero .tagline {
+    font-size: 1rem;
+  }
+
+  .feature-card {
+    padding: 1rem;
+  }
+}
+
+/* Custom container styling */
+.custom-block {
+  border-radius: 8px;
+}
+
+.custom-block.tip {
+  border-color: var(--vp-c-brand-1);
+}
+
+.custom-block.tip .custom-block-title {
+  color: var(--vp-c-brand-1);
+}
