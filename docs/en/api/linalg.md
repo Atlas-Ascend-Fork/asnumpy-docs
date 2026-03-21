@@ -7,23 +7,23 @@
 ### asnumpy.dot
 
 ```python
-asnumpy.dot(a: ndarray, b: ndarray) -> ndarray
+asnumpy.dot(a: ArrayLike, b: ArrayLike) -> ndarray
 ```
 
-Calculate the dot product of two arrays.
+Perform element-wise multiplication and summation between two arrays based on their dimensionality.
 
-This function computes the dot product based on the dimensionality of the input arrays `a` and `b`.
+This function processes inputs `a` and `b` according to their dimensions.
 - For 1-D arrays, it computes the inner product of vectors.
 - For 2-D arrays, it performs matrix multiplication.
 - For 0-D (scalar) inputs, it performs scalar multiplication.
 - For N-D arrays, it generally computes a sum product over the last axis of `a` and the second-to-last axis of `b`.
 
 **Arguments**
-- `a` (asnumpy.ndarray): The first input array.
-- `b` (asnumpy.ndarray): The second input array.
+- `a` (ArrayLike): The first input array.
+- `b` (ArrayLike): The second input array.
 
 **Returns**
-- `asnumpy.ndarray`: The dot product of `a` and `b`.
+- `ndarray`: The dot product of `a` and `b`.
 
 **See Also**
 - [`numpy.dot`](https://numpy.org/doc/stable/reference/generated/numpy.dot.html)
@@ -48,17 +48,17 @@ array([[19, 22],
 ### asnumpy.einsum
 
 ```python
-asnumpy.einsum(subscripts: str, *operands: ndarray) -> ndarray
+asnumpy.einsum(subscripts: str, *operands: ArrayLike) -> ndarray
 ```
 
-Evaluate the Einstein summation convention on the operands.
+Execute tensor operations using subscript notation to specify contraction patterns.
 
 **Arguments**
 - `subscripts` (str): A string specifying the subscripts for summation.
-- `*operands` (asnumpy.ndarray): The arrays to operate on.
+- `*operands` (ArrayLike): The arrays to operate on.
 
 **Returns**
-- `asnumpy.ndarray`: The result of the Einstein summation.
+- `ndarray`: The result of the Einstein summation.
 
 **See Also**
 - [`numpy.einsum`](https://numpy.org/doc/stable/reference/generated/numpy.einsum.html)
@@ -76,17 +76,17 @@ array([0, 4, 8])
 ### asnumpy.inner
 
 ```python
-asnumpy.inner(a: ndarray, b: ndarray) -> ndarray
+asnumpy.inner(a: ArrayLike, b: ArrayLike) -> ndarray
 ```
 
-Compute the inner product of two arrays.
+Multiply corresponding elements and sum the results for scalar or array inputs.
 
 **Arguments**
-- `a` (asnumpy.ndarray): The first input array.
-- `b` (asnumpy.ndarray): The second input array.
+- `a` (ArrayLike): The first input array.
+- `b` (ArrayLike): The second input array.
 
 **Returns**
-- `asnumpy.ndarray`: The inner product of the arrays.
+- `ndarray`: The inner product of the arrays.
 
 **See Also**
 - [`numpy.inner`](https://numpy.org/doc/stable/reference/generated/numpy.inner.html)
@@ -103,17 +103,17 @@ Compute the inner product of two arrays.
 ### asnumpy.matmul
 
 ```python
-asnumpy.matmul(x1: ndarray, x2: ndarray) -> ndarray
+asnumpy.matmul(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```
 
-Compute the matrix product of two arrays.
+Perform matrix multiplication following standard linear algebra broadcasting rules.
 
 **Arguments**
-- `x1` (asnumpy.ndarray): The first input array.
-- `x2` (asnumpy.ndarray): The second input array.
+- `x1` (ArrayLike): The first input array.
+- `x2` (ArrayLike): The second input array.
 
 **Returns**
-- `asnumpy.ndarray`: The matrix product of the inputs.
+- `ndarray`: The matrix product of the inputs.
 
 **See Also**
 - [`numpy.matmul`](https://numpy.org/doc/stable/reference/generated/numpy.matmul.html)
@@ -131,17 +131,17 @@ array([[19, 22],
 ### asnumpy.outer
 
 ```python
-asnumpy.outer(a: ndarray, b: ndarray) -> ndarray
+asnumpy.outer(a: ArrayLike, b: ArrayLike) -> ndarray
 ```
 
-Compute the outer product of two vectors.
+Generate a matrix from two vectors where each element is the product of corresponding input values.
 
 **Arguments**
-- `a` (asnumpy.ndarray): The first input vector.
-- `b` (asnumpy.ndarray): The second input vector.
+- `a` (ArrayLike): The first input vector.
+- `b` (ArrayLike): The second input vector.
 
 **Returns**
-- `asnumpy.ndarray`: The outer product matrix.
+- `ndarray`: The outer product matrix.
 
 **See Also**
 - [`numpy.outer`](https://numpy.org/doc/stable/reference/generated/numpy.outer.html)
@@ -160,17 +160,17 @@ array([[ 4,  5],
 ### asnumpy.vdot
 
 ```python
-asnumpy.vdot(a: ndarray, b: ndarray) -> ndarray
+asnumpy.vdot(a: ArrayLike, b: ArrayLike) -> ndarray
 ```
 
-Compute the dot product of two vectors, conjugating the first.
+Flatten inputs, apply complex conjugation to the first argument, then compute their scalar product.
 
 **Arguments**
-- `a` (asnumpy.ndarray): The first input array.
-- `b` (asnumpy.ndarray): The second input array.
+- `a` (ArrayLike): The first input array.
+- `b` (ArrayLike): The second input array.
 
 **Returns**
-- `asnumpy.ndarray`: The dot product of the vectors.
+- `ndarray`: The dot product of the vectors.
 
 **See Also**
 - [`numpy.vdot`](https://numpy.org/doc/stable/reference/generated/numpy.vdot.html)
@@ -178,17 +178,17 @@ Compute the dot product of two vectors, conjugating the first.
 ### asnumpy.linalg.matrix_power
 
 ```python
-asnumpy.linalg.matrix_power(a: ndarray, n: int) -> ndarray
+asnumpy.linalg.matrix_power(a: ArrayLike, n: int) -> ndarray
 ```
 
-Compute the integer power of a square matrix.
+Raise a matrix to a specified integer exponent through repeated multiplication.
 
 **Arguments**
-- `a` (asnumpy.ndarray): Input square matrix.
+- `a` (ArrayLike): Input square matrix.
 - `n` (int): Integer exponent applied to the matrix.
 
 **Returns**
-- `asnumpy.ndarray`: Resulting matrix after applying the specified power operation.
+- `ndarray`: Resulting matrix after applying the specified power operation.
 
 **See Also**
 - [`numpy.linalg.matrix_power`](https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_power.html)
@@ -207,17 +207,17 @@ array([[1, 4],
 ### asnumpy.linalg.qr
 
 ```python
-asnumpy.linalg.qr(a: ndarray, mode: str = "reduced") -> Union[ndarray, tuple]
+asnumpy.linalg.qr(a: ArrayLike, mode: str = "reduced") -> Union[ndarray, tuple]
 ```
 
-Perform QR factorization of a matrix.
+Decompose a matrix into an orthogonal matrix Q and an upper triangular matrix R.
 
 **Arguments**
-- `a` (asnumpy.ndarray): Input matrix to be factored.
+- `a` (ArrayLike): Input matrix to be factored.
 - `mode` (str, optional): Factorization mode.
 
 **Returns**
-- `asnumpy.ndarray or tuple`: Depending on `mode`, returns `r` alone or a tuple `(q, r)`.
+- `ndarray or tuple`: Depending on `mode`, returns `r` alone or a tuple `(q, r)`.
 
 **See Also**
 - [`numpy.linalg.qr`](https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html)
@@ -228,23 +228,23 @@ Perform QR factorization of a matrix.
 
 ```python
 asnumpy.linalg.norm(
-    a: ndarray,
+    a: ArrayLike,
     ord: Optional[Union[str, int, float]] = None,
-    axis: Optional[Union[int, Sequence[int]]] = None,
+    axis: AxisLike = None,
     keepdims: bool = False,
 ) -> ndarray
 ```
 
-Compute norm of a vector or matrix.
+Measure the magnitude or size of a vector or matrix according to a specified order.
 
 **Arguments**
-- `a` (asnumpy.ndarray): Input vector or matrix.
+- `a` (ArrayLike): Input vector or matrix.
 - `ord` (int, float, or str, optional): Order of the norm.
-- `axis` (int or tuple of ints, optional): Axis or axes along which to compute.
+- `axis` (AxisLike, optional): Axis or axes along which to compute.
 - `keepdims` (bool, optional): If True, reduced axes are kept.
 
 **Returns**
-- `asnumpy.ndarray`: Norm values.
+- `ndarray`: Norm values.
 
 **See Also**
 - [`numpy.linalg.norm`](https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html)
@@ -260,16 +260,16 @@ Compute norm of a vector or matrix.
 ### asnumpy.linalg.det
 
 ```python
-asnumpy.linalg.det(a: ndarray) -> ndarray
+asnumpy.linalg.det(a: ArrayLike) -> ndarray
 ```
 
-Compute determinant of a square matrix.
+Calculate the scalar value representing the volume scaling factor of a linear transformation.
 
 **Arguments**
-- `a` (asnumpy.ndarray): Square matrix or batch of square matrices.
+- `a` (ArrayLike): Square matrix or batch of square matrices.
 
 **Returns**
-- `asnumpy.ndarray`: Determinant value(s) for each matrix.
+- `ndarray`: Determinant value(s) for each matrix.
 
 **See Also**
 - [`numpy.linalg.det`](https://numpy.org/doc/stable/reference/generated/numpy.linalg.det.html)
@@ -285,17 +285,17 @@ Compute determinant of a square matrix.
 ### asnumpy.linalg.slogdet
 
 ```python
-asnumpy.linalg.slogdet(a: ndarray) -> tuple
+asnumpy.linalg.slogdet(a: ArrayLike) -> tuple
 ```
 
-Compute the sign and logarithm of determinant.
+Return both the sign and natural logarithm of a matrix's determinant for numerical stability.
 
 **Arguments**
-- `a` (asnumpy.ndarray): Input square matrix.
+- `a` (ArrayLike): Input square matrix.
 
 **Returns**
-- `sign` (asnumpy.ndarray): Sign of the determinant.
-- `logdet` (asnumpy.ndarray): Natural logarithm of the absolute value.
+- `sign` (ndarray): Sign of the determinant.
+- `logdet` (ndarray): Natural logarithm of the absolute value.
 
 **See Also**
 - [`numpy.linalg.slogdet`](https://numpy.org/doc/stable/reference/generated/numpy.linalg.slogdet.html)
@@ -305,16 +305,16 @@ Compute the sign and logarithm of determinant.
 ### asnumpy.linalg.inv
 
 ```python
-asnumpy.linalg.inv(a: ndarray) -> ndarray
+asnumpy.linalg.inv(a: ArrayLike) -> ndarray
 ```
 
-Compute the multiplicative inverse of a square matrix.
+Find the matrix that produces the identity when multiplied with the original matrix.
 
 **Arguments**
-- `a` (asnumpy.ndarray): Square matrix to invert.
+- `a` (ArrayLike): Square matrix to invert.
 
 **Returns**
-- `asnumpy.ndarray`: Inverse of the input matrix.
+- `ndarray`: Inverse of the input matrix.
 
 **See Also**
 - [`numpy.linalg.inv`](https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html)

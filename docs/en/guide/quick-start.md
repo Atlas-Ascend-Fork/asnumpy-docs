@@ -96,14 +96,12 @@ print("Verification passed.")
 ```python
 import asnumpy as ap
 
+# Query available NPU devices
+print(ap.get_device_count())  # e.g. 8
+
 # Switch to a specific NPU (default is 0)
 ap.set_device(1)
 ```
-
-> **Note:** To check available NPU devices, use the system command:
-> ```bash
-> npu-smi info
-> ```
 
 ## More Examples
 

@@ -2,18 +2,29 @@
 
 本模块提供 asnumpy 的工具函数。
 
-::: info
-工具函数目前正在开发中。请参阅 NumPy 文档了解预期的 API。
-:::
+## asnumpy.broadcast_shape
 
-## 计划中的函数
+```python
+asnumpy.broadcast_shape(shape_a: Sequence[int], shape_b: Sequence[int]) -> tuple
+```
 
-- `asnumpy.copy` - 返回数组的副本
-- `asnumpy.shape` - 返回数组的形状
-- `asnumpy.size` - 返回元素数量
-- `asnumpy.ndim` - 返回维度数
-- `asnumpy.dtype` - 返回数据类型
+计算两个输入形状广播后的结果形状。
 
-## 参见
+**参数**
+- `shape_a` (Sequence[int]): 第一个输入形状。
+- `shape_b` (Sequence[int]): 第二个输入形状。
 
-- [`numpy`](https://numpy.org/doc/stable/reference/index.html): NumPy 参考
+**返回值**
+- `tuple`: 广播后的形状。
+
+**抛出**
+- `ValueError`: 如果形状无法一起广播。
+
+**示例**
+```python
+>>> import asnumpy as anp
+>>> anp.broadcast_shape((3, 1), (1, 4))
+(3, 4)
+>>> anp.broadcast_shape((5, 1, 3), (1, 4, 3))
+(5, 4, 3)
+```

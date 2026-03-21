@@ -5,7 +5,7 @@
 ## asnumpy.zeros
 
 ```python
-asnumpy.zeros(shape: Union[int, Sequence[int]], dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Create an array initialized with zero values.
@@ -41,10 +41,10 @@ array([[0, 0],
 ## asnumpy.zeros_like
 
 ```python
-asnumpy.zeros_like(other: Any, dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
-Create an array of zeros with the same shape as an existing array.
+Return a zero-initialized array with dimensions matching the input.
 
 This function returns a new `asnumpy.ndarray` whose shape matches
 that of the input object. All elements of the returned array are
@@ -74,7 +74,7 @@ array([[0, 0],
 ## asnumpy.full
 
 ```python
-asnumpy.full(shape: Union[int, Sequence[int]], value: Any, dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Create an array filled with a specific value.
@@ -110,10 +110,10 @@ array([[3.5, 3.5, 3.5],
 ## asnumpy.full_like
 
 ```python
-asnumpy.full_like(other: Any, value: Any, dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) -> ndarray
 ```
 
-Create an array filled with a specific value, matching another array's shape.
+Return a new array populated with a scalar value, inheriting shape from the provided array.
 
 **Arguments**
 - `other` (array_like): Array whose shape is used for the output.
@@ -138,10 +138,10 @@ array([9, 9, 9, 9])
 ## asnumpy.empty
 
 ```python
-asnumpy.empty(shape: Union[int, Sequence[int]], dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.empty(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 ```
 
-Create an uninitialized array.
+Allocate a new array without initializing element values.
 
 Returns a new asnumpy.ndarray with arbitrary content.
 The array shape and dtype are determined by the parameters.
@@ -167,10 +167,10 @@ array([[... , ...],
 ## asnumpy.empty_like
 
 ```python
-asnumpy.empty_like(prototype: Any, dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
-Create an uninitialized array matching another array's shape.
+Allocate an uninitialized array with dimensions copied from the input.
 
 **Arguments**
 - `prototype` (array_like): Array whose shape is used for the output.
@@ -194,13 +194,13 @@ array([[... , ...],
 ## asnumpy.eye
 
 ```python
-asnumpy.eye(n: int, dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.eye(n: int, dtype: DTypeLike = None) -> ndarray
 ```
 
-Create a 2-D identity matrix.
+Generate a 2-D array with ones on the diagonal and zeros elsewhere.
 
-Returns a square asnumpy.ndarray with ones on the main diagonal
-and zeros elsewhere.
+Produces a square matrix where diagonal elements are set to 1
+and all other positions contain 0.
 
 **Arguments**
 - `n` (int): Number of rows (and columns) of the matrix.
@@ -225,7 +225,7 @@ array([[1., 0., 0.],
 ## asnumpy.ones
 
 ```python
-asnumpy.ones(shape: Union[int, Sequence[int]], dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.ones(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Create an array filled with ones.
@@ -250,10 +250,10 @@ array([1., 1., 1., 1.])
 ## asnumpy.ones_like
 
 ```python
-asnumpy.ones_like(other: Any, dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
-Create an array of ones matching another array's shape.
+Return a ones-filled array with dimensions matching the input.
 
 **Arguments**
 - `other` (array_like): Array whose shape is used for output.
@@ -277,10 +277,10 @@ array([[1, 1, 1],
 ## asnumpy.identity
 
 ```python
-asnumpy.identity(n: int, dtype: Optional[np.dtype] = None) -> ndarray
+asnumpy.identity(n: int, dtype: DTypeLike = None) -> ndarray
 ```
 
-Create a square identity matrix.
+Generate the identity matrix of given size.
 
 **Arguments**
 - `n` (int): Number of rows and columns.
@@ -302,14 +302,14 @@ array([[1., 0., 0.],
 
 ```python
 asnumpy.linspace(
-    start: Union[int, float],
-    end: Union[int, float],
+    start: ScalarLike,
+    end: ScalarLike,
     steps: int = 50,
-    dtype: Optional[np.dtype] = None,
+    dtype: DTypeLike = None,
 ) -> ndarray
 ```
 
-Generate evenly spaced samples over an interval.
+Produce a sequence of values linearly interpolated between two endpoints.
 
 **Arguments**
 - `start` (int or float): Starting value of the sequence.

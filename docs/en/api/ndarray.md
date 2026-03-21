@@ -59,7 +59,7 @@ This function copies the data from the host (CPU) to the device (NPU).
 asnumpy.ndarray.shape -> tuple
 ```
 
-Tuple of array dimensions.
+Returns the dimensions of the array as a tuple of integers.
 
 **Returns**
 - `tuple`: The shape of the array.
@@ -73,7 +73,7 @@ Tuple of array dimensions.
 asnumpy.ndarray.dtype -> np.dtype
 ```
 
-Data-type of the array's elements.
+Returns the data type information for elements stored in the array.
 
 **Returns**
 - `numpy.dtype`: The data type of the array elements.

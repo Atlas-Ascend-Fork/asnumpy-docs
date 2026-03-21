@@ -96,14 +96,12 @@ print("验证通过。")
 ```python
 import asnumpy as ap
 
-# 切换到指定的 NPU（默认为 0）
+# 查询可用的NPU设备
+print(ap.get_device_count())  # e.g. 8
+
+# 切换到特定的NPU（默认为0）
 ap.set_device(1)
 ```
-
-> **注意：** 要查看可用的 NPU 设备，请使用系统命令：
-> ```bash
-> npu-smi info
-> ```
 
 ## 更多示例
 

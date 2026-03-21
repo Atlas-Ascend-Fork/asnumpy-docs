@@ -1,18 +1,47 @@
 # 排序函数
 
-本模块提供排序和排序相关函数。
+[[toc]]
 
-::: info
-排序函数目前正在开发中。请参阅 NumPy 文档了解预期的 API。
+本模块提供数组元素的排序和排序相关函数。
+
+## asnumpy.sort
+
+```python
+asnumpy.sort(a: ArrayLike, axis: int = -1, stable: bool = False) -> ndarray
+```
+
+将数组元素按升序排列。
+
+此函数生成一个新数组，其元素沿指定轴从小到大排列。如果未指定轴，则默认使用最后一个轴。设置 `stable` 标志为 True 时，可确保相等元素的相对顺序被保留。
+
+**参数**
+- `a` (ArrayLike): 要重新排列元素的输入数组。
+- `axis` (int 或 None, 可选): 排序操作的维度。默认为最后一个维度 (-1)。提供 None 则在排序前展平数组。
+- `stable` (bool, 可选): 是否执行保持相等元素顺序的稳定排序。默认为 False。
+
+**返回值**
+- `ndarray`: 沿指定轴排序元素的新数组。除非展平，否则形状与输入匹配。
+
+**参见**
+- [`numpy.sort`](https://numpy.org/doc/stable/reference/generated/numpy.sort.html): NumPy 数组排序等效函数。
+
+::: warning
+AsNumPy 目前未实现 NumPy 的 `kind` 或 `order` 参数。使用 `stable` 布尔值控制排序稳定性。
 :::
 
-## 计划中的函数
-
-- `asnumpy.sort` - 返回数组的排序副本
-- `asnumpy.argsort` - 返回排序数组的索引
-- `asnumpy.lexsort` - 执行间接稳定排序
-- `asnumpy.partition` - 返回数组的分区副本
-
-## 参见
-
-- [`numpy.sort`](https://numpy.org/doc/stable/reference/generated/numpy.sort.html): NumPy 排序函数
+**示例**
+```python
+>>> import asnumpy as ap
+>>> arr = ap.array([[3, 1], [2, 4]])
+>>> ap.sort(arr)
+array([[1, 3],
+       [2, 4]])
+>>> ap.sort(arr, axis=0)
+array([[2, 1],
+       [3, 4]])
+>>> ap.sort(arr, axis=None)
+array([1, 2, 3, 4])
+>>> ap.sort(arr, stable=True)
+array([[1, 3],
+       [2, 4]])
+```
