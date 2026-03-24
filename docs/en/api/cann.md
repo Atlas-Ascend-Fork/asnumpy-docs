@@ -1,7 +1,5 @@
 # CANN Interfaces
 
-[[toc]]
-
 This module provides interfaces to the CANN (Compute Architecture for Neural Networks) backend.
 
 ## asnumpy.set_device

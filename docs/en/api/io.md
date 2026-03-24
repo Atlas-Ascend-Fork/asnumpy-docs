@@ -1,7 +1,5 @@
 # I/O Operations
 
-[[toc]]
-
 ## asnumpy.save
 
 ```python

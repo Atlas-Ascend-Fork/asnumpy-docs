@@ -1,7 +1,5 @@
 # Mathematical Functions
 
-[[toc]]
-
 This module provides mathematical functions including trigonometric, hyperbolic, exponential, logarithmic, and other mathematical operations.
 
 ## Trigonometric Functions

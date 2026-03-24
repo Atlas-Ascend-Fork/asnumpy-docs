@@ -1,7 +1,5 @@
 # Statistics Functions
 
-[[toc]]
-
 ## Averages and Variances
 
 ### asnumpy.mean

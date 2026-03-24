@@ -1,7 +1,5 @@
 # The N-Dimensional Array Object
 
-[[toc]]
-
 ## Constructor
 
 ### asnumpy.ndarray

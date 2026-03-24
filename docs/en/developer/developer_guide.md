@@ -1,17 +1,5 @@
 # AsNumpy Developer Guide
 
-## Table of Contents
-
-1. [Project Overview](#1-project-overview)
-2. [Development Workflow](#2-development-workflow)
-3. [Backend Development (C++)](#3-backend-development-c)
-4. [Binding Layer (Pybind11)](#4-binding-layer-pybind11)
-5. [Frontend Development (Python)](#5-frontend-development-python)
-6. [Writing Tests](#6-writing-tests)
-7. [Build and Run](#7-build-and-run)
-
----
-
 ## 1. Project Overview
 
 AsNumpy is a numerical computing library based on Huawei Ascend NPU, providing a NumPy-compatible API that offloads computation tasks to the NPU. The project adopts a layered architecture:

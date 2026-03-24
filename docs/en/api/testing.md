@@ -1,7 +1,5 @@
 # Testing Utilities
 
-[[toc]]
-
 The `asnumpy.testing` module provides utilities for testing asnumpy code, including assertion functions, decorators for parameterized testing, and helper functions.
 
 ## Array Assertions

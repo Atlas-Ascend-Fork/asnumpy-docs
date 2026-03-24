@@ -1,7 +1,5 @@
 # Random Sampling Functions
 
-[[toc]]
-
 This module provides random number generation capabilities for various probability distributions. All samples are generated on the accelerator device.
 
 ## Continuous Distributions

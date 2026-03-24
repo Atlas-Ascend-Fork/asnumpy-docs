@@ -1,7 +1,5 @@
 # Linear Algebra
 
-[[toc]]
-
 ## Matrix and Vector Products
 
 ### asnumpy.dot

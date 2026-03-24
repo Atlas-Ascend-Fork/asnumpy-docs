@@ -1,7 +1,5 @@
 # Array Manipulation
 
-[[toc]]
-
 ## asnumpy.zeros
 
 ```python

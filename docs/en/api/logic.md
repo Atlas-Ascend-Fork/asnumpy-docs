@@ -1,7 +1,5 @@
 # Logic Functions
 
-[[toc]]
-
 ## Truth Value Testing
 
 ### asnumpy.all

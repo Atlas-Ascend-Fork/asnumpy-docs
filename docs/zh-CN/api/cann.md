@@ -1,7 +1,5 @@
 # CANN 接口
 
-[[toc]]
-
 本模块提供 CANN（神经网络异构计算架构）后端的接口。
 
 ## asnumpy.set_device

@@ -1,7 +1,5 @@
 # Neural Network Functions
 
-[[toc]]
-
 ## Activation Functions
 
 ### asnumpy.softmax

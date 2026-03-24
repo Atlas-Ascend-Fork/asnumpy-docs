@@ -1,7 +1,5 @@
 # 神经网络函数
 
-[[toc]]
-
 ## 激活函数
 
 ### asnumpy.softmax

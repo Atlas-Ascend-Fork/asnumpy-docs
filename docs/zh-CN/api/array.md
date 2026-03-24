@@ -1,7 +1,5 @@
 # 数组操作
 
-[[toc]]
-
 ## asnumpy.zeros
 
 ```python

@@ -1,7 +1,5 @@
 # Sorting Functions
 
-[[toc]]
-
 This module provides sorting and ordering functions for array elements.
 
 ## asnumpy.sort

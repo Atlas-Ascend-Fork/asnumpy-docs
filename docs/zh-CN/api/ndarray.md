@@ -1,7 +1,5 @@
 # N 维数组对象
 
-[[toc]]
-
 ## 构造函数
 
 ### asnumpy.ndarray

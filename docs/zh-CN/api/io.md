@@ -1,7 +1,5 @@
 # 输入输出操作
 
-[[toc]]
-
 ## asnumpy.save
 
 ```python
