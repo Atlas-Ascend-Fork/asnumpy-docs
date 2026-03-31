@@ -370,7 +370,7 @@ asnumpy.sinh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 包含 `x` 中每个元素的双曲正弦值的数组。
@@ -399,7 +399,7 @@ asnumpy.cosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 包含 `x` 中每个元素的双曲余弦值的数组。
@@ -428,7 +428,7 @@ asnumpy.tanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 包含 `x` 中每个元素的双曲正切值的数组。
@@ -457,7 +457,7 @@ asnumpy.arcsinh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 包含 `x` 中每个元素的反双曲正弦值的数组。
@@ -485,7 +485,7 @@ asnumpy.arccosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 包含 `x` 中每个元素的反双曲余弦值的数组。
@@ -513,7 +513,7 @@ asnumpy.arctanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 包含 `x` 中每个元素的反双曲正切值的数组。
@@ -544,7 +544,7 @@ asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **参数**
 - `x1` (ArrayLike): 第一个输入数组或标量。
 - `x2` (ArrayLike): 第二个输入数组或标量。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 和 `x2` 的和。
@@ -573,7 +573,7 @@ asnumpy.subtract(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarr
 **参数**
 - `x1` (ArrayLike): 被减数组。
 - `x2` (ArrayLike): 减数数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 差值 `x1 - x2`。
@@ -602,7 +602,7 @@ asnumpy.multiply(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarr
 **参数**
 - `x1` (ArrayLike): 第一个输入数组或标量。
 - `x2` (ArrayLike): 第二个输入数组或标量。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 和 `x2` 的积。
@@ -631,7 +631,7 @@ asnumpy.divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **参数**
 - `x1` (ArrayLike): 被除数。
 - `x2` (ArrayLike): 除数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 除以 `x2` 的商。
@@ -662,7 +662,7 @@ asnumpy.true_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 **参数**
 - `x1` (ArrayLike): 被除数。
 - `x2` (ArrayLike): 除数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 除以 `x2` 的商。
@@ -692,7 +692,7 @@ asnumpy.floor_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> n
 **参数**
 - `x1` (ArrayLike): 被除数。
 - `x2` (ArrayLike): 除数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 整除的结果。
@@ -723,7 +723,7 @@ asnumpy.power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **参数**
 - `x1` (ArrayLike): 底数。
 - `x2` (ArrayLike): 指数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1 ** x2` 的结果。
@@ -753,7 +753,7 @@ asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 **参数**
 - `x1` (ArrayLike): 底数。
 - `x2` (ArrayLike): 指数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1 ** x2` 的结果。
@@ -781,7 +781,7 @@ asnumpy.negative(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 输入数组的负值。
@@ -809,7 +809,7 @@ asnumpy.positive(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 应用了正一元运算符的输入数组。
@@ -837,7 +837,7 @@ asnumpy.reciprocal(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x` 中每个元素的倒数。
@@ -866,7 +866,7 @@ asnumpy.mod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **参数**
 - `x1` (ArrayLike): 被除数。
 - `x2` (ArrayLike): 除数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 除法的余数。
@@ -896,7 +896,7 @@ asnumpy.remainder(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndar
 **参数**
 - `x1` (ArrayLike): 被除数。
 - `x2` (ArrayLike): 除数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 除法的余数。
@@ -926,7 +926,7 @@ asnumpy.fmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **参数**
 - `x1` (ArrayLike): 被除数。
 - `x2` (ArrayLike): 除数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 除法的余数。
@@ -983,7 +983,7 @@ asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple
 **参数**
 - `x1` (ArrayLike): 被除数。
 - `x2` (ArrayLike): 除数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray 元组`: 包含逐元素整除商和逐元素余数的元组。
@@ -1491,7 +1491,7 @@ asnumpy.relu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 与 `x` 形状相同的数组，负值被替换为 0。
@@ -1515,7 +1515,7 @@ asnumpy.gelu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 对 `x` 应用 GELU 函数的结果。
@@ -1539,7 +1539,7 @@ asnumpy.sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 在 `x` 处评估的归一化 sinc 函数。
@@ -1569,7 +1569,7 @@ asnumpy.around(x: ArrayLike, decimals: int = 0, dtype: DTypeLike = None) -> ndar
 **参数**
 - `x` (ArrayLike): 输入数据。
 - `decimals` (int, 可选): 要舍入到的小数位数（默认：0）。如果 decimals 为负数，它指定小数点左边的位数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 与 `x` 类型相同的数组，包含舍入后的值。
@@ -1600,7 +1600,7 @@ asnumpy.round_(x: ArrayLike, decimals: int = 0, dtype: DTypeLike = None) -> ndar
 **参数**
 - `x` (ArrayLike): 输入数据。
 - `decimals` (int, 可选): 要舍入到的小数位数（默认：0）。如果 decimals 为负数，它指定小数点左边的位数。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 与 `x` 类型相同的数组，包含舍入后的值。
@@ -1630,7 +1630,7 @@ asnumpy.rint(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 与 `x` 形状和类型相同的输出数组。
@@ -1660,7 +1660,7 @@ asnumpy.fix(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 要舍入的浮点数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 舍入后的数字数组。
@@ -1690,7 +1690,7 @@ asnumpy.floor(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数据。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x` 中每个元素的下取整。
@@ -1719,7 +1719,7 @@ asnumpy.ceil(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数据。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x` 中每个元素的上取整。
@@ -1748,7 +1748,7 @@ asnumpy.trunc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `x` (ArrayLike): 输入数据。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x` 中每个元素的截断值。
@@ -1777,7 +1777,7 @@ asnumpy.prod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dt
 - `a` (ArrayLike): 输入数组。
 - `axis` (int 或 int 序列, 可选): 操作的轴。默认返回展平数组的乘积。
 - `keepdims` (bool, 可选): 如果为 True，则缩减的轴在结果中保留为大小为一的维度。
-- `dtype` (数据类型, 可选): 返回数组和累加器的数据类型。
+- `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
 - `ndarray 或 标量`: 乘积。
@@ -1807,7 +1807,7 @@ asnumpy.sum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dty
 **参数**
 - `a` (ArrayLike): 输入数组。
 - `axis` (int 或 int 序列, 可选): 操作的轴。默认返回展平数组的和。如果 `keepdims` 为 True， 则缩减的轴在结果中保留为大小为一的维度。
-- `dtype` (数据类型, 可选): 返回数组和累加器的数据类型。
+- `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
 - `ndarray 或 标量`: 和。
@@ -1840,7 +1840,7 @@ asnumpy.nanprod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False,
 **参数**
 - `a` (ArrayLike): 输入数组。
 - `axis` (int 或 int 序列, 可选): 操作的轴。默认返回展平数组的乘积。。 如果 `keepdims` 为 True, 则缩减的轴在结果中保留为大小为一的维度。
-- `dtype` (数据类型, 可选): 返回数组和累加器的数据类型。
+- `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
 - `ndarray 或 标量`: 乘积，将 NaN 觪为 1。
@@ -1870,7 +1870,7 @@ asnumpy.nansum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, 
 **参数**
 - `a` (ArrayLike): 输入数组。
 - `axis` (int 或 int 序列, 可选): 操作的轴。默认返回展平数组的和。如果 `keepdims` 为 True, 则缩减的轴在结果中保留为大小为一的维度。
-- `dtype` (数据类型, 可选): 返回数组和累加器的数据类型。
+- `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
 - `ndarray or 标量`: 和（将 NaN 视为 0）。
@@ -1901,7 +1901,7 @@ asnumpy.cumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None
 **参数**
 - `a` (ArrayLike): 输入数组。
 - `axis` (int, 可选): 计算累积乘积的轴。默认输入被展平。
-- `dtype` (数据类型, 可选): 返回数组和累加器的数据类型。
+- `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
 - `ndarray`: 包含累积乘积的新数组。
@@ -1932,7 +1932,7 @@ asnumpy.cumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None)
 **参数**
 - `a` (ArrayLike): 输入数组。
 - `axis` (int, 可选): 计算累积和的轴。默认输入被展平。
-- `dtype` (数据类型, 可选): 返回数组和累加器的数据类型。
+- `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
 - `ndarray`: 包含累积和的新数组。
@@ -1963,7 +1963,7 @@ asnumpy.nancumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = N
 **参数**
 - `a` (ArrayLike): 输入数组。
 - `axis` (int, 可选): 计算累积乘积的轴。默认输入被展平。
-- `dtype` (数据类型, 可选): 返回数组和累加器的数据类型。
+- `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
 - `ndarray`: 包含累积乘积的新数组。
@@ -1991,7 +1991,7 @@ asnumpy.nancumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = No
 此函数计算沿指定轴的元素的运行总和，任何 NaN 值都会被视为 0 进行计算时**参数**
 - `a` (ArrayLike): 输入数组。
 - `axis` (int, 可选): 计算累积和的轴。默认输入被展平。
-- `dtype` (数据类型, 可选): 返回数组和累加器的数据类型。
+- `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
 - `ndarray`: 包含累积和的新数组。
@@ -2054,7 +2054,7 @@ asnumpy.maximum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
 - `x2` (ArrayLike): 第二个输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 和 `x2` 的逐元素最大值。
@@ -2085,7 +2085,7 @@ asnumpy.minimum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
 - `x2` (ArrayLike): 第二个输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 和 `x2` 的逐元素最小值。
@@ -2116,7 +2116,7 @@ asnumpy.fmax(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
 - `x2` (ArrayLike): 第二个输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 和 `x2` 的逐元素最大值。
@@ -2148,7 +2148,7 @@ asnumpy.fmin(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
 - `x2` (ArrayLike): 第二个输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 和 `x2` 的逐元素最小值。
@@ -2455,7 +2455,7 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
 - `x2` (ArrayLike): 第二个输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 输入绝对值的最大公约数。
@@ -2484,7 +2484,7 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
 - `x2` (ArrayLike): 第二个输入数组。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 输入绝对值的最小公倍数。

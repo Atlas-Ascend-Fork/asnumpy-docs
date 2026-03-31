@@ -14,9 +14,9 @@ asnumpy.mean(a: ArrayLike, axis: AxisLike = None, keepdims: bool = False, dtype:
 
 **参数**
 - `a` (ArrayLike): 用于计算平均值的输入数据。
-- `axis` (int 或 int 元组, 可选): 执行平均计算的维度。省略此参数则对所有元素求平均。
+- `axis` (AxisLike, int 或 int 元组, 可选): 执行平均计算的维度。省略此参数则对所有元素求平均。
 - `keepdims` (bool, 可选): 启用时，在输出形状中保留长度为1的缩减维度。默认为 False。
-- `dtype` (数据类型, 可选): 计算的数值精度。整数输入默认使用 float64；浮点输入保持原始精度。
+- `dtype` (DTypeLike, 可选): 计算的数值精度。整数输入默认使用 float64；浮点输入保持原始精度。
 
 **返回值**
 - `ndarray` 或 `float`: 计算得到的平均值。

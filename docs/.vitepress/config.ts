@@ -124,7 +124,7 @@ export default defineConfig({
 
     footer: {
       message: 'Based on <a href="https://numpy.org" target="_blank">NumPy</a> · Powered by <a href="https://www.hiascend.com" target="_blank">Ascend</a>',
-      copyright: 'Copyright © 2024-PRESENT AsNumpy',
+      copyright: 'Copyright © 2026-PRESENT AsNumpy',
     },
 
     outline: {

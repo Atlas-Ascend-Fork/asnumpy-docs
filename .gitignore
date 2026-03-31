@@ -1,7 +1,6 @@
 # Dependencies
 node_modules/
 .pnpm-store/
-package-lock.json 
 
 # Build output (VitePress in docs/.vitepress/)
 docs/.vitepress/dist/

@@ -15,7 +15,7 @@ The softmax function transforms each element of a collection by computing the ex
 **Arguments**
 - `x` (ArrayLike): Input array.
 - `axis` (int, optional): Axis along which softmax is computed. The default is -1 (last axis).
-- `dtype` (data-type, optional): Desired data-type for the output array.
+- `dtype` (DTypeLike, optional): Desired data-type for the output array.
 
 **Returns**
 - `asnumpy.ndarray`: The softmax output array with the same shape as `x`.

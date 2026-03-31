@@ -38,23 +38,51 @@ npm run docs:preview
 ```
 asnumpy-docs/
 ├── docs/
-│   ├── .vitepress/          # VitePress configuration
-│   │   └── config.ts        # Main config (nav, sidebar, i18n)
+│   ├── .vitepress/              # VitePress configuration
+│   │   ├── config.ts            # Main config (nav, sidebar, i18n)
+│   │   └── theme/               # Custom theme
+│   │       ├── index.ts         # Theme entry
+│   │       └── custom.css       # Custom styles
 │   ├── public/
-│   │   └── images/          # Logo and images
-│   ├── en/                  # English documentation
-│   │   ├── index.md         # Home page
-│   │   ├── guide/           # User guides
-│   │   ├── api/             # API reference
-│   │   └── developer/       # Developer documentation
-│   ├── zh-CN/               # Chinese documentation
+│   │   └── images/              # Logo and images
+│   │       └── asnumpy_logo.png
+│   ├── en/                      # English documentation
+│   │   ├── index.md             # Home page
+│   │   ├── guide/               # User guides
+│   │   │   ├── introduction.md
+│   │   │   ├── quick-start.md
+│   │   │   ├── installation.md
+│   │   │   ├── basic-usage.md
+│   │   │   ├── architecture.md
+│   │   │   ├── benchmarks.md
+│   │   │   └── faq.md
+│   │   ├── api/                 # API reference
+│   │   │   ├── index.md
+│   │   │   ├── ndarray.md
+│   │   │   ├── array.md
+│   │   │   ├── math.md
+│   │   │   ├── linalg.md
+│   │   │   ├── logic.md
+│   │   │   ├── random.md
+│   │   │   ├── sorting.md
+│   │   │   ├── statistics.md
+│   │   │   ├── io.md
+│   │   │   ├── cann.md
+│   │   │   ├── nn.md
+│   │   │   ├── testing.md
+│   │   │   └── utils.md
+│   │   └── developer/           # Developer documentation
+│   │       └── developer_guide.md
+│   ├── zh-CN/                   # Chinese documentation (same structure as en/)
 │   │   ├── index.md
 │   │   ├── guide/
 │   │   ├── api/
 │   │   └── developer/
-│   └── index.md             # Root redirect
+│   └── index.md                 # Root redirect
 ├── package.json
-└── README.md
+├── LICENSE
+├── README.md
+└── README.zh-CN.md
 ```
 
 ## Features

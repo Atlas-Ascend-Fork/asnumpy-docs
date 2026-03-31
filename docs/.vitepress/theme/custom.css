@@ -89,10 +89,6 @@
   font-weight: 600;
 }
 
-/* Navigation bar */
-.VPNavBar {
-  backdrop-filter: blur(12px);
-}
 
 /* Footer links */
 .VPFooter a {

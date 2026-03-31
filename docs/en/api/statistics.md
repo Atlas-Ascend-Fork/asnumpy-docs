@@ -14,9 +14,9 @@ This function determines the central tendency of values within an array. When no
 
 **Arguments**
 - `a` (ArrayLike): Input data for averaging.
-- `axis` (int or tuple of ints, optional): Dimension(s) over which to perform averaging. Omitting this argument averages all elements.
+- `axis` (AxisLike, int or tuple of ints, optional): Dimension(s) over which to perform averaging. Omitting this argument averages all elements.
 - `keepdims` (bool, optional): When enabled, preserves reduced dimensions with length one in the output shape. Defaults to False.
-- `dtype` (data-type, optional): Numerical precision for the calculation. Integer inputs use float64 by default; float inputs retain their original precision.
+- `dtype` (DTypeLike, optional): Numerical precision for the calculation. Integer inputs use float64 by default; float inputs retain their original precision.
 
 **Returns**
 - `ndarray` or `float`: The computed average value(s).

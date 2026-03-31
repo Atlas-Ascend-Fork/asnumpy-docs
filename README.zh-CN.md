@@ -38,22 +38,49 @@ npm run docs:preview
 ```
 asnumpy-docs/
 ├── docs/
-│   ├── .vitepress/          # VitePress 配置
-│   │   └── config.ts        # 主配置（导航、侧边栏、国际化）
+│   ├── .vitepress/              # VitePress 配置
+│   │   ├── config.ts            # 主配置（导航、侧边栏、国际化）
+│   │   └── theme/               # 自定义主题
+│   │       ├── index.ts         # 主题入口
+│   │       └── custom.css       # 自定义样式
 │   ├── public/
-│   │   └── images/          # Logo 和图片
-│   ├── en/                  # 英文文档
-│   │   ├── index.md         # 首页
-│   │   ├── guide/           # 用户指南
-│   │   ├── api/             # API 参考
-│   │   └── developer/       # 开发者文档
-│   ├── zh-CN/               # 中文文档
+│   │   └── images/              # Logo 和图片
+│   │       └── asnumpy_logo.png
+│   ├── en/                      # 英文文档
+│   │   ├── index.md             # 首页
+│   │   ├── guide/               # 用户指南
+│   │   │   ├── introduction.md  # 简介
+│   │   │   ├── quick-start.md   # 快速开始
+│   │   │   ├── installation.md  # 安装指南
+│   │   │   ├── basic-usage.md   # 基本用法
+│   │   │   ├── architecture.md  # 架构设计
+│   │   │   ├── benchmarks.md    # 性能测试
+│   │   │   └── faq.md           # 常见问题
+│   │   ├── api/                 # API 参考
+│   │   │   ├── index.md         # API 概览
+│   │   │   ├── ndarray.md       # ndarray 对象
+│   │   │   ├── array.md         # 数组操作
+│   │   │   ├── math.md          # 数学函数
+│   │   │   ├── linalg.md        # 线性代数
+│   │   │   ├── logic.md         # 逻辑函数
+│   │   │   ├── random.md        # 随机抽样
+│   │   │   ├── sorting.md       # 排序函数
+│   │   │   ├── statistics.md    # 统计函数
+│   │   │   ├── io.md            # 输入输出
+│   │   │   ├── cann.md          # CANN 接口
+│   │   │   ├── nn.md            # 神经网络
+│   │   │   ├── testing.md       # 测试函数
+│   │   │   └── utils.md         # 工具函数
+│   │   └── developer/           # 开发者文档
+│   │       └── developer_guide.md
+│   ├── zh-CN/                   # 中文文档（结构同 en/）
 │   │   ├── index.md
 │   │   ├── guide/
 │   │   ├── api/
 │   │   └── developer/
-│   └── index.md             # 根目录重定向
+│   └── index.md                 # 根目录重定向
 ├── package.json
+├── LICENSE
 ├── README.md
 └── README.zh-CN.md
 ```

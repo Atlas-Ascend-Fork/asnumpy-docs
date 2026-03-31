@@ -13,8 +13,8 @@ asnumpy.testing.assert_array_equal(x, y, err_msg='', verbose=True, strides_check
 Verifies that two arrays contain identical elements, raising an error when discrepancies are found.
 
 **Arguments**
-- `x` (array_like): The first array to compare.
-- `y` (array_like): The second array to compare against.
+- `x` (ArrayLike): The first array to compare.
+- `y` (ArrayLike): The second array to compare against.
 - `err_msg` (str, optional): The error message to be printed in case of failure.
 - `verbose` (bool, optional): If True, the conflicting values are appended to the error message.
 - `strides_check` (bool, optional): If True, also verifies that array strides match. Default is False.
@@ -34,8 +34,8 @@ asnumpy.testing.assert_allclose(x, y, rtol=1e-7, atol=0, err_msg='', verbose=Tru
 Verifies that two arrays are equal within specified tolerances.
 
 **Arguments**
-- `x` (array_like): The first array to compare.
-- `y` (array_like): The second array to compare against.
+- `x` (ArrayLike): The first array to compare.
+- `y` (ArrayLike): The second array to compare against.
 - `rtol` (float, optional): Relative tolerance.
 - `atol` (float, optional): Absolute tolerance.
 - `err_msg` (str, optional): The error message to be printed in case of failure.
@@ -381,7 +381,7 @@ Create an array with the given shape filled with sequential values starting from
 
 **Arguments**
 - `shape` (int or tuple): Output array shape.
-- `dtype` (data-type, optional): Output array dtype. Default is numpy.float64.
+- `dtype` (DTypeLike, optional): Output array dtype. Default is numpy.float64.
 - `order` (str, optional): Memory layout ('C' or 'F'). Default is 'C'.
 - `xp` (module, optional): Array module to use (numpy or asnumpy). Default is numpy.
 - `start` (int, optional): Starting value for the sequence. Default is 0.
@@ -396,7 +396,7 @@ Create an array with the given shape filled with random values.
 
 **Arguments**
 - `shape` (int or tuple): Output array shape.
-- `dtype` (data-type, optional): Output array dtype. Default is numpy.float64.
+- `dtype` (DTypeLike, optional): Output array dtype. Default is numpy.float64.
 - `scale` (float, optional): Scaling factor for random values. Default is 1.0.
 - `seed` (int, optional): Random seed for reproducibility.
 - `xp` (module, optional): Array module to use (numpy or asnumpy). Default is numpy.
@@ -411,7 +411,7 @@ Create an array with the given shape filled with descending sequential values.
 
 **Arguments**
 - `shape` (int or tuple): Output array shape.
-- `dtype` (data-type, optional): Output array dtype. Default is numpy.float64.
+- `dtype` (DTypeLike, optional): Output array dtype. Default is numpy.float64.
 - `order` (str, optional): Memory layout ('C' or 'F'). Default is 'C'.
 - `xp` (module, optional): Array module to use (numpy or asnumpy). Default is numpy.
 

@@ -13,8 +13,8 @@ asnumpy.testing.assert_array_equal(x, y, err_msg='', verbose=True, strides_check
 验证两个数组包含相同元素，发现差异时抛出错误。
 
 **参数**
-- `x` (array_like): 第一个待比较数组。
-- `y` (array_like): 第二个待比较数组。
+- `x` (ArrayLike): 第一个待比较数组。
+- `y` (ArrayLike): 第二个待比较数组。
 - `err_msg` (str, 可选): 失败时打印的错误信息。
 - `verbose` (bool, 可选): 如果为 True，冲突值将附加到错误信息中。
 - `strides_check` (bool, 可选): 如果为 True，同时验证数组步幅是否匹配。默认为 False。
@@ -34,8 +34,8 @@ asnumpy.testing.assert_allclose(x, y, rtol=1e-7, atol=0, err_msg='', verbose=Tru
 验证两个数组在指定容差内相等。
 
 **参数**
-- `x` (array_like): 第一个待比较数组。
-- `y` (array_like): 第二个待比较数组。
+- `x` (ArrayLike): 第一个待比较数组。
+- `y` (ArrayLike): 第二个待比较数组。
 - `rtol` (float, 可选): 相对容差。
 - `atol` (float, 可选): 绝对容差。
 - `err_msg` (str, 可选): 失败时打印的错误信息。
@@ -381,7 +381,7 @@ asnumpy.testing.shaped_arange(shape, dtype=numpy.float64, order='C', xp=None, st
 
 **参数**
 - `shape` (int 或 tuple): 输出数组形状。
-- `dtype` (数据类型, 可选): 输出数组数据类型。默认为 numpy.float64。
+- `dtype` (DTypeLike, 可选): 输出数组数据类型。默认为 numpy.float64。
 - `order` (str, 可选): 内存布局（'C' 或 'F'）。默认为 'C'。
 - `xp` (模块, 可选): 使用的数组模块（numpy 或 asnumpy）。默认为 numpy。
 - `start` (int, 可选): 序列的起始值。默认为 0。
@@ -396,7 +396,7 @@ asnumpy.testing.shaped_random(shape, dtype=numpy.float64, scale=1.0, seed=None, 
 
 **参数**
 - `shape` (int 或 tuple): 输出数组形状。
-- `dtype` (数据类型, 可选): 输出数组数据类型。默认为 numpy.float64。
+- `dtype` (DTypeLike, 可选): 输出数组数据类型。默认为 numpy.float64。
 - `scale` (float, 可选): 随机值的缩放因子。默认为 1.0。
 - `seed` (int, 可选): 可重复性的随机种子。
 - `xp` (模块, 可选): 使用的数组模块（numpy 或 asnumpy）。默认为 numpy。
@@ -411,7 +411,7 @@ asnumpy.testing.shaped_reverse_arange(shape, dtype=numpy.float64, order='C', xp=
 
 **参数**
 - `shape` (int 或 tuple): 输出数组形状。
-- `dtype` (数据类型, 可选): 输出数组数据类型。默认为 numpy.float64。
+- `dtype` (DTypeLike, 可选): 输出数组数据类型。默认为 numpy.float64。
 - `order` (str, 可选): 内存布局（'C' 或 'F'）。默认为 'C'。
 - `xp` (模块, 可选): 使用的数组模块（numpy 或 asnumpy）。默认为 numpy。
 

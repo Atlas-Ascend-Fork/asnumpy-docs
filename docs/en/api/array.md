@@ -13,8 +13,8 @@ shape and fills all elements with zeros. The array is created on the
 current execution device used by asnumpy.
 
 **Arguments**
-- `shape` (int or sequence of int): Specifies the dimensions of the output array. A single integer creates a one-dimensional array, while a sequence defines a multi-dimensional shape.
-- `dtype` (data-type, optional): Data type of the returned array. If not provided, the default numeric type is used.
+- `shape` (ShapeLike, int or sequence of ints): Specifies the dimensions of the output array. A single integer creates a one-dimensional array, while a sequence defines a multi-dimensional shape.
+- `dtype` (DTypeLike, optional): Data type of the returned array. If not provided, the default numeric type is used.
 
 **Returns**
 - `ndarray`: An array whose elements are all set to zero and whose shape matches the given `shape` argument.
@@ -50,8 +50,8 @@ initialized to zero. By default, the data type is inferred from the
 input unless explicitly overridden.
 
 **Arguments**
-- `other` (array_like): Reference object that provides the shape of the output array.
-- `dtype` (data-type, optional): Data type of the returned array. If specified, it overrides the data type inferred from `other`.
+- `other` (ArrayLike): Reference object that provides the shape of the output array.
+- `dtype` (DTypeLike, optional): Data type of the returned array. If specified, it overrides the data type inferred from `other`.
 
 **Returns**
 - `ndarray`: An array filled with zeros and having the same shape as `other`.
@@ -81,9 +81,9 @@ Returns a new asnumpy.ndarray where all elements are set to `value`.
 Shape and dtype are controlled by the `shape` and `dtype` parameters.
 
 **Arguments**
-- `shape` (int or sequence of ints): Shape of the output array.
-- `value` (scalar): Value to fill the array with.
-- `dtype` (data-type, optional): Desired data type of the array.
+- `shape` (ShapeLike, int or sequence of ints): Shape of the output array.
+- `value` (ScalarLike): Value to fill the array with.
+- `dtype` (DTypeLike, optional): Desired data type of the array.
 
 **Returns**
 - `asnumpy.ndarray`: Array filled with the specified value.
@@ -114,9 +114,9 @@ asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) 
 Return a new array populated with a scalar value, inheriting shape from the provided array.
 
 **Arguments**
-- `other` (array_like): Array whose shape is used for the output.
-- `value` (scalar): Value to fill the array.
-- `dtype` (data-type, optional): Desired data type of the output array.
+- `other` (ArrayLike): Array whose shape is used for the output.
+- `value` (ScalarLike): Value to fill the array.
+- `dtype` (DTypeLike, optional): Desired data type of the output array.
 
 **Returns**
 - `asnumpy.ndarray`: Array filled with `value` matching the shape of `other`.
@@ -145,8 +145,8 @@ Returns a new asnumpy.ndarray with arbitrary content.
 The array shape and dtype are determined by the parameters.
 
 **Arguments**
-- `shape` (int or sequence of ints): Shape of the output array.
-- `dtype` (data-type, optional): Desired data type of the array.
+- `shape` (ShapeLike, int or sequence of ints): Shape of the output array.
+- `dtype` (DTypeLike, optional): Desired data type of the array.
 
 **Returns**
 - `asnumpy.ndarray`: Array with uninitialized values (may contain random memory data).
@@ -171,8 +171,8 @@ asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Allocate an uninitialized array with dimensions copied from the input.
 
 **Arguments**
-- `prototype` (array_like): Array whose shape is used for the output.
-- `dtype` (data-type, optional): Desired data type of the output array.
+- `prototype` (ArrayLike): Array whose shape is used for the output.
+- `dtype` (DTypeLike, optional): Desired data type of the output array.
 
 **Returns**
 - `asnumpy.ndarray`: Array with uninitialized values and same shape as `prototype`.
@@ -202,7 +202,7 @@ and all other positions contain 0.
 
 **Arguments**
 - `n` (int): Number of rows (and columns) of the matrix.
-- `dtype` (data-type, optional): Desired data type of the matrix.
+- `dtype` (DTypeLike, optional): Desired data type of the matrix.
 
 **Returns**
 - `asnumpy.ndarray`: Identity matrix of shape (n, n).
@@ -229,8 +229,8 @@ asnumpy.ones(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 Create an array filled with ones.
 
 **Arguments**
-- `shape` (int or sequence of ints): Shape of the output array.
-- `dtype` (data-type, optional): Desired data type of the array.
+- `shape` (ShapeLike, int or sequence of ints): Shape of the output array.
+- `dtype` (DTypeLike, optional): Desired data type of the array.
 
 **Returns**
 - `asnumpy.ndarray`: Array of ones with specified shape and dtype.
@@ -254,8 +254,8 @@ asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Return a ones-filled array with dimensions matching the input.
 
 **Arguments**
-- `other` (array_like): Array whose shape is used for output.
-- `dtype` (data-type, optional): Desired data type of the output array.
+- `other` (ArrayLike): Array whose shape is used for output.
+- `dtype` (DTypeLike, optional): Desired data type of the output array.
 
 **Returns**
 - `asnumpy.ndarray`: Array of ones with same shape (and optionally dtype) as `other`.
@@ -282,7 +282,7 @@ Generate the identity matrix of given size.
 
 **Arguments**
 - `n` (int): Number of rows and columns.
-- `dtype` (data-type, optional): Desired data type of the matrix.
+- `dtype` (DTypeLike, optional): Desired data type of the matrix.
 
 **Returns**
 - `asnumpy.ndarray`: Identity matrix of shape (n, n).
@@ -310,10 +310,10 @@ asnumpy.linspace(
 Produce a sequence of values linearly interpolated between two endpoints.
 
 **Arguments**
-- `start` (int or float): Starting value of the sequence.
-- `end` (int or float): End value of the sequence.
+- `start` (ScalarLike, int or float): Starting value of the sequence.
+- `end` (ScalarLike, int or float): End value of the sequence.
 - `steps` (int, optional): Number of samples to generate. Default is 50.
-- `dtype` (data-type, optional): Desired data type of the output array.
+- `dtype` (DTypeLike, optional): Desired data type of the output array.
 
 **Returns**
 - `asnumpy.ndarray`: Array of evenly spaced samples between start and end.

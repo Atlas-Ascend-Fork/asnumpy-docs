@@ -370,7 +370,7 @@ This function computes the hyperbolic sine for every element in the input array 
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: An array containing the hyperbolic sine of each element in `x`.
@@ -399,7 +399,7 @@ This function computes the hyperbolic cosine for every element in the input arra
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: An array containing the hyperbolic cosine of each element in `x`.
@@ -428,7 +428,7 @@ This function computes the hyperbolic tangent for every element in the input arr
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: An array containing the hyperbolic tangent of each element in `x`.
@@ -457,7 +457,7 @@ This function computes the inverse hyperbolic sine for every element in the inpu
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: An array containing the inverse hyperbolic sine of each element in `x`.
@@ -485,7 +485,7 @@ This function computes the inverse hyperbolic cosine for every element in the in
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: An array containing the inverse hyperbolic cosine of each element in `x`.
@@ -513,7 +513,7 @@ This function computes the inverse hyperbolic tangent for every element in the i
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: An array containing the inverse hyperbolic tangent of each element in `x`.
@@ -544,7 +544,7 @@ This function adds `x1` and `x2` element by element.
 **Arguments**
 - `x1` (ArrayLike): First input array or scalar.
 - `x2` (ArrayLike): Second input array or scalar.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The sum of `x1` and `x2`.
@@ -573,7 +573,7 @@ This function subtracts `x2` from `x1` element by element.
 **Arguments**
 - `x1` (ArrayLike): The array to subtract from.
 - `x2` (ArrayLike): The array to subtract.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The difference `x1 - x2`.
@@ -602,7 +602,7 @@ This function multiplies `x1` and `x2` element by element.
 **Arguments**
 - `x1` (ArrayLike): First input array or scalar.
 - `x2` (ArrayLike): Second input array or scalar.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The product of `x1` and `x2`.
@@ -631,7 +631,7 @@ This function divides `x1` by `x2` element by element, performing true division.
 **Arguments**
 - `x1` (ArrayLike): The dividend.
 - `x2` (ArrayLike): The divisor.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The quotient of `x1` divided by `x2`.
@@ -662,7 +662,7 @@ This function divides `x1` by `x2` element by element. It is an alias for `divid
 **Arguments**
 - `x1` (ArrayLike): The dividend.
 - `x2` (ArrayLike): The divisor.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The quotient of `x1` divided by `x2`.
@@ -692,7 +692,7 @@ This function divides `x1` by `x2` and rounds the quotient down to the nearest i
 **Arguments**
 - `x1` (ArrayLike): The dividend.
 - `x2` (ArrayLike): The divisor.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The result of floor division.
@@ -723,7 +723,7 @@ This function raises elements of `x1` to the power of elements of `x2`.
 **Arguments**
 - `x1` (ArrayLike): The bases.
 - `x2` (ArrayLike): The exponents.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The result of `x1 ** x2`.
@@ -753,7 +753,7 @@ This function raises elements of `x1` to the power of elements of `x2`. It ensur
 **Arguments**
 - `x1` (ArrayLike): The bases.
 - `x2` (ArrayLike): The exponents.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The result of `x1 ** x2`.
@@ -781,7 +781,7 @@ This function negates each element in the input array, returning `-x`.
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The negative of the input array.
@@ -809,7 +809,7 @@ This function returns `+x` for each element. It effectively returns a copy of th
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The input array with the positive unary operator applied.
@@ -837,7 +837,7 @@ This function computes the multiplicative inverse, `1 / x`, for every element in
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The reciprocal of each element in `x`.
@@ -866,7 +866,7 @@ This function computes the remainder of `x1` divided by `x2`. It behaves like th
 **Arguments**
 - `x1` (ArrayLike): The dividend.
 - `x2` (ArrayLike): The divisor.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The remainder of the division.
@@ -896,7 +896,7 @@ This function computes the remainder of `x1` divided by `x2`. It is an alias for
 **Arguments**
 - `x1` (ArrayLike): The dividend.
 - `x2` (ArrayLike): The divisor.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The remainder of the division.
@@ -926,7 +926,7 @@ This function computes the remainder of `x1` divided by `x2`. The result carries
 **Arguments**
 - `x1` (ArrayLike): The dividend.
 - `x2` (ArrayLike): The divisor.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The remainder of the division.
@@ -983,7 +983,7 @@ This function performs floor division and modulus simultaneously. It returns the
 **Arguments**
 - `x1` (ArrayLike): The dividend.
 - `x2` (ArrayLike): The divisor.
-- `dtype` (data-type, optional): Desired data type for the output array.
+- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `tuple of ndarray`: A tuple containing the element-wise floor quotient and the element-wise remainder.
@@ -1491,7 +1491,7 @@ This function applies the ReLU operation element-wise, returning `x` if positive
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: An array with the same shape as `x`, with negative values replaced by 0.
@@ -1515,7 +1515,7 @@ This function applies the GELU operation, which weights inputs by their probabil
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The result of the GELU function applied to `x`.
@@ -1539,7 +1539,7 @@ This function computes the normalized sinc function, `sin(pi * x) / (pi * x)`, f
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The normalized sinc function evaluated at `x`.
@@ -1569,7 +1569,7 @@ This function rounds each element in `x` to the given number of decimals.
 **Arguments**
 - `x` (ArrayLike): Input data.
 - `decimals` (int, optional): Number of decimal places to round to (default: 0). If decimals is negative, it specifies the number of positions to the left of the decimal point.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: An array of the same type as `x`, containing the rounded values.
@@ -1600,7 +1600,7 @@ This function rounds each element in `x` to the given number of decimals. It is 
 **Arguments**
 - `x` (ArrayLike): Input data.
 - `decimals` (int, optional): Number of decimal places to round to (default: 0). If decimals is negative, it specifies the number of positions to the left of the decimal point.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: An array of the same type as `x`, containing the rounded values.
@@ -1630,7 +1630,7 @@ This function rounds each element in the input array `x` to the closest integer 
 
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: Output array with the same shape and type as `x`.
@@ -1660,7 +1660,7 @@ This function rounds each floating-point element to the nearest integer closer t
 
 **Arguments**
 - `x` (ArrayLike): An array of floats to be rounded.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The array of rounded numbers.
@@ -1690,7 +1690,7 @@ This function returns the largest integer less than or equal to each element in 
 
 **Arguments**
 - `x` (ArrayLike): Input data.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The floor of each element in `x`.
@@ -1719,7 +1719,7 @@ This function returns the smallest integer greater than or equal to each element
 
 **Arguments**
 - `x` (ArrayLike): Input data.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The ceiling of each element in `x`.
@@ -1748,7 +1748,7 @@ This function returns the integer portion of each element in `x`, effectively di
 
 **Arguments**
 - `x` (ArrayLike): Input data.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The truncated value of each element in `x`.
@@ -1781,7 +1781,7 @@ This function multiplies elements in the input array `a`. If an `axis` is provid
 - `a` (ArrayLike): Input array.
 - `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, the product of the flattened array is returned.
 - `keepdims` (bool, optional): If True, the axes which are reduced are left in the result as dimensions with size one.
-- `dtype` (data-type, optional): The type of the returned array and of the accumulator in which the elements are multiplied.
+- `dtype` (DTypeLike, optional): The type of the returned array and of the accumulator in which the elements are multiplied.
 
 **Returns**
 - `ndarray or scalar`: The product of the elements.
@@ -1811,7 +1811,7 @@ This function adds up elements in the input array `a`. If an `axis` is provided,
 - `a` (ArrayLike): Input array.
 - `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, the sum of the flattened array is returned.
 - `keepdims` (bool, optional): If True, the axes which are reduced are left in the result as dimensions with size one.
-- `dtype` (data-type, optional): The type of the returned array and of the accumulator in which the elements are summed.
+- `dtype` (DTypeLike, optional): The type of the returned array and of the accumulator in which the elements are summed.
 
 **Returns**
 - `ndarray or scalar`: The sum of the elements.
@@ -1841,7 +1841,7 @@ This function multiplies elements in the input array `a`, treating any NaN value
 - `a` (ArrayLike): Input array.
 - `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, the product of the flattened array is returned.
 - `keepdims` (bool, optional): If True, the axes which are reduced are left in the result as dimensions with size one.
-- `dtype` (data-type, optional): The type of the returned array and of the accumulator.
+- `dtype` (DTypeLike, optional): The type of the returned array and of the accumulator.
 
 **Returns**
 - `ndarray or scalar`: The product of the elements, with NaNs treated as 1.
@@ -1872,7 +1872,7 @@ This function adds up elements in the input array `a`, treating any NaN values a
 - `a` (ArrayLike): Input array.
 - `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, the sum of the flattened array is returned.
 - `keepdims` (bool, optional): If True, the axes which are reduced are left in the result as dimensions with size one.
-- `dtype` (data-type, optional): The type of the returned array and of the accumulator.
+- `dtype` (DTypeLike, optional): The type of the returned array and of the accumulator.
 
 **Returns**
 - `ndarray or scalar`: The sum of the elements, with NaNs treated as 0.
@@ -1902,7 +1902,7 @@ This function computes the running product of elements along the specified axis.
 **Arguments**
 - `a` (ArrayLike): Input array.
 - `axis` (int, optional): Axis along which the cumulative product is computed. By default, the input is flattened.
-- `dtype` (data-type, optional): Type of the returned array and of the accumulator.
+- `dtype` (DTypeLike, optional): Type of the returned array and of the accumulator.
 
 **Returns**
 - `ndarray`: A new array containing the cumulative product.
@@ -1933,7 +1933,7 @@ This function computes the running total of elements along the specified axis.
 **Arguments**
 - `a` (ArrayLike): Input array.
 - `axis` (int, optional): Axis along which the cumulative sum is computed. By default, the input is flattened.
-- `dtype` (data-type, optional): Type of the returned array and of the accumulator.
+- `dtype` (DTypeLike, optional): Type of the returned array and of the accumulator.
 
 **Returns**
 - `ndarray`: A new array containing the cumulative sum.
@@ -1964,7 +1964,7 @@ This function computes the running product of elements along the specified axis.
 **Arguments**
 - `a` (ArrayLike): Input array.
 - `axis` (int, optional): Axis along which the cumulative product is computed. By default, the input is flattened.
-- `dtype` (data-type, optional): Type of the returned array and of the accumulator.
+- `dtype` (DTypeLike, optional): Type of the returned array and of the accumulator.
 
 **Returns**
 - `ndarray`: A new array containing the cumulative product.
@@ -1995,7 +1995,7 @@ This function computes the running total of elements along the specified axis. A
 **Arguments**
 - `a` (ArrayLike): Input array.
 - `axis` (int, optional): Axis along which the cumulative sum is computed. By default, the input is flattened.
-- `dtype` (data-type, optional): Type of the returned array and of the accumulator.
+- `dtype` (DTypeLike, optional): Type of the returned array and of the accumulator.
 
 **Returns**
 - `ndarray`: A new array containing the cumulative sum.
@@ -2058,7 +2058,7 @@ This function compares `x1` and `x2` and returns the larger value for each eleme
 **Arguments**
 - `x1` (ArrayLike): The first input array.
 - `x2` (ArrayLike): The second input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The maximum of `x1` and `x2`, element-wise.
@@ -2089,7 +2089,7 @@ This function compares `x1` and `x2` and returns the smaller value for each elem
 **Arguments**
 - `x1` (ArrayLike): The first input array.
 - `x2` (ArrayLike): The second input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The minimum of `x1` and `x2`, element-wise.
@@ -2120,7 +2120,7 @@ This function compares `x1` and `x2` and returns the larger value. If a NaN is e
 **Arguments**
 - `x1` (ArrayLike): The first input array.
 - `x2` (ArrayLike): The second input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The maximum of `x1` and `x2`, element-wise.
@@ -2152,7 +2152,7 @@ This function compares `x1` and `x2` and returns the smaller value. If a NaN is 
 **Arguments**
 - `x1` (ArrayLike): The first input array.
 - `x2` (ArrayLike): The second input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The minimum of `x1` and `x2`, element-wise.
@@ -2459,7 +2459,7 @@ This function computes the greatest common divisor (GCD) of the absolute values 
 **Arguments**
 - `x1` (ArrayLike): First input array.
 - `x2` (ArrayLike): Second input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The greatest common divisor of the absolute values of the inputs.
@@ -2488,7 +2488,7 @@ This function computes the least common multiple (LCM) of the absolute values of
 **Arguments**
 - `x1` (ArrayLike): First input array.
 - `x2` (ArrayLike): Second input array.
-- `dtype` (data-type, optional): The desired data type for the output array.
+- `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
 - `ndarray`: The least common multiple of the absolute values of the inputs.

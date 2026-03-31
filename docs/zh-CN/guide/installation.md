@@ -82,8 +82,16 @@ uv sync
 git clone --recursive https://gitcode.com/cann/asnumpy.git
 cd asnumpy
 
-# 构建并安装
+# 升级 pip、setuptools 和 wheel 到最新版本
+pip install --upgrade pip setuptools wheel
+
+# 安装 build 包，提供 Python 包的简单构建前端
+pip install build
+
+# 构建当前 Python 项目（创建源码分发包和 wheel 包）
 python -m build
+
+# 安装 dist/ 目录下生成的所有 wheel (.whl) 文件
 pip install dist/*.whl
 ```
 

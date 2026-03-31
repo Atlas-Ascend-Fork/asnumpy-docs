@@ -15,7 +15,7 @@ softmax 函数通过计算每个元素的指数除以集合中所有元素指数
 **参数**
 - `x` (ArrayLike): 输入数组。
 - `axis` (int, 可选): 计算 softmax 的轴。默认为 -1（最后一个轴）。
-- `dtype` (数据类型, 可选): 输出数组的所需数据类型。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `asnumpy.ndarray`: 与 `x` 形状相同的 softmax 输出数组。
