@@ -2255,7 +2255,6 @@ This function finds the largest value in the array `a`, skipping any NaN values.
 
 **See Also**
 - [`numpy.nanmax`](https://numpy.org/doc/stable/reference/generated/numpy.nanmax.html)
-- [`asnumpy.nanmin`](#asnumpy-nanmin)
 - [`asnumpy.max`](#asnumpy-max)
 - [`asnumpy.amax`](#asnumpy-amax)
 

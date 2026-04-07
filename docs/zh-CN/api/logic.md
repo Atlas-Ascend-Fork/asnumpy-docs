@@ -212,6 +212,13 @@ asnumpy.greater_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> 
 **参见**
 - [`numpy.greater_equal`](https://numpy.org/doc/stable/reference/generated/numpy.greater_equal.html)
 
+**示例**
+```python
+>>> import asnumpy as ap
+>>> ap.greater_equal([4, 2, 1], [2, 2, 2])
+array([ True,  True, False])
+```
+
 ### asnumpy.less
 
 ```python
@@ -230,6 +237,13 @@ asnumpy.less(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参见**
 - [`numpy.less`](https://numpy.org/doc/stable/reference/generated/numpy.less.html)
+
+**示例**
+```python
+>>> import asnumpy as ap
+>>> ap.less([1, 2, 3], [2, 2, 2])
+array([ True, False, False])
+```
 
 ### asnumpy.less_equal
 
@@ -250,6 +264,13 @@ asnumpy.less_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nda
 **参见**
 - [`numpy.less_equal`](https://numpy.org/doc/stable/reference/generated/numpy.less_equal.html)
 
+**示例**
+```python
+>>> import asnumpy as ap
+>>> ap.less_equal([1, 2, 3], [2, 2, 2])
+array([ True,  True, False])
+```
+
 ### asnumpy.equal
 
 ```python
@@ -268,6 +289,13 @@ asnumpy.equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参见**
 - [`numpy.equal`](https://numpy.org/doc/stable/reference/generated/numpy.equal.html)
+
+**示例**
+```python
+>>> import asnumpy as ap
+>>> ap.equal([1, 2, 3], [1, 4, 3])
+array([ True, False,  True])
+```
 
 ### asnumpy.not_equal
 
@@ -288,6 +316,13 @@ asnumpy.not_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndar
 **参见**
 - [`numpy.not_equal`](https://numpy.org/doc/stable/reference/generated/numpy.not_equal.html)
 
+**示例**
+```python
+>>> import asnumpy as ap
+>>> ap.not_equal([1, 2, 3], [1, 4, 3])
+array([False,  True, False])
+```
+
 ## 其他
 
 ### asnumpy.isfinite
@@ -307,6 +342,14 @@ asnumpy.isfinite(x: ArrayLike) -> ndarray
 **参见**
 - [`numpy.isfinite`](https://numpy.org/doc/stable/reference/generated/numpy.isfinite.html)
 
+**示例**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> ap.isfinite([1, np.inf, np.nan])
+array([ True, False, False])
+```
+
 ### asnumpy.isinf
 
 ```python
@@ -323,6 +366,14 @@ asnumpy.isinf(x: ArrayLike) -> ndarray
 
 **参见**
 - [`numpy.isinf`](https://numpy.org/doc/stable/reference/generated/numpy.isinf.html)
+
+**示例**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> ap.isinf([1, np.inf, -np.inf])
+array([False,  True,  True])
+```
 
 ### asnumpy.isneginf
 
@@ -341,6 +392,14 @@ asnumpy.isneginf(x: ArrayLike) -> ndarray
 **参见**
 - [`numpy.isneginf`](https://numpy.org/doc/stable/reference/generated/numpy.isneginf.html)
 
+**示例**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> ap.isneginf([1, -np.inf, np.inf])
+array([False,  True, False])
+```
+
 ### asnumpy.isposinf
 
 ```python
@@ -357,3 +416,11 @@ asnumpy.isposinf(x: ArrayLike) -> ndarray
 
 **参见**
 - [`numpy.isposinf`](https://numpy.org/doc/stable/reference/generated/numpy.isposinf.html)
+
+**示例**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> ap.isposinf([1, np.inf, -np.inf])
+array([False,  True, False])
+```

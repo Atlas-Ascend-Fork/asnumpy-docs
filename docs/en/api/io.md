@@ -113,6 +113,7 @@ For `.npz` files, returns a lazy-loading container that works like a dictionary.
 - [`asnumpy.save`](#asnumpy-save): Save a single array.
 
 **Examples**
+
 Load a single array from .npy file:
 ```python
 >>> import asnumpy as ap

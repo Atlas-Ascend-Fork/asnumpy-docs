@@ -1761,6 +1761,10 @@ asnumpy.trunc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
+>>> ap.trunc(ap.array([-1.5, 1.5]))
+array([-1.,  1.])
+```
+
 ## 求和、乘积、差分
 
 ### asnumpy.prod
@@ -1777,7 +1781,7 @@ asnumpy.prod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dt
 - `a` (ArrayLike): 输入数组。
 - `axis` (int 或 int 序列, 可选): 操作的轴。默认返回展平数组的乘积。
 - `keepdims` (bool, 可选): 如果为 True，则缩减的轴在结果中保留为大小为一的维度。
-- `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
+- `dtype` (DTypeLike, 可选): 返回数组的类型以及元素相乘的累加器的类型。
 
 **返回值**
 - `ndarray 或 标量`: 乘积。
@@ -1812,14 +1816,13 @@ asnumpy.sum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dty
 **返回值**
 - `ndarray 或 标量`: 和。
 
-。
-
 **另请参阅**
 - [`numpy.sum`](https://numpy.org/doc/stable/reference/generated/numpy.sum.html)
 - [`asnumpy.nanprod`](#asnumpy-nanprod)
 - [`asnumpy.nansum`](#asnumpy-nansum)
 - [`asnumpy.cumprod`](#asnumpy-cumprod)
 - [`asnumpy.cumsum`](#asnumpy-cumsum)
+
 **示例**
 ```python
 >>> import asnumpy as ap
@@ -1881,6 +1884,7 @@ asnumpy.nansum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, 
 - [`asnumpy.cumsum`](#asnumpy-cumsum)
 - [`asnumpy.nancumprod`](#asnumpy-nancumprod)
 - [`asnumpy.nancumsum`](#asnumpy-nancumsum)
+
 **示例**
 ```python
 >>> import asnumpy as ap
@@ -1942,6 +1946,7 @@ asnumpy.cumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None)
 - [`asnumpy.sum`](#asnumpy-sum)
 - [`asnumpy.prod`](#asnumpy-prod)
 - [`asnumpy.cumprod`](#asnumpy-cumprod)
+
 **示例**
 ```python
 >>> import asnumpy as ap
@@ -1972,6 +1977,7 @@ asnumpy.nancumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = N
 - [`numpy.nancumprod`](https://numpy.org/doc/stable/reference/generated/numpy.nancumprod.html)
 - [`asnumpy.nanprod`](#asnumpy-nanprod)
 - [`asnumpy.cumprod`](#asnumpy-cumprod)
+
 **示例**
 ```python
 >>> import asnumpy as ap
@@ -2001,6 +2007,7 @@ asnumpy.nancumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = No
 - [`asnumpy.nansum`](#asnumpy-nansum)
 - [`asnumpy.cumsum`](#asnumpy-cumsum)
 - [`asnumpy.nanprod`](#asnumpy-nanprod)
+
 **示例**
 ```python
 >>> import asnumpy as ap
@@ -2251,7 +2258,6 @@ asnumpy.nanmax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) 
 
 **另请参阅**
 - [`numpy.nanmax`](https://numpy.org/doc/stable/reference/generated/numpy.nanmax.html)
-- [`asnumpy.nanmin`](#asnumpy-nanmin)
 - [`asnumpy.max`](#asnumpy-max)
 - [`asnumpy.amax`](#asnumpy-amax)
 

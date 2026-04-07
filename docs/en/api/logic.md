@@ -212,6 +212,13 @@ Determine whether elements of x1 are greater than or equal to those of x2.
 **See Also**
 - [`numpy.greater_equal`](https://numpy.org/doc/stable/reference/generated/numpy.greater_equal.html)
 
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> ap.greater_equal([4, 2, 1], [2, 2, 2])
+array([ True,  True, False])
+```
+
 ### asnumpy.less
 
 ```python
@@ -230,6 +237,13 @@ Determine whether elements of x1 are less than those of x2.
 
 **See Also**
 - [`numpy.less`](https://numpy.org/doc/stable/reference/generated/numpy.less.html)
+
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> ap.less([1, 2, 3], [2, 2, 2])
+array([ True, False, False])
+```
 
 ### asnumpy.less_equal
 
@@ -250,6 +264,13 @@ Determine whether elements of x1 are less than or equal to those of x2.
 **See Also**
 - [`numpy.less_equal`](https://numpy.org/doc/stable/reference/generated/numpy.less_equal.html)
 
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> ap.less_equal([1, 2, 3], [2, 2, 2])
+array([ True,  True, False])
+```
+
 ### asnumpy.equal
 
 ```python
@@ -268,6 +289,13 @@ Compare two arrays for equality element by element.
 
 **See Also**
 - [`numpy.equal`](https://numpy.org/doc/stable/reference/generated/numpy.equal.html)
+
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> ap.equal([1, 2, 3], [1, 4, 3])
+array([ True, False,  True])
+```
 
 ### asnumpy.not_equal
 
@@ -288,6 +316,13 @@ Compare two arrays for inequality element by element.
 **See Also**
 - [`numpy.not_equal`](https://numpy.org/doc/stable/reference/generated/numpy.not_equal.html)
 
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> ap.not_equal([1, 2, 3], [1, 4, 3])
+array([False,  True, False])
+```
+
 ## Other
 
 ### asnumpy.isfinite
@@ -307,6 +342,14 @@ Identify which array elements are regular numbers (not infinity or NaN).
 **See Also**
 - [`numpy.isfinite`](https://numpy.org/doc/stable/reference/generated/numpy.isfinite.html)
 
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> ap.isfinite([1, np.inf, np.nan])
+array([ True, False, False])
+```
+
 ### asnumpy.isinf
 
 ```python
@@ -323,6 +366,14 @@ Detect infinite values (both positive and negative) in the input array.
 
 **See Also**
 - [`numpy.isinf`](https://numpy.org/doc/stable/reference/generated/numpy.isinf.html)
+
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> ap.isinf([1, np.inf, -np.inf])
+array([False,  True,  True])
+```
 
 ### asnumpy.isneginf
 
@@ -341,6 +392,14 @@ Identify occurrences of negative infinity within the array.
 **See Also**
 - [`numpy.isneginf`](https://numpy.org/doc/stable/reference/generated/numpy.isneginf.html)
 
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> ap.isneginf([1, -np.inf, np.inf])
+array([False,  True, False])
+```
+
 ### asnumpy.isposinf
 
 ```python
@@ -357,3 +416,11 @@ Identify occurrences of positive infinity within the array.
 
 **See Also**
 - [`numpy.isposinf`](https://numpy.org/doc/stable/reference/generated/numpy.isposinf.html)
+
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> ap.isposinf([1, np.inf, -np.inf])
+array([False,  True, False])
+```

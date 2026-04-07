@@ -113,6 +113,7 @@ asnumpy.load(file, mmap_mode=None, allow_pickle=False, **kwargs)
 - [`asnumpy.save`](#asnumpy-save): 保存单个数组。
 
 **示例**
+
 从 .npy 文件加载单个数组：
 ```python
 >>> import asnumpy as ap
