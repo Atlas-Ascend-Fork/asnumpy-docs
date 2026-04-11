@@ -22,4 +22,3 @@ Welcome to the asnumpy API reference documentation! This section provides detail
 - [I/O Operations](/en/api/io) - Input/output functions
 - [CANN Interfaces](/en/api/cann) - CANN backend interfaces
 - [Utilities](/en/api/utils) - Utility functions
-- [Testing Utilities](/en/api/testing) - Testing framework and utilities

@@ -41,7 +41,6 @@ const enSidebar: DefaultTheme.SidebarItem[] = [
       { text: 'I/O Operations', link: '/en/api/io' },
       { text: 'CANN Interfaces', link: '/en/api/cann' },
       { text: 'Utilities', link: '/en/api/utils' },
-      { text: 'Testing Utilities', link: '/en/api/testing' },
     ],
   },
 ]
@@ -82,7 +81,6 @@ const zhSidebar: DefaultTheme.SidebarItem[] = [
       { text: '输入输出', link: '/zh-CN/api/io' },
       { text: 'CANN 接口', link: '/zh-CN/api/cann' },
       { text: '工具函数', link: '/zh-CN/api/utils' },
-      { text: '测试工具', link: '/zh-CN/api/testing' },
     ],
   },
 ]

@@ -69,7 +69,6 @@ asnumpy-docs/
 │   │   │   ├── io.md
 │   │   │   ├── cann.md
 │   │   │   ├── nn.md
-│   │   │   ├── testing.md
 │   │   │   └── utils.md
 │   │   └── developer/           # Developer documentation
 │   │       └── developer_guide.md

@@ -22,4 +22,3 @@
 - [输入输出](/zh-CN/api/io) - 输入/输出函数
 - [CANN 接口](/zh-CN/api/cann) - CANN 后端接口
 - [工具函数](/zh-CN/api/utils) - 实用工具函数
-- [测试工具](/zh-CN/api/testing) - 测试框架和工具

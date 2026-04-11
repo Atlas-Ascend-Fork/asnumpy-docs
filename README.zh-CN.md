@@ -69,7 +69,6 @@ asnumpy-docs/
 │   │   │   ├── io.md            # 输入输出
 │   │   │   ├── cann.md          # CANN 接口
 │   │   │   ├── nn.md            # 神经网络
-│   │   │   ├── testing.md       # 测试函数
 │   │   │   └── utils.md         # 工具函数
 │   │   └── developer/           # 开发者文档
 │   │       └── developer_guide.md
