@@ -5,12 +5,16 @@
 ### asnumpy.ndarray
 
 ```python
-asnumpy.ndarray(shape: Sequence[int], dtype: np.dtype) -> None
+asnumpy.ndarray(shape_or_array: Union[Sequence[int], int, ndarray], dtype: Union[np.dtype, None] = None) -> None
 ```
 
 表示设备上的多维数组。
 
 该类封装了 C++ 后端数组，并提供 Python 接口，用于直接在加速器（NPU）上执行数组操作。用户通过此类与驻留在设备上的数组进行交互，在保持类似 NumPy 接口的同时实现高效计算。
+
+**参数**
+- `shape_or_array` (Union[Sequence[int], int, ndarray]): 形状元组（如 `(3, 4)`）、单个整数（如 `5` 表示一维数组）或现有的 `ndarray` 对象。
+- `dtype` (Union[np.dtype, None], 默认 None): 元素的数据类型。当 `shape_or_array` 为形状时必须指定；当 `shape_or_array` 为已有 `ndarray` 时忽略。
 
 ::: tip
 此类通常不直接创建。请使用数组创建例程（如 `asnumpy.zeros`、`asnumpy.ones` 或 `asnumpy.ndarray.from_numpy`）在设备上构造数组。
@@ -73,6 +77,62 @@ asnumpy.ndarray.dtype -> np.dtype
 
 **参见**
 - [`numpy.ndarray.dtype`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.dtype.html)
+
+### asnumpy.ndarray.ndim
+
+```python
+asnumpy.ndarray.ndim -> int
+```
+
+数组的维度数。
+
+**返回值**
+- `int`: 轴的数量。
+
+**参见**
+- [`numpy.ndarray.ndim`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.ndim.html)
+
+### asnumpy.ndarray.itemsize
+
+```python
+asnumpy.ndarray.itemsize -> int
+```
+
+单个元素的字节大小。
+
+**返回值**
+- `int`: 元素大小（字节）。
+
+**参见**
+- [`numpy.ndarray.itemsize`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.itemsize.html)
+
+### asnumpy.ndarray.nbytes
+
+```python
+asnumpy.ndarray.nbytes -> int
+```
+
+数组数据占用的总字节数。
+
+**返回值**
+- `int`: 数组数据的总字节数。
+
+**参见**
+- [`numpy.ndarray.nbytes`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.nbytes.html)
+
+### asnumpy.ndarray.strides
+
+```python
+asnumpy.ndarray.strides -> tuple
+```
+
+遍历数组时每个维度上步进的字节数元组。
+
+**返回值**
+- `tuple`: 每个维度的步幅（字节）。
+
+**参见**
+- [`numpy.ndarray.strides`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.strides.html)
 
 ### asnumpy.ndarray.acl_dtype
 

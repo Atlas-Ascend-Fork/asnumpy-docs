@@ -1,5 +1,18 @@
 # Asnumpy 开发指南
 
+## 目录
+
+1. [项目概述](#一项目概述)
+2. [开发流程](#二开发流程)
+3. [分支管理](#三分支管理)
+4. [后端开发 (C++)](#四后端开发-c)
+5. [绑定层 (Pybind11)](#五绑定层-pybind11)
+6. [前端开发 (Python)](#六前端开发-python)
+7. [测试编写](#七测试编写)
+8. [编译与运行](#八编译与运行)
+
+---
+
 ## 一、项目概述
 
 Asnumpy 是一个基于华为昇腾 NPU 的数值计算库，提供与 NumPy 兼容的 API，将计算任务转移到 NPU 上执行。项目采用分层架构：
@@ -14,10 +27,13 @@ Asnumpy 是一个基于华为昇腾 NPU 的数值计算库，提供与 NumPy 兼
 ```
 asnumpy/
 ├── asnumpy/                 # Python 包
-│   ├── __init__.py         # 主包初始化
+│   ├── __init__.py         # 主包初始化（懒加载导出）
+│   ├── __init__.pyi        # 公共 API 类型存根
 │   ├── math.py             # 数学模块
 │   ├── linalg/             # 线性代数模块
 │   ├── random/             # 随机数模块
+│   ├── lib/
+│   │   └── asnumpy_core.pyi  # C++ 扩展类型存根
 │   └── ...
 ├── include/                # C++ 头文件
 │   └── asnumpy/
@@ -58,11 +74,221 @@ asnumpy/
 
 ---
 
-## 三、后端开发 (C++)
+## 三、分支管理
+
+### 3.1 概述
+
+Asnumpy 采用简化的分支模型，基于单一主分支配合发布分支进行稳定化：
+
+```
+master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_E ─── PR_F
+                          │                      │
+                   release/v0.2.0          cherry-pick hotfix
+                          │                      │
+                    tag v0.2.0               tag v0.2.1
+                    tag v0.2.1                    │
+                                                PR to master
+```
+
+### 3.2 分支类型
+
+| 分支 | 用途 | 生命周期 |
+|------|------|----------|
+| `master` | 主分支。所有功能 PR 合并至此。 | 永久 |
+| `feature/<name>` | 开发新功能或增强。 | 短期 |
+| `fix/<name>` | 修复缺陷。 | 短期 |
+| `release/vX.Y.Z` | 稳定化和测试发布。 | 每次发布 |
+| `hotfix/<name>` | 将发布分支的修复回移至主分支。 | 短期 |
+
+### 3.3 工作流程
+
+#### 功能开发
+
+1. 从 `master` 创建功能分支：
+   ```bash
+   git checkout master
+   git pull upstream master
+   git checkout -b feature/my-feature
+   ```
+2. 开发、测试并提交。
+3. 推送并打开指向 `master` 的 Pull Request。
+4. 确保代码审查和 CI 通过。
+5. 合并 PR。
+
+#### 发布流程
+
+1. 从 `master` 切出发布分支：
+   ```bash
+   git checkout master
+   git checkout -b release/v0.3.0
+   ```
+2. 运行测试并稳定化。在发布分支上直接修复问题。
+3. 为发布打标签：
+   ```bash
+   git tag v0.3.0
+   ```
+4. 如果打标签后需要额外修复，在发布分支上应用修复并打新补丁版本标签（如 `v0.3.1`）。
+5. 将这些修复 cherry-pick 回 `master`（参见 [热修复流程](#热修复流程)）。
+6. 当该发布系列不再维护时，删除发布分支：
+   ```bash
+   git branch -d release/v0.3.0
+   ```
+
+#### 热修复流程
+
+当在发布分支上修复了缺陷后，必须将修复带回 `master`，以确保未来的发布包含该修复：
+
+1. 在发布分支上修复缺陷并打补丁发布标签。
+2. 将修复 cherry-pick 到新的热修复分支：
+   ```bash
+   git checkout -b hotfix/backport-fix-xxx master
+   git cherry-pick <commit-hash-of-the-fix>
+   ```
+3. 推送热修复分支并打开指向 `master` 的 Pull Request。
+4. 该 PR 经过正常的代码审查和 CI 流水线。
+5. 合并后，删除热修复分支：
+   ```bash
+   git branch -d hotfix/backport-fix-xxx
+   ```
+
+> **为什么使用独立的热修复分支而不是直接 cherry-pick 到 master？**
+> 专用分支允许修复经过 PR 审查和 CI 检查，确保与其他任何贡献相同的质量标准。
+
+### 3.4 合并策略
+
+**始终使用合并提交。禁止 squash 合并。**
+
+```bash
+# 在平台上合并 PR 时，选择"Merge"（不是"Squash and merge"）。
+# 在本地合并时：
+git merge --no-ff feature/my-feature
+```
+
+**原因：** Squash 合并会创建一个丢弃原始提交历史和作者信息的新提交。这会破坏仓库首页的贡献统计，并使追溯变更到原始作者变得更加困难。合并提交保留完整历史，确保每位贡献者得到应有的署名。
+
+### 3.5 分支命名规范
+
+| 模式 | 示例 | 描述 |
+|------|------|------|
+| `feature/<name>` | `feature/add-sinc-function` | 新功能或增强 |
+| `fix/<name>` | `fix/incorrect-signbit` | 缺陷修复 |
+| `release/vX.Y.Z` | `release/v0.3.0` | 发布稳定化 |
+| `hotfix/<name>` | `hotfix/backport-signbit-fix` | 从发布分支回移的修复 |
+
+分支名使用小写 kebab-case。保持名称简洁但具有描述性。
+
+### 3.6 CI/CD 流水线
+
+CI/CD 流水线由事件触发，而非分支类型。配置以下规则：
+
+| 事件 | 流水线 | 描述 |
+|------|--------|------|
+| 创建/更新指向 `master` 的 PR | CI | 每个 PR 上运行测试、代码检查和代码分析 |
+| 推送到 `master`（合并后） | CI | 验证合并后的代码是否健康 |
+| 创建标签 (`vX.Y.Z`) | CD | 构建发布产物，发布包 |
+
+`feature/`、`fix/` 或 `hotfix/` 分支不需要额外的 CI 配置。只要 PR 目标是 `master`，无论源分支名称如何，CI 都会运行。
+
+### 3.7 贡献者工作流程
+
+#### 团队成员（有推送权限）
+
+团队成员直接在上游仓库创建分支：
+
+```
+upstream/master ←── PR ─── upstream/fix/xxx
+```
+
+```bash
+git clone <upstream-url>
+git checkout master
+git pull upstream master
+git checkout -b fix/signbit-error
+# 开发、提交、推送
+git push upstream fix/signbit-error
+# 在平台上打开 PR：fix/signbit-error → master
+```
+
+#### 外部贡献者（无推送权限）
+
+外部贡献者在自己的 fork 中工作：
+
+```
+upstream/master ←── PR ─── fork/fix/xxx
+```
+
+```bash
+git clone <fork-url>
+git checkout master
+git pull upstream master
+git checkout -b fix/signbit-error
+# 开发、提交、推送
+git push fork fix/signbit-error
+# 在平台上打开 PR：fork/fix/xxx → upstream/master
+```
+
+#### 关键要点
+
+- **每次变更新建一个 PR。** 始终直接从工作分支创建 PR 到 `master`。无需两步 PR 流程（例如先 PR 到修复分支，再从修复分支 PR 到 master）。
+- **所有代码变更必须通过 PR。** 禁止直接推送到 `master`。
+- **所有 PR 必须经过 CI 和代码审查。** 无论贡献者是团队成员还是外部贡献者。
+
+### 3.8 提交规范与审查准则
+
+#### 提交质量
+
+PR 中的每个提交都应代表一个单一的、有意义的变更。提交 PR 前，贡献者应清理提交历史：
+
+**不佳（碎片化的提交，凑数）：**
+```
+fix typo
+fix another typo
+update import
+add sinc function
+add sinc test
+```
+
+**良好（干净、有意义的提交）：**
+```
+feat: add sinc function
+test: add sinc unit tests
+```
+
+#### 提交 PR 前清理提交历史
+
+使用交互式 rebase 合并琐碎的提交：
+
+```bash
+git rebase -i master
+# 用 's'（squash）或 'f'（fixup）标记琐碎提交
+# 仅保留有意义的提交为 'p'（pick）
+git push --force  # 更新远程分支
+```
+
+#### 审查者职责
+
+- 审查者除检查代码质量外，还应检查提交质量。
+- 如果 PR 包含碎片化或琐碎的提交，审查者应要求贡献者在批准 PR 前进行清理。
+- 组织良好的提交历史有助于理解变更、二分定位缺陷以及在需要时回滚单个提交。
+
+#### 平台设置与提交规范的关系
+
+| 方面 | 责任方 | 作用 |
+|------|--------|------|
+| 禁止平台级 squash | 平台设置 | 防止作者署名丢失 |
+| 合并提交策略 | 平台设置 | 保留完整历史和贡献统计 |
+| 提交清理（合并琐碎提交） | 贡献者（本地） | 确保有意义的提交历史 |
+| 执行提交质量 | 审查者 | 确保 PR 具有干净、有组织的提交 |
+
+> **总结：** 平台配置为始终使用合并提交并禁止 squash，以保留作者署名。贡献者有责任保持自己的提交历史干净且有组织。审查者在代码审查中执行此标准。
+
+---
+
+## 四、后端开发 (C++)
 
 后端开发主要涉及在 C++ 层面实现 NPU 算子调用逻辑。本节以开发 `sinc` 函数为例。
 
-### 3.1 添加函数声明
+### 4.1 添加函数声明
 
 在对应的头文件中添加函数声明。`sinc` 属于数学模块的特殊函数，声明位于：
 
@@ -83,7 +309,7 @@ asnumpy/
 NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype = std::nullopt);
 ```
 
-### 3.2 实现函数主体
+### 4.2 实现函数主体
 
 在对应的源文件中实现函数逻辑：
 
@@ -159,7 +385,7 @@ NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype) {
 }
 ```
 
-### 3.3 关键实现要点
+### 4.3 关键实现要点
 
 #### 错误处理
 
@@ -190,9 +416,9 @@ if (error != ACL_SUCCESS) {
 
 ---
 
-## 四、绑定层 (Pybind11)
+## 五、绑定层 (Pybind11)
 
-### 4.1 添加函数绑定
+### 5.1 添加函数绑定
 
 在对应的绑定文件中添加函数绑定：
 
@@ -217,11 +443,11 @@ namespace asnumpy {
 
 ---
 
-## 五、前端开发 (Python)
+## 六、前端开发 (Python)
 
 前端开发主要涉及将 C++ 函数暴露到 Python 层，并确保 API 与 NumPy 兼容。
 
-### 5.1 添加 Python 包装层
+### 6.1 添加 Python 包装层
 
 在对应的 Python 模块中导入 C++ 函数，并添加 Python 包装层：
 
@@ -246,7 +472,7 @@ def sinc(x: ndarray, dtype: Optional[np.dtype] = None) -> ndarray:
     return ndarray(_ap_sinc(x, _convert_dtype(dtype)))
 ```
 
-### 5.2 导出到主命名空间
+### 6.2 导出到主命名空间
 
 在主包的 `__init__.py` 中添加函数：
 
@@ -266,13 +492,42 @@ __all__ = [
 ]
 ```
 
+### 6.3 同步更新类型存根
+
+由于 `__init__.py` 使用 `__getattr__` 懒加载机制，mypy 无法在静态分析时解析懒加载符号的类型。因此项目提供了 `.pyi` 类型存根文件，新增函数时必须同步更新。
+
+**文件位置**: `asnumpy/__init__.pyi`
+
+在对应的分类区域中添加函数签名，确保参数名、参数类型、返回类型与 `.py` 实现完全一致：
+
+```python
+# math 模块区域
+def sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray: ...
+```
+
+如果是 `linalg`、`random` 等子模块的函数，则添加到对应的 `class` 下的 `@staticmethod` 中：
+
+```python
+class linalg:
+    @staticmethod
+    def slogdet(a: ArrayLike) -> tuple[ndarray, ndarray]: ...
+```
+
+如果是新导出的子模块（如新增 `asnumpy.fft`），还需要在 `asnumpy/lib/asnumpy_core.pyi` 中补充 C++ 扩展的顶层符号声明。
+
+更新完成后，运行 mypy 验证：
+
+```bash
+python -m mypy asnumpy/
+```
+
 ---
 
-## 六、测试编写
+## 七、测试编写
 
 asnumpy 使用 pytest 和自定义测试框架编写测试。
 
-### 6.1 测试文件组织
+### 7.1 测试文件组织
 
 测试文件按模块组织，位于 `tests/asnumpy_tests/` 目录：
 
@@ -285,7 +540,7 @@ tests/
     └── ...
 ```
 
-### 6.2 编写测试用例
+### 7.2 编写测试用例
 
 **文件位置**: `tests/asnumpy_tests/math_tests/test_miscellaneous.py`
 
@@ -321,7 +576,7 @@ def test_sinc_at_zero(xp, dtype):
     return xp.sinc(a)
 ```
 
-### 6.3 装饰器说明
+### 7.3 装饰器说明
 
 asnumpy 提供了丰富的测试装饰器，用于参数化测试和结果比较。
 
@@ -381,9 +636,9 @@ def test_func(n):
 
 ---
 
-## 七、编译与运行
+## 八、编译与运行
 
-### 7.1 编译项目
+### 8.1 编译项目
 
 在开发模式下安装和编译项目：
 
@@ -391,7 +646,7 @@ def test_func(n):
 pip install -e .
 ```
 
-### 7.2 运行测试
+### 8.2 运行测试
 
 #### 运行所有测试
 

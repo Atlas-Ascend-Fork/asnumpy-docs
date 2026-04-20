@@ -205,7 +205,7 @@ array([[1, 4],
 ### asnumpy.linalg.qr
 
 ```python
-asnumpy.linalg.qr(a: ArrayLike, mode: str = "reduced") -> Union[ndarray, tuple]
+asnumpy.linalg.qr(a: ArrayLike, mode: str = "reduced") -> Union[ndarray, tuple[ndarray, ndarray]]
 ```
 
 Decompose a matrix into an orthogonal matrix Q and an upper triangular matrix R.
@@ -215,7 +215,7 @@ Decompose a matrix into an orthogonal matrix Q and an upper triangular matrix R.
 - `mode` (str, optional): Factorization mode.
 
 **Returns**
-- `ndarray or tuple`: Depending on `mode`, returns `r` alone or a tuple `(q, r)`.
+- `Union[ndarray, tuple[ndarray, ndarray]]`: Depending on `mode`, returns `r` alone or a tuple `(q, r)`.
 
 **See Also**
 - [`numpy.linalg.qr`](https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html)
@@ -283,7 +283,7 @@ Calculate the scalar value representing the volume scaling factor of a linear tr
 ### asnumpy.linalg.slogdet
 
 ```python
-asnumpy.linalg.slogdet(a: ArrayLike) -> tuple
+asnumpy.linalg.slogdet(a: ArrayLike) -> tuple[ndarray, ndarray]
 ```
 
 Return both the sign and natural logarithm of a matrix's determinant for numerical stability.

@@ -946,7 +946,7 @@ array([-1, -1,  1,  1])
 ### asnumpy.modf
 
 ```python
-asnumpy.modf(x: ArrayLike) -> tuple
+asnumpy.modf(x: ArrayLike) -> tuple[ndarray, ndarray]
 ```
 
 Separate the fractional and integral parts of elements.
@@ -973,7 +973,7 @@ This function splits each element of `x` into its fractional and integral compon
 ### asnumpy.divmod
 
 ```python
-asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple
+asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple[ndarray, ndarray]
 ```
 
 Calculate both the quotient and the remainder.

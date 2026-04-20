@@ -1,5 +1,18 @@
 # AsNumpy Developer Guide
 
+## Table of Contents
+
+1. [Project Overview](#1-project-overview)
+2. [Development Workflow](#2-development-workflow)
+3. [Branch Management](#3-branch-management)
+4. [Backend Development (C++)](#4-backend-development-c)
+5. [Binding Layer (Pybind11)](#5-binding-layer-pybind11)
+6. [Frontend Development (Python)](#6-frontend-development-python)
+7. [Writing Tests](#7-writing-tests)
+8. [Build and Run](#8-build-and-run)
+
+---
+
 ## 1. Project Overview
 
 AsNumpy is a numerical computing library based on Huawei Ascend NPU, providing a NumPy-compatible API that offloads computation tasks to the NPU. The project adopts a layered architecture:
@@ -14,10 +27,13 @@ AsNumpy is a numerical computing library based on Huawei Ascend NPU, providing a
 ```
 asnumpy/
 ├── asnumpy/                 # Python package
-│   ├── __init__.py         # Main package initialization
+│   ├── __init__.py         # Main package initialization (lazy-loading exports)
+│   ├── __init__.pyi        # Public API type stubs
 │   ├── math.py             # Math module
 │   ├── linalg/             # Linear algebra module
 │   ├── random/             # Random module
+│   ├── lib/
+│   │   └── asnumpy_core.pyi  # C++ extension type stubs
 │   └── ...
 ├── include/                # C++ headers
 │   └── asnumpy/
@@ -58,11 +74,221 @@ Developing new features typically follows these steps:
 
 ---
 
-## 3. Backend Development (C++)
+## 3. Branch Management
+
+### 3.1 Overview
+
+Asnumpy uses a simplified branching model based on a single main branch with release branches for stabilization:
+
+```
+master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_E ─── PR_F
+                          │                      │
+                   release/v0.2.0          cherry-pick hotfix
+                          │                      │
+                    tag v0.2.0               tag v0.2.1
+                    tag v0.2.1                    │
+                                                PR to master
+```
+
+### 3.2 Branch Types
+
+| Branch | Purpose | Lifetime |
+|--------|---------|----------|
+| `master` | Main branch. All feature PRs merge here. | Permanent |
+| `feature/<name>` | Develop a new feature or enhancement. | Short-lived |
+| `fix/<name>` | Fix a bug. | Short-lived |
+| `release/vX.Y.Z` | Stabilize and test a release. | Per release |
+| `hotfix/<name>` | Backport a fix from a release branch to master. | Short-lived |
+
+### 3.3 Workflow
+
+#### Feature Development
+
+1. Create a feature branch from `master`:
+   ```bash
+   git checkout master
+   git pull upstream master
+   git checkout -b feature/my-feature
+   ```
+2. Develop, test, and commit.
+3. Push and open a Pull Request targeting `master`.
+4. Ensure code review and CI pass.
+5. Merge the PR.
+
+#### Release Process
+
+1. Cut a release branch from `master`:
+   ```bash
+   git checkout master
+   git checkout -b release/v0.3.0
+   ```
+2. Run tests and stabilize. Fix any issues directly on the release branch.
+3. Tag the release:
+   ```bash
+   git tag v0.3.0
+   ```
+4. If additional fixes are needed after tagging, apply them on the release branch and tag a new patch version (e.g., `v0.3.1`).
+5. Cherry-pick those fixes back to `master` (see [Hotfix Process](#333-hotfix-process)).
+6. Delete the release branch when the release series is no longer maintained:
+   ```bash
+   git branch -d release/v0.3.0
+   ```
+
+#### Hotfix Process
+
+When a bug is fixed on a release branch, the fix must be brought back to `master` so that future releases include it:
+
+1. Fix the bug on the release branch and tag the patch release.
+2. Cherry-pick the fix to a new hotfix branch:
+   ```bash
+   git checkout -b hotfix/backport-fix-xxx master
+   git cherry-pick <commit-hash-of-the-fix>
+   ```
+3. Push the hotfix branch and open a Pull Request targeting `master`.
+4. This PR goes through the normal code review and CI pipeline.
+5. After merge, delete the hotfix branch:
+   ```bash
+   git branch -d hotfix/backport-fix-xxx
+   ```
+
+> **Why use a separate hotfix branch instead of cherry-picking directly to master?**
+> A dedicated branch allows the fix to go through PR review and CI checks, ensuring the same quality standards as any other contribution.
+
+### 3.4 Merge Strategy
+
+**Always use merge commits. Never squash.**
+
+```bash
+# When merging PRs on the platform, select "Merge" (not "Squash and merge").
+# When merging locally:
+git merge --no-ff feature/my-feature
+```
+
+**Rationale:** Squash merges create a new commit that discards the original commit history and authorship. This breaks contribution statistics on the repository homepage and makes it harder to trace changes back to their original authors. Merge commits preserve the full history and ensure every contributor is properly credited.
+
+### 3.5 Branch Naming Conventions
+
+| Pattern | Example | Description |
+|---------|---------|-------------|
+| `feature/<name>` | `feature/add-sinc-function` | New feature or enhancement |
+| `fix/<name>` | `fix/incorrect-signbit` | Bug fix |
+| `release/vX.Y.Z` | `release/v0.3.0` | Release stabilization |
+| `hotfix/<name>` | `hotfix/backport-signbit-fix` | Backported fix from a release branch |
+
+Use lowercase kebab-case for branch names. Keep names concise but descriptive.
+
+### 3.6 CI/CD Pipeline
+
+CI/CD pipelines are triggered by events, not by branch types. Configure the following rules:
+
+| Event | Pipeline | Description |
+|-------|----------|-------------|
+| PR created/updated targeting `master` | CI | Run tests, linting, and code analysis on every PR |
+| Push to `master` (post-merge) | CI | Verify the merged code is healthy |
+| Tag created (`vX.Y.Z`) | CD | Build release artifacts, publish packages |
+
+No additional CI configuration is needed for `feature/`, `fix/`, or `hotfix/` branches. As long as the PR targets `master`, CI will run regardless of the source branch name.
+
+### 3.7 Contributor Workflow
+
+#### Team Members (with push access)
+
+Team members create branches directly in the upstream repository:
+
+```
+upstream/master ←── PR ─── upstream/fix/xxx
+```
+
+```bash
+git clone <upstream-url>
+git checkout master
+git pull upstream master
+git checkout -b fix/signbit-error
+# Develop, commit, push
+git push upstream fix/signbit-error
+# Open a PR on the platform: fix/signbit-error → master
+```
+
+#### External Contributors (without push access)
+
+External contributors work in their own fork:
+
+```
+upstream/master ←── PR ─── fork/fix/xxx
+```
+
+```bash
+git clone <fork-url>
+git checkout master
+git pull upstream master
+git checkout -b fix/signbit-error
+# Develop, commit, push
+git push fork fix/signbit-error
+# Open a PR on the platform: fork/fix/xxx → upstream/master
+```
+
+#### Key Points
+
+- **One PR per change.** Always create a PR directly from the working branch to `master`. There is no need for a two-step PR process (e.g., PR to a fix branch, then PR from fix branch to master).
+- **All code changes go through PR.** No direct pushes to `master`.
+- **All PRs go through CI and code review.** Regardless of whether the contributor is a team member or an external contributor.
+
+### 3.8 Commit Hygiene and Review Norms
+
+#### Commit Quality
+
+Every commit in a PR should represent a single, meaningful change. Before submitting a PR, contributors are expected to clean up their commit history:
+
+**Bad (fragmented commits that pad the count):**
+```
+fix typo
+fix another typo
+update import
+add sinc function
+add sinc test
+```
+
+**Good (clean, meaningful commits):**
+```
+feat: add sinc function
+test: add sinc unit tests
+```
+
+#### Cleaning Up Commits Before Submitting a PR
+
+Use interactive rebase to squash trivial commits:
+
+```bash
+git rebase -i master
+# Mark trivial commits with 's' (squash) or 'f' (fixup)
+# Keep only meaningful commits as 'p' (pick)
+git push --force  # Update the remote branch after rebase
+```
+
+#### Reviewer Responsibilities
+
+- Reviewers should check commit quality in addition to code quality.
+- If a PR contains fragmented or trivial commits, the reviewer should request the contributor to clean them up before approving the PR.
+- A PR with well-organized commit history makes it easier to understand the change, bisect bugs, and revert individual changes if needed.
+
+#### Relationship Between Platform Settings and Commit Hygiene
+
+| Aspect | Who is responsible | What happens |
+|--------|--------------------|--------------|
+| Disable platform-level squash | Platform setting | Prevents loss of author attribution |
+| Merge commit strategy | Platform setting | Preserves full history and contribution stats |
+| Commit cleanup (squash trivial commits) | Contributor (local) | Ensures meaningful commit history |
+| Enforce commit quality | Reviewer | Ensures PRs have clean, organized commits |
+
+> **Summary:** The platform is configured to always use merge commits and disallow squash to preserve authorship. Contributors are responsible for keeping their own commit history clean and meaningful. Reviewers enforce this standard during code review.
+
+---
+
+## 4. Backend Development (C++)
 
 Backend development primarily involves implementing NPU operator invocation logic at the C++ level. This section uses developing the `sinc` function as an example.
 
-### 3.1 Add Function Declaration
+### 4.1 Add Function Declaration
 
 Add the function declaration in the corresponding header file. `sinc` belongs to the special functions in the math module, with the declaration located at:
 
@@ -83,7 +309,7 @@ Add the function declaration in the corresponding header file. `sinc` belongs to
 NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype = std::nullopt);
 ```
 
-### 3.2 Implement Function Body
+### 4.2 Implement Function Body
 
 Implement the function logic in the corresponding source file:
 
@@ -95,13 +321,13 @@ NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype) {
     py::dtype py_dtype = x.dtype;
     aclDataType in_dtype = NPUArray::GetACLDataType(py_dtype);
     aclDataType out_dtype = in_dtype;
-
+    
     py::dtype out_py_dtype = NPUArray::GetPyDtype(out_dtype);
     if (dtype != std::nullopt) {
         out_py_dtype = *dtype;
         out_dtype = NPUArray::GetACLDataType(out_py_dtype);
     }
-
+    
     // 2. Create output array
     NPUArray out(x.shape, out_py_dtype);
 
@@ -159,7 +385,7 @@ NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype) {
 }
 ```
 
-### 3.3 Key Implementation Points
+### 4.3 Key Implementation Points
 
 #### Error Handling
 
@@ -190,9 +416,9 @@ A typical NPU operator execution flow includes:
 
 ---
 
-## 4. Binding Layer (Pybind11)
+## 5. Binding Layer (Pybind11)
 
-### 4.1 Add Function Binding
+### 5.1 Add Function Binding
 
 Add function binding in the corresponding binding file:
 
@@ -217,11 +443,11 @@ namespace asnumpy {
 
 ---
 
-## 5. Frontend Development (Python)
+## 6. Frontend Development (Python)
 
 Frontend development primarily involves exposing C++ functions to the Python layer and ensuring APIs are compatible with NumPy.
 
-### 5.1 Add Python Wrapper Layer
+### 6.1 Add Python Wrapper Layer
 
 Import C++ functions in the corresponding Python module and add Python wrapper layer:
 
@@ -246,7 +472,7 @@ def sinc(x: ndarray, dtype: Optional[np.dtype] = None) -> ndarray:
     return ndarray(_ap_sinc(x, _convert_dtype(dtype)))
 ```
 
-### 5.2 Export to Main Namespace
+### 6.2 Export to Main Namespace
 
 Add functions in the main package's `__init__.py`:
 
@@ -266,13 +492,42 @@ __all__ = [
 ]
 ```
 
+### 6.3 Sync Type Stubs
+
+Since `__init__.py` uses `__getattr__` lazy loading, mypy cannot resolve the types of lazily loaded symbols during static analysis. Therefore, the project provides `.pyi` type stub files, which must be updated when adding new functions.
+
+**File location**: `asnumpy/__init__.pyi`
+
+Add the function signature in the corresponding category section, ensuring parameter names, parameter types, and return types are fully consistent with the `.py` implementation:
+
+```python
+# math module section
+def sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray: ...
+```
+
+For functions in submodules such as `linalg` or `random`, add them as `@staticmethod` under the corresponding `class`:
+
+```python
+class linalg:
+    @staticmethod
+    def slogdet(a: ArrayLike) -> tuple[ndarray, ndarray]: ...
+```
+
+If you are adding a new exported submodule (e.g., `asnumpy.fft`), you also need to update `asnumpy/lib/asnumpy_core.pyi` with the top-level symbol declarations for the C++ extension.
+
+After updating, run mypy to verify:
+
+```bash
+python -m mypy asnumpy/
+```
+
 ---
 
-## 6. Writing Tests
+## 7. Writing Tests
 
 AsNumpy uses pytest and a custom testing framework to write tests.
 
-### 6.1 Test File Organization
+### 7.1 Test File Organization
 
 Test files are organized by module in the `tests/asnumpy_tests/` directory:
 
@@ -285,7 +540,7 @@ tests/
     └── ...
 ```
 
-### 6.2 Writing Test Cases
+### 7.2 Writing Test Cases
 
 **File location**: `tests/asnumpy_tests/math_tests/test_miscellaneous.py`
 
@@ -321,7 +576,7 @@ def test_sinc_at_zero(xp, dtype):
     return xp.sinc(a)
 ```
 
-### 6.3 Decorator Reference
+### 7.3 Decorator Reference
 
 AsNumpy provides rich test decorators for parameterized testing and result comparison.
 
@@ -381,9 +636,9 @@ def test_func(n):
 
 ---
 
-## 7. Build and Run
+## 8. Build and Run
 
-### 7.1 Build Project
+### 8.1 Build Project
 
 Install and build the project in development mode:
 
@@ -391,7 +646,7 @@ Install and build the project in development mode:
 pip install -e .
 ```
 
-### 7.2 Run Tests
+### 8.2 Run Tests
 
 #### Run All Tests
 

@@ -946,7 +946,7 @@ array([-1, -1,  1,  1])
 ### asnumpy.modf
 
 ```python
-asnumpy.modf(x: ArrayLike) -> tuple
+asnumpy.modf(x: ArrayLike) -> tuple[ndarray, ndarray]
 ```
 
 分离元素的小数和整数部分。
@@ -973,7 +973,7 @@ asnumpy.modf(x: ArrayLike) -> tuple
 ### asnumpy.divmod
 
 ```python
-asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple
+asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple[ndarray, ndarray]
 ```
 
 同时计算商和余数。

@@ -5,7 +5,7 @@
 ### asnumpy.ndarray
 
 ```python
-asnumpy.ndarray(shape: Sequence[int], dtype: np.dtype) -> None
+asnumpy.ndarray(shape_or_array: Union[Sequence[int], int, ndarray], dtype: Union[np.dtype, None] = None) -> None
 ```
 
 Represent a multi-dimensional array on the device.
@@ -14,6 +14,10 @@ This class encapsulates a C++ backend array and provides a Python interface
 for performing array operations directly on the accelerator (NPU).
 Users interact with device-resident arrays through this class, enabling
 efficient computations while maintaining a NumPy-like interface.
+
+**Arguments**
+- `shape_or_array` (Union[Sequence[int], int, ndarray]): Either a shape tuple (e.g. `(3, 4)`), a single integer (e.g. `5` for a 1-D array), or an existing `ndarray` to wrap.
+- `dtype` (Union[np.dtype, None], default None): Data type for the elements. Required when `shape_or_array` is a shape; ignored when `shape_or_array` is an existing `ndarray`.
 
 ::: tip
 This class is typically not created directly. Use array creation
@@ -78,6 +82,62 @@ Returns the data type information for elements stored in the array.
 
 **See Also**
 - [`numpy.ndarray.dtype`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.dtype.html)
+
+### asnumpy.ndarray.ndim
+
+```python
+asnumpy.ndarray.ndim -> int
+```
+
+Returns the number of dimensions of the array.
+
+**Returns**
+- `int`: The number of axes.
+
+**See Also**
+- [`numpy.ndarray.ndim`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.ndim.html)
+
+### asnumpy.ndarray.itemsize
+
+```python
+asnumpy.ndarray.itemsize -> int
+```
+
+Returns the size of one element in bytes.
+
+**Returns**
+- `int`: Element size in bytes.
+
+**See Also**
+- [`numpy.ndarray.itemsize`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.itemsize.html)
+
+### asnumpy.ndarray.nbytes
+
+```python
+asnumpy.ndarray.nbytes -> int
+```
+
+Returns the total number of bytes consumed by the array data.
+
+**Returns**
+- `int`: Total bytes of the array data.
+
+**See Also**
+- [`numpy.ndarray.nbytes`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.nbytes.html)
+
+### asnumpy.ndarray.strides
+
+```python
+asnumpy.ndarray.strides -> tuple
+```
+
+Returns the tuple of bytes to step in each dimension when traversing the array.
+
+**Returns**
+- `tuple`: Strides in bytes for each dimension.
+
+**See Also**
+- [`numpy.ndarray.strides`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.strides.html)
 
 ### asnumpy.ndarray.acl_dtype
 

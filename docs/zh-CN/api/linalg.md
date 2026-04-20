@@ -205,7 +205,7 @@ array([[1, 4],
 ### asnumpy.linalg.qr
 
 ```python
-asnumpy.linalg.qr(a: ArrayLike, mode: str = "reduced") -> Union[ndarray, tuple]
+asnumpy.linalg.qr(a: ArrayLike, mode: str = "reduced") -> Union[ndarray, tuple[ndarray, ndarray]]
 ```
 
 将矩阵分解为正交矩阵 Q 和上三角矩阵 R。
@@ -215,7 +215,7 @@ asnumpy.linalg.qr(a: ArrayLike, mode: str = "reduced") -> Union[ndarray, tuple]
 - `mode` (str, 可选): 分解模式。
 
 **返回值**
-- `ndarray 或 tuple`: 根据 `mode`，返回单独的 `r` 或元组 `(q, r)`。
+- `Union[ndarray, tuple[ndarray, ndarray]]`: 根据 `mode`，返回单独的 `r` 或元组 `(q, r)`。
 
 **参见**
 - [`numpy.linalg.qr`](https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html)
@@ -283,7 +283,7 @@ asnumpy.linalg.det(a: ArrayLike) -> ndarray
 ### asnumpy.linalg.slogdet
 
 ```python
-asnumpy.linalg.slogdet(a: ArrayLike) -> tuple
+asnumpy.linalg.slogdet(a: ArrayLike) -> tuple[ndarray, ndarray]
 ```
 
 返回矩阵行列式的符号和自然对数以实现数值稳定性。
