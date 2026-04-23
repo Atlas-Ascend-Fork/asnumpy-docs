@@ -5,7 +5,7 @@
 ## asnumpy.sort
 
 ```python
-asnumpy.sort(a: ArrayLike, axis: int = -1, stable: bool = False) -> ndarray
+asnumpy.sort(a: ArrayLike, axis: Optional[int] = -1, stable: bool = False) -> ndarray
 ```
 
 将数组元素按升序排列。
@@ -30,7 +30,9 @@ AsNumPy 目前未实现 NumPy 的 `kind` 或 `order` 参数。使用 `stable` �
 **示例**
 ```python
 >>> import asnumpy as ap
->>> arr = ap.array([[3, 1], [2, 4]])
+>>> import numpy as np
+>>> arr = np.array([[3, 1], [2, 4]])
+>>> arr = ap.ndarray.from_numpy(arr)
 >>> ap.sort(arr)
 array([[1, 3],
        [2, 4]])

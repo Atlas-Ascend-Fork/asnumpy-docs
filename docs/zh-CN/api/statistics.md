@@ -27,7 +27,9 @@ asnumpy.mean(a: ArrayLike, axis: AxisLike = None, keepdims: bool = False, dtype:
 **示例**
 ```python
 >>> import asnumpy as ap
->>> data = ap.array([[5, 8], [2, 9]])
+>>> import numpy as np
+>>> data = np.array([[5, 8], [2, 9]])
+>>> data = ap.ndarray.from_numpy(data)
 >>> ap.mean(data)
 6.0
 >>> ap.mean(data, axis=0)

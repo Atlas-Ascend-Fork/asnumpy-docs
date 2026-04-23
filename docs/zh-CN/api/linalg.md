@@ -30,14 +30,19 @@ asnumpy.dot(a: ArrayLike, b: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
+>>> import numpy as np
 >>> ap.dot(5, 6)
 30
->>> vec1 = ap.array([1, 2])
->>> vec2 = ap.array([3, 4])
+>>> vec1 = np.array([1, 2])
+>>> vec1 = ap.ndarray.from_numpy(vec1)
+>>> vec2 = np.array([3, 4])
+>>> vec2 = ap.ndarray.from_numpy(vec2)
 >>> ap.dot(vec1, vec2)
 11
->>> mat1 = ap.array([[1, 2], [3, 4]])
->>> mat2 = ap.array([[5, 6], [7, 8]])
+>>> mat1 = np.array([[1, 2], [3, 4]])
+>>> mat1 = ap.ndarray.from_numpy(mat1)
+>>> mat2 = np.array([[5, 6], [7, 8]])
+>>> mat2 = ap.ndarray.from_numpy(mat2)
 >>> ap.dot(mat1, mat2)
 array([[19, 22],
        [43, 50]])
@@ -64,7 +69,9 @@ asnumpy.einsum(subscripts: str, *operands: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.arange(9).reshape(3, 3)
+>>> import numpy as np
+>>> a = np.arange(9).reshape(3, 3)
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.einsum('ii', a)  # 迹
 12
 >>> ap.einsum('ii->i', a)  # 对角线
@@ -92,8 +99,11 @@ asnumpy.inner(a: ArrayLike, b: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> vec1 = ap.array([2, 3])
->>> vec2 = ap.array([4, 5])
+>>> import numpy as np
+>>> vec1 = np.array([2, 3])
+>>> vec1 = ap.ndarray.from_numpy(vec1)
+>>> vec2 = np.array([4, 5])
+>>> vec2 = ap.ndarray.from_numpy(vec2)
 >>> ap.inner(vec1, vec2)
 23
 ```
@@ -101,7 +111,7 @@ asnumpy.inner(a: ArrayLike, b: ArrayLike) -> ndarray
 ### asnumpy.matmul
 
 ```python
-asnumpy.matmul(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.matmul(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 按照标准线性代数广播规则执行矩阵乘法。
@@ -119,8 +129,11 @@ asnumpy.matmul(x1: ArrayLike, x2: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> mat1 = ap.array([[1, 2], [3, 4]])
->>> mat2 = ap.array([[5, 6], [7, 8]])
+>>> import numpy as np
+>>> mat1 = np.array([[1, 2], [3, 4]])
+>>> mat1 = ap.ndarray.from_numpy(mat1)
+>>> mat2 = np.array([[5, 6], [7, 8]])
+>>> mat2 = ap.ndarray.from_numpy(mat2)
 >>> ap.matmul(mat1, mat2)
 array([[19, 22],
        [43, 50]])
@@ -147,8 +160,11 @@ asnumpy.outer(a: ArrayLike, b: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> vec1 = ap.array([1, 2, 3])
->>> vec2 = ap.array([4, 5])
+>>> import numpy as np
+>>> vec1 = np.array([1, 2, 3])
+>>> vec1 = ap.ndarray.from_numpy(vec1)
+>>> vec2 = np.array([4, 5])
+>>> vec2 = ap.ndarray.from_numpy(vec2)
 >>> ap.outer(vec1, vec2)
 array([[ 4,  5],
        [ 8, 10],
@@ -194,7 +210,9 @@ asnumpy.linalg.matrix_power(a: ArrayLike, n: int) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> m = ap.array([[1, 2], [0, 1]])
+>>> import numpy as np
+>>> m = np.array([[1, 2], [0, 1]])
+>>> m = ap.ndarray.from_numpy(m)
 >>> ap.linalg.matrix_power(m, 2)
 array([[1, 4],
        [0, 1]])
@@ -250,7 +268,9 @@ asnumpy.linalg.norm(
 **示例**
 ```python
 >>> import asnumpy as ap
->>> v = ap.array([3., 4.])
+>>> import numpy as np
+>>> v = np.array([3., 4.])
+>>> v = ap.ndarray.from_numpy(v)
 >>> ap.linalg.norm(v)
 5.0
 ```
@@ -275,7 +295,9 @@ asnumpy.linalg.det(a: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> mtx = ap.array([[1., 2.], [3., 4.]])
+>>> import numpy as np
+>>> mtx = np.array([[1., 2.], [3., 4.]])
+>>> mtx = ap.ndarray.from_numpy(mtx)
 >>> ap.linalg.det(mtx)
 -2.0
 ```
@@ -320,7 +342,9 @@ asnumpy.linalg.inv(a: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> M = ap.array([[1., 2.], [3., 4.]])
+>>> import numpy as np
+>>> M = np.array([[1., 2.], [3., 4.]])
+>>> M = ap.ndarray.from_numpy(M)
 >>> ap.linalg.inv(M)
 array([[-2. ,  1. ],
        [ 1.5, -0.5]])

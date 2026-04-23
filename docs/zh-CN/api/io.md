@@ -3,7 +3,7 @@
 ## asnumpy.save
 
 ```python
-asnumpy.save(file: Union[str, IO[bytes]], arr: ArrayLike, allow_pickle: bool = False) -> None
+asnumpy.save(file: Union[str, npt.IO[bytes]], arr: ArrayLike, allow_pickle: bool = False) -> None
 ```
 
 使用 NumPy 的二进制文件规范将数组数据持久化到磁盘。
@@ -11,7 +11,7 @@ asnumpy.save(file: Union[str, IO[bytes]], arr: ArrayLike, allow_pickle: bool = F
 此函数将数组数据从设备（NPU）传输到主机（CPU）并将其写入二进制文件。
 
 **参数**
-- `file` (Union[str, IO[bytes]]): 保存数据的文件路径或文件对象。
+- `file` (Union[str, npt.IO[bytes]]): 保存数据的文件路径或文件对象。
 - `arr` (ArrayLike): 要保存的数组。NPUArray 对象在保存前会自动转换为 numpy 数组。
 - `allow_pickle` (bool, 默认 False): 是否允许使用 pickle 保存对象数组。
 
@@ -22,7 +22,9 @@ asnumpy.save(file: Union[str, IO[bytes]], arr: ArrayLike, allow_pickle: bool = F
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(10)
+>>> import numpy as np
+>>> x = np.arange(10)
+>>> x = ap.ndarray.from_numpy(x)
 >>> ap.save('output.npy', x)
 >>> loaded = ap.load('output.npy')
 >>> loaded
@@ -32,7 +34,7 @@ array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 ## asnumpy.savez
 
 ```python
-asnumpy.savez(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike) -> None
+asnumpy.savez(file: Union[str, npt.IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike) -> None
 ```
 
 将多个数组存储到单个未压缩的存档文件中。
@@ -41,7 +43,7 @@ asnumpy.savez(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike
 关键字参数使用指定的名称保存。
 
 **参数**
-- `file` (Union[str, IO[bytes]]): 保存数据的文件路径或文件对象。
+- `file` (Union[str, npt.IO[bytes]]): 保存数据的文件路径或文件对象。
 - `*args` (ArrayLike): 使用自动生成键（arr_0, arr_1, ...）保存的数组。
 - `**kwargs` (ArrayLike): 使用显式命名键保存的数组。
 
@@ -53,7 +55,9 @@ asnumpy.savez(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(5)
+>>> import numpy as np
+>>> x = np.arange(5)
+>>> x = ap.ndarray.from_numpy(x)
 >>> y = ap.ones(5)
 >>> ap.savez('data.npz', x, y)  # 保存为 arr_0, arr_1
 >>> ap.savez('data.npz', a=x, b=y)  # 保存为 a, b
@@ -62,7 +66,7 @@ asnumpy.savez(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike
 ## asnumpy.savez_compressed
 
 ```python
-asnumpy.savez_compressed(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike) -> None
+asnumpy.savez_compressed(file: Union[str, npt.IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike) -> None
 ```
 
 将多个数组存储到单个压缩存档文件中。
@@ -71,7 +75,7 @@ asnumpy.savez_compressed(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs
 关键字参数使用指定的名称保存。
 
 **参数**
-- `file` (Union[str, IO[bytes]]): 保存数据的文件路径或文件对象。
+- `file` (Union[str, npt.IO[bytes]]): 保存数据的文件路径或文件对象。
 - `*args` (ArrayLike): 使用自动生成键（arr_0, arr_1, ...）保存的数组。
 - `**kwargs` (ArrayLike): 使用显式命名键保存的数组。
 
@@ -82,7 +86,9 @@ asnumpy.savez_compressed(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(100)
+>>> import numpy as np
+>>> x = np.arange(100)
+>>> x = ap.ndarray.from_numpy(x)
 >>> y = ap.ones(100)
 >>> ap.savez_compressed('compressed.npz', a=x, b=y)
 ```
@@ -90,16 +96,16 @@ asnumpy.savez_compressed(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs
 ## asnumpy.load
 
 ```python
-asnumpy.load(file: Union[str, IO[bytes]], mmap_mode: Union[str, None] = None, allow_pickle: bool = False, **kwargs) -> Union[ndarray, _AsnpNpz]
+asnumpy.load(file: Union[str, npt.IO[bytes]], mmap_mode: Union[str, None] = None, allow_pickle: bool = False, **kwargs) -> Union[ndarray, _AsnpNpz]
 ```
 
 从先前保存的二进制文件读取数组数据。
 
-对于 `.npy` 文件，返回存储在设备上的 NPUArray。
+对于 `.npy` 文件，返回存储在设备上的 ndarray。
 对于 `.npz` 文件，返回类似字典的延迟加载容器。
 
 **参数**
-- `file` (Union[str, IO[bytes]]): 加载的文件路径。
+- `file` (Union[str, npt.IO[bytes]]): 加载的文件路径。
 - `mmap_mode` (Union[str, None], 默认 None): 内存映射模式。如果不为 None，文件在主机端进行内存映射。注意内存映射操作在主机内存上，而非设备内存。
 - `allow_pickle` (bool, 默认 False): 是否允许加载 pickle 对象数组。
 - `**kwargs`: 传递给 numpy.load 的额外关键字参数。

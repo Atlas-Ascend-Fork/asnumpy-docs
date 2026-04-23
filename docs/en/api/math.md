@@ -29,7 +29,9 @@ This function computes the sine for every element in the input array `x`. Input 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sin(ap.array([0, np.pi/6, np.pi/2]))
+>>> x = np.array([0, np.pi/6, np.pi/2])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sin(x)
 array([0. , 0.5, 1. ])
 ```
 
@@ -58,7 +60,9 @@ This function computes the cosine for every element in the input array `x`. Inpu
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cos(ap.array([0, np.pi]))
+>>> x = np.array([0, np.pi])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.cos(x)
 array([ 1., -1.])
 ```
 
@@ -87,7 +91,9 @@ This function computes the tangent for every element in the input array `x`. Inp
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tan(ap.array([-np.pi/4, 0, np.pi/4]))
+>>> x = np.array([-np.pi/4, 0, np.pi/4])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.tan(x)
 array([-1.,  0.,  1.])
 ```
 
@@ -116,7 +122,10 @@ This function computes the inverse sine (arcsine) for every element in `x`. The 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.arcsin(ap.array([0, 0.5, 1]))
+>>> import numpy as np
+>>> x = np.array([0, 0.5, 1])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arcsin(x)
 array([0.        , 0.52359878, 1.57079633])
 ```
 
@@ -145,7 +154,10 @@ This function computes the inverse cosine (arccosine) for every element in `x`. 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.arccos(ap.array([1, 0.5, 0]))
+>>> import numpy as np
+>>> x = np.array([1, 0.5, 0])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arccos(x)
 array([0.        , 1.04719755, 1.57079633])
 ```
 
@@ -175,14 +187,17 @@ This function computes the inverse tangent (arctangent) for every element in `x`
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.arctan(ap.array([0, 1]))
+>>> import numpy as np
+>>> x = np.array([0, 1])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arctan(x)
 array([0.        , 0.78539816])
 ```
 
 ### asnumpy.arctan2
 
 ```python
-asnumpy.arctan2(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.arctan2(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 Calculate the element-wise inverse tangent of the quotient `x1/x2`, adjusting for the quadrant.
@@ -204,8 +219,11 @@ This function computes the inverse tangent of `x1/x2`, using the signs of both a
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> y = ap.array([0, 1])
->>> x = ap.array([-1, 1])
+>>> import numpy as np
+>>> y = np.array([0, 1])
+>>> y = ap.ndarray.from_numpy(y)
+>>> x = np.array([-1, 1])
+>>> x = ap.ndarray.from_numpy(x)
 >>> ap.arctan2(y, x)
 array([3.14159265, 0.78539816])
 ```
@@ -213,7 +231,7 @@ array([3.14159265, 0.78539816])
 ### asnumpy.hypot
 
 ```python
-asnumpy.hypot(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.hypot(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 Calculate the hypotenuse given two sides of a right triangle.
@@ -263,7 +281,10 @@ This function converts each element in the input array `x` from degrees to radia
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.radians(ap.array([0, 90, 180]))
+>>> import numpy as np
+>>> x = np.array([0, 90, 180])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.radians(x)
 array([0.        , 1.57079633, 3.14159265])
 ```
 
@@ -292,7 +313,10 @@ This function converts input angles from degrees to radians element-wise. It is 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.deg2rad(ap.array([0, 90, 180]))
+>>> import numpy as np
+>>> x = np.array([0, 90, 180])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.deg2rad(x)
 array([0.        , 1.57079633, 3.14159265])
 ```
 
@@ -322,7 +346,9 @@ This function converts each element in the input array `x` from radians to degre
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.degrees(ap.array([0, np.pi/2, np.pi]))
+>>> x = np.array([0, np.pi/2, np.pi])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.degrees(x)
 array([  0.,  90., 180.])
 ```
 
@@ -352,7 +378,9 @@ This function converts each element in the input array `x` from radians to degre
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rad2deg(ap.array([0, np.pi/2, np.pi]))
+>>> x = np.array([0, np.pi/2, np.pi])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.rad2deg(x)
 array([  0.,  90., 180.])
 ```
 
@@ -383,7 +411,10 @@ This function computes the hyperbolic sine for every element in the input array 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.sinh(ap.array([0., 1.]))
+>>> import numpy as np
+>>> x = np.array([0., 1.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sinh(x)
 array([0.        , 1.17520119])
 ```
 
@@ -412,7 +443,10 @@ This function computes the hyperbolic cosine for every element in the input arra
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.cosh(ap.array([0., 1.]))
+>>> import numpy as np
+>>> x = np.array([0., 1.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.cosh(x)
 array([1.        , 1.54308063])
 ```
 
@@ -441,7 +475,10 @@ This function computes the hyperbolic tangent for every element in the input arr
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.tanh(ap.array([0., 1.]))
+>>> import numpy as np
+>>> x = np.array([0., 1.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.tanh(x)
 array([0.        , 0.76159416])
 ```
 
@@ -469,7 +506,10 @@ This function computes the inverse hyperbolic sine for every element in the inpu
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.arcsinh(ap.array([0., 1.17520119]))
+>>> import numpy as np
+>>> x = np.array([0., 1.17520119])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arcsinh(x)
 array([0., 1.])
 ```
 
@@ -497,7 +537,10 @@ This function computes the inverse hyperbolic cosine for every element in the in
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.arccosh(ap.array([1., 1.54308063]))
+>>> import numpy as np
+>>> x = np.array([1., 1.54308063])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arccosh(x)
 array([0., 1.])
 ```
 
@@ -525,7 +568,10 @@ This function computes the inverse hyperbolic tangent for every element in the i
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.arctanh(ap.array([0., 0.76159416]))
+>>> import numpy as np
+>>> x = np.array([0., 0.76159416])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arctanh(x)
 array([0., 1.])
 ```
 
@@ -534,7 +580,7 @@ array([0., 1.])
 ### asnumpy.add
 
 ```python
-asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.add(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the sum of two inputs element-wise.
@@ -556,14 +602,19 @@ This function adds `x1` and `x2` element by element.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.add(ap.array([10, 20]), ap.array([5, 5]))
+>>> import numpy as np
+>>> a = np.array([5, 5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10, 20])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.add(b, a)
 array([15, 25])
 ```
 
 ### asnumpy.subtract
 
 ```python
-asnumpy.subtract(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.subtract(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the difference between two inputs element-wise.
@@ -585,14 +636,19 @@ This function subtracts `x2` from `x1` element by element.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.subtract(ap.array([10, 5]), ap.array([2, 2]))
+>>> import numpy as np
+>>> a = np.array([2, 2])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10, 5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.subtract(b, a)
 array([8, 3])
 ```
 
 ### asnumpy.multiply
 
 ```python
-asnumpy.multiply(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.multiply(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the product of two inputs element-wise.
@@ -614,14 +670,19 @@ This function multiplies `x1` and `x2` element by element.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.multiply(ap.array([2.0, 4.0]), ap.array([3.0, 0.5]))
+>>> import numpy as np
+>>> a = np.array([3.0, 0.5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2.0, 4.0])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.multiply(b, a)
 array([6., 2.])
 ```
 
 ### asnumpy.divide
 
 ```python
-asnumpy.divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.divide(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the division of two inputs element-wise.
@@ -645,14 +706,19 @@ This function divides `x1` by `x2` element by element, performing true division.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.divide(ap.array([6, 12]), ap.array([3, 4]))
+>>> import numpy as np
+>>> a = np.array([3, 4])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([6, 12])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.divide(b, a)
 array([2., 3.])
 ```
 
 ### asnumpy.true_divide
 
 ```python
-asnumpy.true_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.true_divide(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the true division of two inputs element-wise.
@@ -675,14 +741,19 @@ This function divides `x1` by `x2` element by element. It is an alias for `divid
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.true_divide(ap.array([6, 12]), ap.array([3, 4]))
+>>> import numpy as np
+>>> a = np.array([3, 4])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([6, 12])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.true_divide(b, a)
 array([2., 3.])
 ```
 
 ### asnumpy.floor_divide
 
 ```python
-asnumpy.floor_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.floor_divide(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the floor division of two inputs element-wise.
@@ -706,14 +777,19 @@ This function divides `x1` by `x2` and rounds the quotient down to the nearest i
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.floor_divide(ap.array([10, 10]), ap.array([3, 4]))
+>>> import numpy as np
+>>> a = np.array([3, 4])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10, 10])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.floor_divide(b, a)
 array([3, 2])
 ```
 
 ### asnumpy.power
 
 ```python
-asnumpy.power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.power(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the power of bases raised to exponents.
@@ -736,14 +812,19 @@ This function raises elements of `x1` to the power of elements of `x2`.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.power(ap.array([2, 5]), ap.array([3, 2]))
+>>> import numpy as np
+>>> a = np.array([3, 2])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2, 5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.power(b, a)
 array([ 8, 25])
 ```
 
 ### asnumpy.float_power
 
 ```python
-asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.float_power(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the power of bases raised to exponents, promoting to float.
@@ -765,7 +846,12 @@ This function raises elements of `x1` to the power of elements of `x2`. It ensur
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.float_power(ap.array([2, 5]), ap.array([3, 2]))
+>>> import numpy as np
+>>> a = np.array([3, 2])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2, 5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.float_power(b, a)
 array([ 8., 25.])
 ```
 
@@ -793,7 +879,10 @@ This function negates each element in the input array, returning `-x`.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.negative(ap.array([10, -10]))
+>>> import numpy as np
+>>> x = np.array([10, -10])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.negative(x)
 array([-10,  10])
 ```
 
@@ -821,7 +910,10 @@ This function returns `+x` for each element. It effectively returns a copy of th
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.positive(ap.array([-5, 5]))
+>>> import numpy as np
+>>> x = np.array([-5, 5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.positive(x)
 array([-5,  5])
 ```
 
@@ -849,14 +941,17 @@ This function computes the multiplicative inverse, `1 / x`, for every element in
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.reciprocal(ap.array([1., 2., 4.]))
+>>> import numpy as np
+>>> x = np.array([1., 2., 4.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.reciprocal(x)
 array([1.  , 0.5 , 0.25])
 ```
 
 ### asnumpy.mod
 
 ```python
-asnumpy.mod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.mod(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the remainder of division element-wise.
@@ -879,14 +974,19 @@ This function computes the remainder of `x1` divided by `x2`. It behaves like th
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.mod(ap.array([-4, -4, 4, 4]), ap.array([3, -3, 3, -3]))
+>>> import numpy as np
+>>> a = np.array([3, -3, 3, -3])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([-4, -4, 4, 4])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.mod(b, a)
 array([ 2, -1,  1, -2])
 ```
 
 ### asnumpy.remainder
 
 ```python
-asnumpy.remainder(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.remainder(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the remainder of division element-wise.
@@ -909,14 +1009,19 @@ This function computes the remainder of `x1` divided by `x2`. It is an alias for
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.remainder(ap.array([5, -5]), ap.array([3, 3]))
+>>> import numpy as np
+>>> a = np.array([3, 3])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([5, -5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.remainder(b, a)
 array([2, 1])
 ```
 
 ### asnumpy.fmod
 
 ```python
-asnumpy.fmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.fmod(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the floating-point remainder of division.
@@ -939,7 +1044,12 @@ This function computes the remainder of `x1` divided by `x2`. The result carries
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.fmod(ap.array([-4, -4, 4, 4]), ap.array([3, -3, 3, -3]))
+>>> import numpy as np
+>>> a = np.array([3, -3, 3, -3])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([-4, -4, 4, 4])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.fmod(b, a)
 array([-1, -1,  1,  1])
 ```
 
@@ -966,14 +1076,17 @@ This function splits each element of `x` into its fractional and integral compon
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.modf(ap.array([1.5, -2.5]))
+>>> import numpy as np
+>>> x = np.array([1.5, -2.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.modf(x)
 (array([ 0.5, -0.5]), array([ 1., -2.]))
 ```
 
 ### asnumpy.divmod
 
 ```python
-asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple[ndarray, ndarray]
+asnumpy.divmod(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> tuple[ndarray, ndarray]
 ```
 
 Calculate both the quotient and the remainder.
@@ -996,7 +1109,12 @@ This function performs floor division and modulus simultaneously. It returns the
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.divmod(ap.array([10, 11]), ap.array([3, 3]))
+>>> import numpy as np
+>>> a = np.array([3, 3])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10, 11])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.divmod(b, a)
 (array([3, 3]), array([1, 2]))
 ```
 
@@ -1025,7 +1143,10 @@ This function computes `e` raised to the power of each element in `x`, where `e`
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.exp(ap.array([1., 2.]))
+>>> import numpy as np
+>>> x = np.array([1., 2.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.exp(x)
 array([2.71828183, 7.3890561 ])
 ```
 
@@ -1052,7 +1173,10 @@ This function computes the base-2 exponential for every element in the input arr
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.exp2(ap.array([3]))
+>>> import numpy as np
+>>> x = np.array([3])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.exp2(x)
 array([8.])
 ```
 
@@ -1079,7 +1203,10 @@ This function computes the exponential of each element minus one. It is designed
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.expm1(ap.array([1e-10]))
+>>> import numpy as np
+>>> x = np.array([1e-10])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.expm1(x)
 array([1.0000000e-10])
 ```
 
@@ -1108,7 +1235,10 @@ This function computes the logarithm to the base `e` for every element in the in
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.log(ap.array([ap.e]))
+>>> import numpy as np
+>>> x = np.array([np.e])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.log(x)
 array([1.])
 ```
 
@@ -1136,7 +1266,10 @@ This function computes the binary logarithm (base 2) for every element in the in
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.log2(ap.array([8.]))
+>>> import numpy as np
+>>> x = np.array([8.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.log2(x)
 array([3.])
 ```
 
@@ -1164,7 +1297,10 @@ This function computes the common logarithm (base 10) for every element in the i
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.log10(ap.array([100.]))
+>>> import numpy as np
+>>> x = np.array([100.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.log10(x)
 array([2.])
 ```
 
@@ -1191,14 +1327,17 @@ This function computes `log(1 + x)` element-wise. It is designed to provide bett
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.log1p(ap.array([1e-99]))
+>>> import numpy as np
+>>> x = np.array([1e-99])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.log1p(x)
 array([1.e-99])
 ```
 
 ### asnumpy.logaddexp
 
 ```python
-asnumpy.logaddexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.logaddexp(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 Calculate the logarithm of the sum of exponentials of the inputs.
@@ -1220,14 +1359,18 @@ This function computes `log(exp(x1) + exp(x2))`. It is numerically stable and us
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp(ap.array([0]), ap.array([0]))
+>>> a = np.array([0])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([0])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.logaddexp(b, a)
 array([0.69314718])
 ```
 
 ### asnumpy.logaddexp2
 
 ```python
-asnumpy.logaddexp2(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.logaddexp2(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 Calculate the base-2 logarithm of the sum of base-2 exponentials of the inputs.
@@ -1248,7 +1391,12 @@ This function computes `log2(2**x1 + 2**x2)`. It is a base-2 analog of `logaddex
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.logaddexp2(ap.array([1]), ap.array([1]))
+>>> import numpy as np
+>>> a = np.array([1])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([1])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.logaddexp2(b, a)
 array([2.])
 ```
 
@@ -1277,9 +1425,14 @@ This function computes the absolute value for every element in the input array `
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.absolute(ap.array([-2.5, 2.5]))
+>>> import numpy as np
+>>> a = np.array([-2.5, 2.5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> ap.absolute(a)
 array([2.5, 2.5])
->>> ap.absolute(ap.array([3+4j]))
+>>> b = np.array([3+4j])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.absolute(b)
 array([5.])
 ```
 
@@ -1306,7 +1459,10 @@ This function computes the absolute value of each element in `x`. It is designed
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.fabs(ap.array([-2.5, 2.5]))
+>>> import numpy as np
+>>> x = np.array([-2.5, 2.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.fabs(x)
 array([2.5, 2.5])
 ```
 
@@ -1332,7 +1488,10 @@ This function returns an element-wise indication of the sign of a number: -1 for
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.sign(ap.array([-3., 2.]))
+>>> import numpy as np
+>>> x = np.array([-3., 2.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sign(x)
 array([-1.,  1.])
 >>> ap.sign(0)
 0
@@ -1341,7 +1500,7 @@ array([-1.,  1.])
 ### asnumpy.heaviside
 
 ```python
-asnumpy.heaviside(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.heaviside(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 Compute the Heaviside step function.
@@ -1361,7 +1520,10 @@ This function calculates the Heaviside step function for each element in `x1`. T
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.heaviside(ap.array([-2.0, 0, 1.0]), 0.5)
+>>> import numpy as np
+>>> x = np.array([-2.0, 0, 1.0])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.heaviside(x, 0.5)
 array([0. , 0.5, 1. ])
 ```
 
@@ -1388,7 +1550,10 @@ This function computes the square root for every element in the input array `x`.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.sqrt(ap.array([1, 4, 16]))
+>>> import numpy as np
+>>> x = np.array([1, 4, 16])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sqrt(x)
 array([1., 2., 4.])
 ```
 
@@ -1416,7 +1581,10 @@ This function computes the square of the input `x` element-wise.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.square(ap.array([2, 3, 4]))
+>>> import numpy as np
+>>> x = np.array([2, 3, 4])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.square(x)
 array([ 4,  9, 16])
 ```
 
@@ -1444,7 +1612,9 @@ This function limits the values in `a` to be within the interval [`a_min`, `a_ma
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> a = ap.arange(5)
+>>> import numpy as np
+>>> a = np.arange(5)
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.clip(a, 1, 3)
 array([1, 1, 2, 3, 3])
 ```
@@ -1475,7 +1645,9 @@ This function replaces NaN with zero (or a specified value) and infinity with la
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nan_to_num(ap.array([np.inf, -np.inf, np.nan]))
+>>> x = np.array([np.inf, -np.inf, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nan_to_num(x)
 array([ 1.79769313e+308, -1.79769313e+308,  0.00000000e+000])
 ```
 
@@ -1499,7 +1671,10 @@ This function applies the ReLU operation element-wise, returning `x` if positive
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.relu(ap.array([-2, 0, 2]))
+>>> import numpy as np
+>>> x = np.array([-2, 0, 2])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.relu(x)
 array([0, 0, 2])
 ```
 
@@ -1523,7 +1698,10 @@ This function applies the GELU operation, which weights inputs by their probabil
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.gelu(ap.array([-1.0, 0.0, 1.0]))
+>>> import numpy as np
+>>> x = np.array([-1.0, 0.0, 1.0])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.gelu(x)
 array([-0.15865525,  0.        ,  0.84134475])
 ```
 
@@ -1550,7 +1728,10 @@ This function computes the normalized sinc function, `sin(pi * x) / (pi * x)`, f
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.sinc(ap.array([0., 0.5]))
+>>> import numpy as np
+>>> x = np.array([0., 0.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sinc(x)
 array([1.        , 0.63661977])
 ```
 
@@ -1583,7 +1764,10 @@ This function rounds each element in `x` to the given number of decimals.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.around(ap.array([0.55, 1.55]), decimals=1)
+>>> import numpy as np
+>>> x = np.array([0.55, 1.55])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.around(x, decimals=1)
 array([0.6, 1.6])
 ```
 
@@ -1614,7 +1798,10 @@ This function rounds each element in `x` to the given number of decimals. It is 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.round_(ap.array([0.55, 1.55]), decimals=1)
+>>> import numpy as np
+>>> x = np.array([0.55, 1.55])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.round_(x, decimals=1)
 array([0.6, 1.6])
 ```
 
@@ -1644,7 +1831,10 @@ This function rounds each element in the input array `x` to the closest integer 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.rint(ap.array([-1.2, 1.2]))
+>>> import numpy as np
+>>> x = np.array([-1.2, 1.2])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.rint(x)
 array([-1.,  1.])
 ```
 
@@ -1674,7 +1864,10 @@ This function rounds each floating-point element to the nearest integer closer t
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.fix(ap.array([2.9, -2.9]))
+>>> import numpy as np
+>>> x = np.array([2.9, -2.9])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.fix(x)
 array([ 2., -2.])
 ```
 
@@ -1703,7 +1896,10 @@ This function returns the largest integer less than or equal to each element in 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.floor(ap.array([-1.5, 1.5]))
+>>> import numpy as np
+>>> x = np.array([-1.5, 1.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.floor(x)
 array([-2.,  1.])
 ```
 
@@ -1732,7 +1928,10 @@ This function returns the smallest integer greater than or equal to each element
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.ceil(ap.array([-1.5, 1.5]))
+>>> import numpy as np
+>>> x = np.array([-1.5, 1.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.ceil(x)
 array([-1.,  2.])
 ```
 
@@ -1761,7 +1960,10 @@ This function returns the integer portion of each element in `x`, effectively di
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.trunc(ap.array([-1.5, 1.5]))
+>>> import numpy as np
+>>> x = np.array([-1.5, 1.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.trunc(x)
 array([-1.,  1.])
 ```
 
@@ -1793,7 +1995,10 @@ This function multiplies elements in the input array `a`. If an `axis` is provid
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.prod(ap.array([1., 2.]))
+>>> import numpy as np
+>>> x = np.array([1., 2.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.prod(x)
 2.0
 ```
 
@@ -1823,7 +2028,10 @@ This function adds up elements in the input array `a`. If an `axis` is provided,
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.sum(ap.array([0.5, 1.5]))
+>>> import numpy as np
+>>> x = np.array([0.5, 1.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sum(x)
 2.0
 ```
 
@@ -1854,7 +2062,9 @@ This function multiplies elements in the input array `a`, treating any NaN value
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nanprod(ap.array([1, np.nan]))
+>>> x = np.array([1, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nanprod(x)
 1.0
 ```
 
@@ -1885,7 +2095,9 @@ This function adds up elements in the input array `a`, treating any NaN values a
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nansum(ap.array([1, np.nan]))
+>>> x = np.array([1, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nansum(x)
 1.0
 ```
 
@@ -1915,7 +2127,9 @@ This function computes the running product of elements along the specified axis.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.cumprod(a)
 array([1, 2, 6])
 ```
@@ -1946,7 +2160,9 @@ This function computes the running total of elements along the specified axis.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.cumsum(a)
 array([1, 3, 6])
 ```
@@ -1978,7 +2194,9 @@ This function computes the running product of elements along the specified axis.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumprod(ap.array([1, np.nan]))
+>>> x = np.array([1, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nancumprod(x)
 array([1., 1.])
 ```
 
@@ -2009,7 +2227,9 @@ This function computes the running total of elements along the specified axis. A
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumsum(ap.array([1, np.nan]))
+>>> x = np.array([1, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nancumsum(x)
 array([1., 1.])
 ```
 
@@ -2037,8 +2257,11 @@ This function computes the vector cross product of `a` and `b`. It operates on v
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> x = ap.array([1, 2, 3])
->>> y = ap.array([4, 5, 6])
+>>> import numpy as np
+>>> x = np.array([1, 2, 3])
+>>> x = ap.ndarray.from_numpy(x)
+>>> y = np.array([4, 5, 6])
+>>> y = ap.ndarray.from_numpy(y)
 >>> ap.cross(x, y)
 array([-3,  6, -3])
 ```
@@ -2048,7 +2271,7 @@ array([-3,  6, -3])
 ### asnumpy.maximum
 
 ```python
-asnumpy.maximum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.maximum(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the element-wise maximum of the inputs.
@@ -2072,14 +2295,19 @@ This function compares `x1` and `x2` and returns the larger value for each eleme
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.maximum(ap.array([2, 3]), ap.array([1, 5]))
+>>> import numpy as np
+>>> a = np.array([1, 5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2, 3])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.maximum(b, a)
 array([2, 5])
 ```
 
 ### asnumpy.minimum
 
 ```python
-asnumpy.minimum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.minimum(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the element-wise minimum of the inputs.
@@ -2103,14 +2331,19 @@ This function compares `x1` and `x2` and returns the smaller value for each elem
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.minimum(ap.array([2, 3]), ap.array([1, 5]))
+>>> import numpy as np
+>>> a = np.array([1, 5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2, 3])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.minimum(b, a)
 array([1, 3])
 ```
 
 ### asnumpy.fmax
 
 ```python
-asnumpy.fmax(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.fmax(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the element-wise maximum of the inputs, ignoring NaNs.
@@ -2135,14 +2368,18 @@ This function compares `x1` and `x2` and returns the larger value. If a NaN is e
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmax(ap.array([np.nan, 2]), ap.array([1, np.nan]))
+>>> a = np.array([1, np.nan])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([np.nan, 2])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.fmax(b, a)
 array([1., 2.])
 ```
 
 ### asnumpy.fmin
 
 ```python
-asnumpy.fmin(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.fmin(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the element-wise minimum of the inputs, ignoring NaNs.
@@ -2167,7 +2404,11 @@ This function compares `x1` and `x2` and returns the smaller value. If a NaN is 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmin(ap.array([np.nan, 2]), ap.array([1, np.nan]))
+>>> a = np.array([1, np.nan])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([np.nan, 2])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.fmin(b, a)
 array([1., 2.])
 ```
 
@@ -2198,7 +2439,9 @@ This function finds the largest value in the array `a`. If an `axis` is provided
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.max(a)
 3
 ```
@@ -2230,7 +2473,9 @@ This function finds the largest value in the array `a`. It is an alias for `max`
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.amax(a)
 3
 ```
@@ -2262,7 +2507,8 @@ This function finds the largest value in the array `a`, skipping any NaN values.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.array([1, np.nan])
+>>> a = np.array([1, np.nan])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.nanmax(a)
 1.0
 ```
@@ -2294,7 +2540,9 @@ This function finds the smallest value in the array `a`. If an `axis` is provide
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.min(a)
 1
 ```
@@ -2326,7 +2574,9 @@ This function finds the smallest value in the array `a`. It is an alias for `min
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.amin(a)
 1
 ```
@@ -2356,14 +2606,17 @@ This function returns True where the sign bit is set (indicating a negative numb
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.signbit(ap.array([-2.5, 3.5]))
+>>> import numpy as np
+>>> x = np.array([-2.5, 3.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.signbit(x)
 array([ True, False])
 ```
 
 ### asnumpy.copysign
 
 ```python
-asnumpy.copysign(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.copysign(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 Change the sign of `x1` to that of `x2` element-wise.
@@ -2384,14 +2637,19 @@ This function returns a value with the magnitude of `x1` and the sign of `x2`.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.copysign(ap.array([1.5]), ap.array([-1]))
+>>> import numpy as np
+>>> a = np.array([-1])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([1.5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.copysign(b, a)
 array([-1.5])
 ```
 
 ### asnumpy.ldexp
 
 ```python
-asnumpy.ldexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.ldexp(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 Calculate `x1 * (2**x2)` element-wise.
@@ -2411,7 +2669,12 @@ This function computes the product of `x1` and 2 raised to the power of `x2`.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.ldexp(ap.array([3]), ap.array([2]))
+>>> import numpy as np
+>>> a = np.array([2])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([3])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.ldexp(b, a)
 array([12.])
 ```
 
@@ -2439,7 +2702,10 @@ This function extracts the real component of the elements in `x`.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.real(ap.array([1+5j]))
+>>> import numpy as np
+>>> x = np.array([1+5j])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.real(x)
 array([1.])
 ```
 
@@ -2448,7 +2714,7 @@ array([1.])
 ### asnumpy.gcd
 
 ```python
-asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.gcd(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the greatest common divisor of the inputs.
@@ -2470,14 +2736,19 @@ This function computes the greatest common divisor (GCD) of the absolute values 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.gcd(ap.array([10]), ap.array([25]))
+>>> import numpy as np
+>>> a = np.array([25])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.gcd(b, a)
 array([5])
 ```
 
 ### asnumpy.lcm
 
 ```python
-asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.lcm(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 Calculate the least common multiple of the inputs.
@@ -2499,6 +2770,11 @@ This function computes the least common multiple (LCM) of the absolute values of
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.lcm(ap.array([4]), ap.array([6]))
+>>> import numpy as np
+>>> a = np.array([6])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([4])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.lcm(b, a)
 array([12])
 ```

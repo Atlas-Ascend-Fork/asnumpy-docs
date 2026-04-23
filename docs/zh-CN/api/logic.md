@@ -25,9 +25,14 @@ asnumpy.all(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.all(ap.array([True, True, True]))
+>>> import numpy as np
+>>> x = np.array([True, True, True])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.all(x)
 array(True)
->>> ap.all(ap.array([True, False, True]))
+>>> x = np.array([True, False, True])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.all(x)
 array(False)
 ```
 
@@ -54,9 +59,14 @@ asnumpy.any(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.any(ap.array([False, False, True]))
+>>> import numpy as np
+>>> a = np.array([False, False, True])
+>>> a = ap.ndarray.from_numpy(a)
+>>> ap.any(a)
 array(True)
->>> ap.any(ap.array([False, False, False]))
+>>> b = np.array([False, False, False])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.any(b)
 array(False)
 ```
 
@@ -65,7 +75,7 @@ array(False)
 ### asnumpy.logical_and
 
 ```python
-asnumpy.logical_and(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.logical_and(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 对两个数组的对应元素应用布尔与逻辑。
@@ -92,7 +102,7 @@ array([ True, False])
 ### asnumpy.logical_or
 
 ```python
-asnumpy.logical_or(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.logical_or(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 对两个数组的对应元素应用布尔或逻辑。
@@ -143,7 +153,7 @@ array([False,  True])
 ### asnumpy.logical_xor
 
 ```python
-asnumpy.logical_xor(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.logical_xor(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 对两个数组的对应元素应用异或逻辑。
@@ -170,7 +180,7 @@ array(True)
 ### asnumpy.greater
 
 ```python
-asnumpy.greater(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.greater(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 判断 x1 的元素是否大于 x2 的元素。
@@ -196,7 +206,7 @@ array([ True, False])
 ### asnumpy.greater_equal
 
 ```python
-asnumpy.greater_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.greater_equal(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 判断 x1 的元素是否大于等于 x2 的元素。
@@ -222,7 +232,7 @@ array([ True,  True, False])
 ### asnumpy.less
 
 ```python
-asnumpy.less(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.less(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 判断 x1 的元素是否小于 x2 的元素。
@@ -248,7 +258,7 @@ array([ True, False, False])
 ### asnumpy.less_equal
 
 ```python
-asnumpy.less_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.less_equal(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 判断 x1 的元素是否小于等于 x2 的元素。
@@ -274,7 +284,7 @@ array([ True,  True, False])
 ### asnumpy.equal
 
 ```python
-asnumpy.equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.equal(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素比较两个数组是否相等。
@@ -300,7 +310,7 @@ array([ True, False,  True])
 ### asnumpy.not_equal
 
 ```python
-asnumpy.not_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.not_equal(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素比较两个数组是否不相等。

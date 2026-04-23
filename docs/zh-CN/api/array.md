@@ -58,7 +58,9 @@ asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(4).reshape(2, 2)
+>>> import numpy as np
+>>> x = np.arange(4).reshape(2, 2)
+>>> x = ap.ndarray.from_numpy(x)
 >>> ap.zeros_like(x)
 array([[0, 0],
        [0, 0]])
@@ -122,7 +124,9 @@ asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) 
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(4)
+>>> import numpy as np
+>>> x = np.arange(4)
+>>> x = ap.ndarray.from_numpy(x)
 >>> ap.full_like(x, 9)
 array([9, 9, 9, 9])
 ```
@@ -176,7 +180,9 @@ asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([[1, 2], [3, 4]])
+>>> import numpy as np
+>>> a = np.array([[1, 2], [3, 4]])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.empty_like(a)
 array([[... , ...],
        [... , ...]])  # 值任意
@@ -258,7 +264,9 @@ asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(6).reshape((2, 3))
+>>> import numpy as np
+>>> x = np.arange(6).reshape((2, 3))
+>>> x = ap.ndarray.from_numpy(x)
 >>> ap.ones_like(x)
 array([[1, 1, 1],
        [1, 1, 1]])

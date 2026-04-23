@@ -29,7 +29,9 @@ asnumpy.sin(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sin(ap.array([0, np.pi/6, np.pi/2]))
+>>> x = np.array([0, np.pi/6, np.pi/2])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sin(x)
 array([0. , 0.5, 1. ])
 ```
 
@@ -58,7 +60,9 @@ asnumpy.cos(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cos(ap.array([0, np.pi]))
+>>> x = np.array([0, np.pi])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.cos(x)
 array([ 1., -1.])
 ```
 
@@ -87,7 +91,9 @@ asnumpy.tan(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tan(ap.array([-np.pi/4, 0, np.pi/4]))
+>>> x = np.array([-np.pi/4, 0, np.pi/4])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.tan(x)
 array([-1.,  0.,  1.])
 ```
 
@@ -116,7 +122,10 @@ asnumpy.arcsin(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.arcsin(ap.array([0, 0.5, 1]))
+>>> import numpy as np
+>>> x = np.array([0, 0.5, 1])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arcsin(x)
 array([0.        , 0.52359878, 1.57079633])
 ```
 
@@ -145,7 +154,10 @@ asnumpy.arccos(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.arccos(ap.array([1, 0.5, 0]))
+>>> import numpy as np
+>>> x = np.array([1, 0.5, 0])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arccos(x)
 array([0.        , 1.04719755, 1.57079633])
 ```
 
@@ -175,14 +187,17 @@ asnumpy.arctan(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.arctan(ap.array([0, 1]))
+>>> import numpy as np
+>>> x = np.array([0, 1])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arctan(x)
 array([0.        , 0.78539816])
 ```
 
 ### asnumpy.arctan2
 
 ```python
-asnumpy.arctan2(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.arctan2(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 计算商 `x1/x2` 的逐元素反正切值，并根据象限调整。
@@ -204,8 +219,11 @@ asnumpy.arctan2(x1: ArrayLike, x2: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> y = ap.array([0, 1])
->>> x = ap.array([-1, 1])
+>>> import numpy as np
+>>> y = np.array([0, 1])
+>>> y = ap.ndarray.from_numpy(y)
+>>> x = np.array([-1, 1])
+>>> x = ap.ndarray.from_numpy(x)
 >>> ap.arctan2(y, x)
 array([3.14159265, 0.78539816])
 ```
@@ -213,7 +231,7 @@ array([3.14159265, 0.78539816])
 ### asnumpy.hypot
 
 ```python
-asnumpy.hypot(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.hypot(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 给定直角三角形的两条直角边，计算斜边长度。
@@ -263,7 +281,10 @@ asnumpy.radians(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.radians(ap.array([0, 90, 180]))
+>>> import numpy as np
+>>> x = np.array([0, 90, 180])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.radians(x)
 array([0.        , 1.57079633, 3.14159265])
 ```
 
@@ -292,7 +313,10 @@ asnumpy.deg2rad(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.deg2rad(ap.array([0, 90, 180]))
+>>> import numpy as np
+>>> x = np.array([0, 90, 180])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.deg2rad(x)
 array([0.        , 1.57079633, 3.14159265])
 ```
 
@@ -322,7 +346,9 @@ asnumpy.degrees(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.degrees(ap.array([0, np.pi/2, np.pi]))
+>>> x = np.array([0, np.pi/2, np.pi])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.degrees(x)
 array([  0.,  90., 180.])
 ```
 
@@ -352,7 +378,9 @@ asnumpy.rad2deg(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rad2deg(ap.array([0, np.pi/2, np.pi]))
+>>> x = np.array([0, np.pi/2, np.pi])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.rad2deg(x)
 array([  0.,  90., 180.])
 ```
 
@@ -383,7 +411,10 @@ asnumpy.sinh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.sinh(ap.array([0., 1.]))
+>>> import numpy as np
+>>> x = np.array([0., 1.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sinh(x)
 array([0.        , 1.17520119])
 ```
 
@@ -412,7 +443,10 @@ asnumpy.cosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.cosh(ap.array([0., 1.]))
+>>> import numpy as np
+>>> x = np.array([0., 1.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.cosh(x)
 array([1.        , 1.54308063])
 ```
 
@@ -441,7 +475,10 @@ asnumpy.tanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.tanh(ap.array([0., 1.]))
+>>> import numpy as np
+>>> x = np.array([0., 1.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.tanh(x)
 array([0.        , 0.76159416])
 ```
 
@@ -469,7 +506,10 @@ asnumpy.arcsinh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.arcsinh(ap.array([0., 1.17520119]))
+>>> import numpy as np
+>>> x = np.array([0., 1.17520119])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arcsinh(x)
 array([0., 1.])
 ```
 
@@ -497,7 +537,10 @@ asnumpy.arccosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.arccosh(ap.array([1., 1.54308063]))
+>>> import numpy as np
+>>> x = np.array([1., 1.54308063])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arccosh(x)
 array([0., 1.])
 ```
 
@@ -525,7 +568,10 @@ asnumpy.arctanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.arctanh(ap.array([0., 0.76159416]))
+>>> import numpy as np
+>>> x = np.array([0., 0.76159416])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.arctanh(x)
 array([0., 1.])
 ```
 
@@ -534,7 +580,7 @@ array([0., 1.])
 ### asnumpy.add
 
 ```python
-asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.add(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算两个输入的和。
@@ -556,14 +602,19 @@ asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.add(ap.array([10, 20]), ap.array([5, 5]))
+>>> import numpy as np
+>>> a = np.array([5, 5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10, 20])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.add(b, a)
 array([15, 25])
 ```
 
 ### asnumpy.subtract
 
 ```python
-asnumpy.subtract(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.subtract(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算两个输入的差。
@@ -585,14 +636,19 @@ asnumpy.subtract(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarr
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.subtract(ap.array([10, 5]), ap.array([2, 2]))
+>>> import numpy as np
+>>> a = np.array([2, 2])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10, 5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.subtract(b, a)
 array([8, 3])
 ```
 
 ### asnumpy.multiply
 
 ```python
-asnumpy.multiply(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.multiply(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算两个输入的积。
@@ -614,14 +670,19 @@ asnumpy.multiply(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarr
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.multiply(ap.array([2.0, 4.0]), ap.array([3.0, 0.5]))
+>>> import numpy as np
+>>> a = np.array([3.0, 0.5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2.0, 4.0])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.multiply(b, a)
 array([6., 2.])
 ```
 
 ### asnumpy.divide
 
 ```python
-asnumpy.divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.divide(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算两个输入的除法。
@@ -645,14 +706,19 @@ asnumpy.divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.divide(ap.array([6, 12]), ap.array([3, 4]))
+>>> import numpy as np
+>>> a = np.array([3, 4])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([6, 12])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.divide(b, a)
 array([2., 3.])
 ```
 
 ### asnumpy.true_divide
 
 ```python
-asnumpy.true_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.true_divide(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算两个输入的真除法。
@@ -675,14 +741,19 @@ asnumpy.true_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.true_divide(ap.array([6, 12]), ap.array([3, 4]))
+>>> import numpy as np
+>>> a = np.array([3, 4])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([6, 12])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.true_divide(b, a)
 array([2., 3.])
 ```
 
 ### asnumpy.floor_divide
 
 ```python
-asnumpy.floor_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.floor_divide(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算两个输入的整除。
@@ -706,14 +777,19 @@ asnumpy.floor_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> n
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.floor_divide(ap.array([10, 10]), ap.array([3, 4]))
+>>> import numpy as np
+>>> a = np.array([3, 4])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10, 10])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.floor_divide(b, a)
 array([3, 2])
 ```
 
 ### asnumpy.power
 
 ```python
-asnumpy.power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.power(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 计算底数的指数幂。
@@ -736,14 +812,19 @@ asnumpy.power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.power(ap.array([2, 5]), ap.array([3, 2]))
+>>> import numpy as np
+>>> a = np.array([3, 2])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2, 5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.power(b, a)
 array([ 8, 25])
 ```
 
 ### asnumpy.float_power
 
 ```python
-asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.float_power(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 计算底数的指数幂，提升为浮点数。
@@ -765,7 +846,12 @@ asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.float_power(ap.array([2, 5]), ap.array([3, 2]))
+>>> import numpy as np
+>>> a = np.array([3, 2])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2, 5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.float_power(b, a)
 array([ 8., 25.])
 ```
 
@@ -793,7 +879,10 @@ asnumpy.negative(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.negative(ap.array([10, -10]))
+>>> import numpy as np
+>>> x = np.array([10, -10])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.negative(x)
 array([-10,  10])
 ```
 
@@ -821,7 +910,10 @@ asnumpy.positive(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.positive(ap.array([-5, 5]))
+>>> import numpy as np
+>>> x = np.array([-5, 5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.positive(x)
 array([-5,  5])
 ```
 
@@ -849,14 +941,17 @@ asnumpy.reciprocal(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.reciprocal(ap.array([1., 2., 4.]))
+>>> import numpy as np
+>>> x = np.array([1., 2., 4.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.reciprocal(x)
 array([1.  , 0.5 , 0.25])
 ```
 
 ### asnumpy.mod
 
 ```python
-asnumpy.mod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.mod(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算除法的余数。
@@ -879,14 +974,19 @@ asnumpy.mod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.mod(ap.array([-4, -4, 4, 4]), ap.array([3, -3, 3, -3]))
+>>> import numpy as np
+>>> a = np.array([3, -3, 3, -3])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([-4, -4, 4, 4])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.mod(b, a)
 array([ 2, -1,  1, -2])
 ```
 
 ### asnumpy.remainder
 
 ```python
-asnumpy.remainder(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.remainder(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算除法的余数。
@@ -909,14 +1009,19 @@ asnumpy.remainder(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndar
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.remainder(ap.array([5, -5]), ap.array([3, 3]))
+>>> import numpy as np
+>>> a = np.array([3, 3])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([5, -5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.remainder(b, a)
 array([2, 1])
 ```
 
 ### asnumpy.fmod
 
 ```python
-asnumpy.fmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.fmod(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 计算浮点除法的余数。
@@ -939,7 +1044,12 @@ asnumpy.fmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.fmod(ap.array([-4, -4, 4, 4]), ap.array([3, -3, 3, -3]))
+>>> import numpy as np
+>>> a = np.array([3, -3, 3, -3])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([-4, -4, 4, 4])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.fmod(b, a)
 array([-1, -1,  1,  1])
 ```
 
@@ -966,14 +1076,17 @@ asnumpy.modf(x: ArrayLike) -> tuple[ndarray, ndarray]
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.modf(ap.array([1.5, -2.5]))
+>>> import numpy as np
+>>> x = np.array([1.5, -2.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.modf(x)
 (array([ 0.5, -0.5]), array([ 1., -2.]))
 ```
 
 ### asnumpy.divmod
 
 ```python
-asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple[ndarray, ndarray]
+asnumpy.divmod(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> tuple[ndarray, ndarray]
 ```
 
 同时计算商和余数。
@@ -996,7 +1109,12 @@ asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple[n
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.divmod(ap.array([10, 11]), ap.array([3, 3]))
+>>> import numpy as np
+>>> a = np.array([3, 3])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10, 11])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.divmod(b, a)
 (array([3, 3]), array([1, 2]))
 ```
 
@@ -1025,7 +1143,10 @@ asnumpy.exp(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.exp(ap.array([1., 2.]))
+>>> import numpy as np
+>>> x = np.array([1., 2.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.exp(x)
 array([2.71828183, 7.3890561 ])
 ```
 
@@ -1052,7 +1173,10 @@ asnumpy.exp2(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.exp2(ap.array([3]))
+>>> import numpy as np
+>>> x = np.array([3])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.exp2(x)
 array([8.])
 ```
 
@@ -1079,7 +1203,10 @@ asnumpy.expm1(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.expm1(ap.array([1e-10]))
+>>> import numpy as np
+>>> x = np.array([1e-10])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.expm1(x)
 array([1.0000000e-10])
 ```
 
@@ -1108,7 +1235,10 @@ asnumpy.log(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.log(ap.array([ap.e]))
+>>> import numpy as np
+>>> x = np.array([np.e])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.log(x)
 array([1.])
 ```
 
@@ -1136,7 +1266,10 @@ asnumpy.log2(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.log2(ap.array([8.]))
+>>> import numpy as np
+>>> x = np.array([8.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.log2(x)
 array([3.])
 ```
 
@@ -1164,7 +1297,10 @@ asnumpy.log10(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.log10(ap.array([100.]))
+>>> import numpy as np
+>>> x = np.array([100.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.log10(x)
 array([2.])
 ```
 
@@ -1191,14 +1327,17 @@ asnumpy.log1p(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.log1p(ap.array([1e-99]))
+>>> import numpy as np
+>>> x = np.array([1e-99])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.log1p(x)
 array([1.e-99])
 ```
 
 ### asnumpy.logaddexp
 
 ```python
-asnumpy.logaddexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.logaddexp(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 计算输入的指数和的对数。
@@ -1220,14 +1359,18 @@ asnumpy.logaddexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp(ap.array([0]), ap.array([0]))
+>>> a = np.array([0])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([0])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.logaddexp(b, a)
 array([0.69314718])
 ```
 
 ### asnumpy.logaddexp2
 
 ```python
-asnumpy.logaddexp2(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.logaddexp2(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 计算输入的以 2 为底的指数和的以 2 为底的对数。
@@ -1248,7 +1391,12 @@ asnumpy.logaddexp2(x1: ArrayLike, x2: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.logaddexp2(ap.array([1]), ap.array([1]))
+>>> import numpy as np
+>>> a = np.array([1])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([1])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.logaddexp2(b, a)
 array([2.])
 ```
 
@@ -1277,9 +1425,14 @@ asnumpy.absolute(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.absolute(ap.array([-2.5, 2.5]))
+>>> import numpy as np
+>>> a = np.array([-2.5, 2.5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> ap.absolute(a)
 array([2.5, 2.5])
->>> ap.absolute(ap.array([3+4j]))
+>>> b = np.array([3+4j])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.absolute(b)
 array([5.])
 ```
 
@@ -1306,7 +1459,10 @@ asnumpy.fabs(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.fabs(ap.array([-2.5, 2.5]))
+>>> import numpy as np
+>>> x = np.array([-2.5, 2.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.fabs(x)
 array([2.5, 2.5])
 ```
 
@@ -1332,7 +1488,10 @@ asnumpy.sign(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.sign(ap.array([-3., 2.]))
+>>> import numpy as np
+>>> x = np.array([-3., 2.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sign(x)
 array([-1.,  1.])
 >>> ap.sign(0)
 0
@@ -1341,7 +1500,7 @@ array([-1.,  1.])
 ### asnumpy.heaviside
 
 ```python
-asnumpy.heaviside(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.heaviside(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 计算 Heaviside 阶跃函数。
@@ -1361,7 +1520,10 @@ asnumpy.heaviside(x1: ArrayLike, x2: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.heaviside(ap.array([-2.0, 0, 1.0]), 0.5)
+>>> import numpy as np
+>>> x = np.array([-2.0, 0, 1.0])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.heaviside(x, 0.5)
 array([0. , 0.5, 1. ])
 ```
 
@@ -1388,7 +1550,10 @@ asnumpy.sqrt(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.sqrt(ap.array([1, 4, 16]))
+>>> import numpy as np
+>>> x = np.array([1, 4, 16])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sqrt(x)
 array([1., 2., 4.])
 ```
 
@@ -1416,7 +1581,10 @@ asnumpy.square(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.square(ap.array([2, 3, 4]))
+>>> import numpy as np
+>>> x = np.array([2, 3, 4])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.square(x)
 array([ 4,  9, 16])
 ```
 
@@ -1444,7 +1612,9 @@ asnumpy.clip(a: ArrayLike, a_min: Union[ArrayLike, float], a_max: Union[ArrayLik
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.arange(5)
+>>> import numpy as np
+>>> a = np.arange(5)
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.clip(a, 1, 3)
 array([1, 1, 2, 3, 3])
 ```
@@ -1475,7 +1645,9 @@ asnumpy.nan_to_num(x: ArrayLike, nan: float = 0.0, posinf: Optional[float] = Non
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nan_to_num(ap.array([np.inf, -np.inf, np.nan]))
+>>> x = np.array([np.inf, -np.inf, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nan_to_num(x)
 array([ 1.79769313e+308, -1.79769313e+308,  0.00000000e+000])
 ```
 
@@ -1499,7 +1671,10 @@ asnumpy.relu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.relu(ap.array([-2, 0, 2]))
+>>> import numpy as np
+>>> x = np.array([-2, 0, 2])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.relu(x)
 array([0, 0, 2])
 ```
 
@@ -1523,7 +1698,10 @@ asnumpy.gelu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.gelu(ap.array([-1.0, 0.0, 1.0]))
+>>> import numpy as np
+>>> x = np.array([-1.0, 0.0, 1.0])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.gelu(x)
 array([-0.15865525,  0.        ,  0.84134475])
 ```
 
@@ -1550,7 +1728,10 @@ asnumpy.sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.sinc(ap.array([0., 0.5]))
+>>> import numpy as np
+>>> x = np.array([0., 0.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sinc(x)
 array([1.        , 0.63661977])
 ```
 
@@ -1583,7 +1764,10 @@ asnumpy.around(x: ArrayLike, decimals: int = 0, dtype: DTypeLike = None) -> ndar
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.around(ap.array([0.55, 1.55]), decimals=1)
+>>> import numpy as np
+>>> x = np.array([0.55, 1.55])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.around(x, decimals=1)
 array([0.6, 1.6])
 ```
 
@@ -1614,7 +1798,10 @@ asnumpy.round_(x: ArrayLike, decimals: int = 0, dtype: DTypeLike = None) -> ndar
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.round_(ap.array([0.55, 1.55]), decimals=1)
+>>> import numpy as np
+>>> x = np.array([0.55, 1.55])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.round_(x, decimals=1)
 array([0.6, 1.6])
 ```
 
@@ -1644,7 +1831,10 @@ asnumpy.rint(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.rint(ap.array([-1.2, 1.2]))
+>>> import numpy as np
+>>> x = np.array([-1.2, 1.2])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.rint(x)
 array([-1.,  1.])
 ```
 
@@ -1674,7 +1864,10 @@ asnumpy.fix(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.fix(ap.array([2.9, -2.9]))
+>>> import numpy as np
+>>> x = np.array([2.9, -2.9])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.fix(x)
 array([ 2., -2.])
 ```
 
@@ -1703,7 +1896,10 @@ asnumpy.floor(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.floor(ap.array([-1.5, 1.5]))
+>>> import numpy as np
+>>> x = np.array([-1.5, 1.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.floor(x)
 array([-2.,  1.])
 ```
 
@@ -1732,7 +1928,10 @@ asnumpy.ceil(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.ceil(ap.array([-1.5, 1.5]))
+>>> import numpy as np
+>>> x = np.array([-1.5, 1.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.ceil(x)
 array([-1.,  2.])
 ```
 
@@ -1761,7 +1960,10 @@ asnumpy.trunc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.trunc(ap.array([-1.5, 1.5]))
+>>> import numpy as np
+>>> x = np.array([-1.5, 1.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.trunc(x)
 array([-1.,  1.])
 ```
 
@@ -1794,7 +1996,10 @@ asnumpy.prod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dt
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.prod(ap.array([1., 2.]))
+>>> import numpy as np
+>>> x = np.array([1., 2.])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.prod(x)
 2.0
 ```
 
@@ -1826,7 +2031,10 @@ asnumpy.sum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dty
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.sum(ap.array([0.5, 1.5]))
+>>> import numpy as np
+>>> x = np.array([0.5, 1.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.sum(x)
 2.0
 ```
 
@@ -1856,7 +2064,9 @@ asnumpy.nanprod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False,
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nanprod(ap.array([1, np.nan]))
+>>> x = np.array([1, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nanprod(x)
 1.0
 ```
 
@@ -1888,7 +2098,10 @@ asnumpy.nansum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, 
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.nansum(ap.array([1, np.nan]))
+>>> import numpy as np
+>>> x = np.array([1, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nansum(x)
 1.0
 ```
 
@@ -1918,7 +2131,9 @@ asnumpy.cumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.cumprod(a)
 array([1, 2, 6])
 ```
@@ -1950,7 +2165,9 @@ asnumpy.cumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None)
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.cumsum(a)
 array([1, 3, 6])
 ```
@@ -1982,7 +2199,9 @@ asnumpy.nancumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = N
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumprod(ap.array([1, np.nan]))
+>>> x = np.array([1, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nancumprod(x)
 array([1., 1.])
 ```
 
@@ -2012,7 +2231,9 @@ asnumpy.nancumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = No
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumsum(ap.array([1, np.nan]))
+>>> x = np.array([1, np.nan])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.nancumsum(x)
 array([1., 1.])
 ```
 
@@ -2040,8 +2261,11 @@ asnumpy.cross(a: ArrayLike, b: ArrayLike, axis: AxisOptional = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.array([1, 2, 3])
->>> y = ap.array([4, 5, 6])
+>>> import numpy as np
+>>> x = np.array([1, 2, 3])
+>>> x = ap.ndarray.from_numpy(x)
+>>> y = np.array([4, 5, 6])
+>>> y = ap.ndarray.from_numpy(y)
 >>> ap.cross(x, y)
 array([-3,  6, -3])
 ```
@@ -2051,7 +2275,7 @@ array([-3,  6, -3])
 ### asnumpy.maximum
 
 ```python
-asnumpy.maximum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.maximum(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算输入的最大值。
@@ -2075,14 +2299,19 @@ asnumpy.maximum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.maximum(ap.array([2, 3]), ap.array([1, 5]))
+>>> import numpy as np
+>>> a = np.array([1, 5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2, 3])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.maximum(b, a)
 array([2, 5])
 ```
 
 ### asnumpy.minimum
 
 ```python
-asnumpy.minimum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.minimum(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算输入的最小值。
@@ -2106,14 +2335,19 @@ asnumpy.minimum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.minimum(ap.array([2, 3]), ap.array([1, 5]))
+>>> import numpy as np
+>>> a = np.array([1, 5])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([2, 3])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.minimum(b, a)
 array([1, 3])
 ```
 
 ### asnumpy.fmax
 
 ```python
-asnumpy.fmax(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.fmax(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算输入的最大值，忽略 NaN。
@@ -2138,14 +2372,18 @@ asnumpy.fmax(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmax(ap.array([np.nan, 2]), ap.array([1, np.nan]))
+>>> a = np.array([1, np.nan])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([np.nan, 2])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.fmax(b, a)
 array([1., 2.])
 ```
 
 ### asnumpy.fmin
 
 ```python
-asnumpy.fmin(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.fmin(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 逐元素计算输入的最小值，忽略 NaN。
@@ -2170,7 +2408,11 @@ asnumpy.fmin(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmin(ap.array([np.nan, 2]), ap.array([1, np.nan]))
+>>> a = np.array([1, np.nan])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([np.nan, 2])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.fmin(b, a)
 array([1., 2.])
 ```
 
@@ -2201,7 +2443,9 @@ asnumpy.max(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.max(a)
 3
 ```
@@ -2233,7 +2477,9 @@ asnumpy.amax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.amax(a)
 3
 ```
@@ -2265,7 +2511,8 @@ asnumpy.nanmax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.array([1, np.nan])
+>>> a = np.array([1, np.nan])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.nanmax(a)
 1.0
 ```
@@ -2297,7 +2544,9 @@ asnumpy.min(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.min(a)
 1
 ```
@@ -2329,7 +2578,9 @@ asnumpy.amin(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.array([1, 2, 3])
+>>> import numpy as np
+>>> a = np.array([1, 2, 3])
+>>> a = ap.ndarray.from_numpy(a)
 >>> ap.amin(a)
 1
 ```
@@ -2359,14 +2610,17 @@ asnumpy.signbit(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.signbit(ap.array([-2.5, 3.5]))
+>>> import numpy as np
+>>> x = np.array([-2.5, 3.5])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.signbit(x)
 array([ True, False])
 ```
 
 ### asnumpy.copysign
 
 ```python
-asnumpy.copysign(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.copysign(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 逐元素将 `x1` 的符号更改为 `x2` 的符号。
@@ -2387,14 +2641,19 @@ asnumpy.copysign(x1: ArrayLike, x2: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.copysign(ap.array([1.5]), ap.array([-1]))
+>>> import numpy as np
+>>> a = np.array([-1])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([1.5])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.copysign(b, a)
 array([-1.5])
 ```
 
 ### asnumpy.ldexp
 
 ```python
-asnumpy.ldexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
+asnumpy.ldexp(x1: ArrayLike, x: ArrayLike) -> ndarray
 ```
 
 逐元素计算 `x1 * (2**x2)`。
@@ -2414,7 +2673,12 @@ asnumpy.ldexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.ldexp(ap.array([3]), ap.array([2]))
+>>> import numpy as np
+>>> a = np.array([2])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([3])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.ldexp(b, a)
 array([12.])
 ```
 
@@ -2442,7 +2706,10 @@ asnumpy.real(x: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.real(ap.array([1+5j]))
+>>> import numpy as np
+>>> x = np.array([1+5j])
+>>> x = ap.ndarray.from_numpy(x)
+>>> ap.real(x)
 array([1.])
 ```
 
@@ -2451,7 +2718,7 @@ array([1.])
 ### asnumpy.gcd
 
 ```python
-asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.gcd(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 计算输入的最大公约数。
@@ -2473,14 +2740,19 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.gcd(ap.array([10]), ap.array([25]))
+>>> import numpy as np
+>>> a = np.array([25])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([10])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.gcd(b, a)
 array([5])
 ```
 
 ### asnumpy.lcm
 
 ```python
-asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.lcm(x1: ArrayLike, x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```
 
 计算输入的最小公倍数。
@@ -2502,6 +2774,11 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.lcm(ap.array([4]), ap.array([6]))
+>>> import numpy as np
+>>> a = np.array([6])
+>>> a = ap.ndarray.from_numpy(a)
+>>> b = np.array([4])
+>>> b = ap.ndarray.from_numpy(b)
+>>> ap.lcm(b, a)
 array([12])
 ```

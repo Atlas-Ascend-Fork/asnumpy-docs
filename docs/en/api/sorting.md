@@ -5,7 +5,7 @@ This module provides sorting and ordering functions for array elements.
 ## asnumpy.sort
 
 ```python
-asnumpy.sort(a: ArrayLike, axis: int = -1, stable: bool = False) -> ndarray
+asnumpy.sort(a: ArrayLike, axis: Optional[int] = -1, stable: bool = False) -> ndarray
 ```
 
 Arrange array elements in ascending order.
@@ -30,7 +30,9 @@ AsNumPy does not currently implement `kind` or `order` parameters from NumPy. Us
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> arr = ap.array([[3, 1], [2, 4]])
+>>> import numpy as np
+>>> arr = np.array([[3, 1], [2, 4]])
+>>> arr = ap.ndarray.from_numpy(arr)
 >>> ap.sort(arr)
 array([[1, 3],
        [2, 4]])

@@ -3,7 +3,7 @@
 ## asnumpy.save
 
 ```python
-asnumpy.save(file: Union[str, IO[bytes]], arr: ArrayLike, allow_pickle: bool = False) -> None
+asnumpy.save(file: Union[str, npt.IO[bytes]], arr: ArrayLike, allow_pickle: bool = False) -> None
 ```
 
 Persist array data to disk using NumPy's binary file specification.
@@ -11,7 +11,7 @@ Persist array data to disk using NumPy's binary file specification.
 This function transfers the array data from the device (NPU) to the host (CPU) and writes it to a binary file.
 
 **Arguments**
-- `file` (Union[str, IO[bytes]]): File path or file object to save the data.
+- `file` (Union[str, npt.IO[bytes]]): File path or file object to save the data.
 - `arr` (ArrayLike): Array to save. NPUArray objects are automatically converted to numpy arrays before saving.
 - `allow_pickle` (bool, default False): Whether to allow saving object arrays using pickle.
 
@@ -22,7 +22,9 @@ This function transfers the array data from the device (NPU) to the host (CPU) a
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(10)
+>>> import numpy as np
+>>> x = np.arange(10)
+>>> x = ap.ndarray.from_numpy(x)
 >>> ap.save('output.npy', x)
 >>> loaded = ap.load('output.npy')
 >>> loaded
@@ -32,7 +34,7 @@ array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 ## asnumpy.savez
 
 ```python
-asnumpy.savez(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike) -> None
+asnumpy.savez(file: Union[str, npt.IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike) -> None
 ```
 
 Store multiple arrays in a single uncompressed archive file.
@@ -41,7 +43,7 @@ Positional arguments are saved with auto-generated names: arr_0, arr_1, ...
 Keyword arguments are saved with their specified names.
 
 **Arguments**
-- `file` (Union[str, IO[bytes]]): File path or file object to save the data.
+- `file` (Union[str, npt.IO[bytes]]): File path or file object to save the data.
 - `*args` (ArrayLike): Arrays to save with auto-generated keys (arr_0, arr_1, ...).
 - `**kwargs` (ArrayLike): Arrays to save with explicitly named keys.
 
@@ -53,7 +55,9 @@ Keyword arguments are saved with their specified names.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(5)
+>>> import numpy as np
+>>> x = np.arange(5)
+>>> x = ap.ndarray.from_numpy(x)
 >>> y = ap.ones(5)
 >>> ap.savez('data.npz', x, y)  # saved as arr_0, arr_1
 >>> ap.savez('data.npz', a=x, b=y)  # saved as a, b
@@ -62,7 +66,7 @@ Keyword arguments are saved with their specified names.
 ## asnumpy.savez_compressed
 
 ```python
-asnumpy.savez_compressed(file: Union[str, IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike) -> None
+asnumpy.savez_compressed(file: Union[str, npt.IO[bytes]], *args: ArrayLike, **kwargs: ArrayLike) -> None
 ```
 
 Store multiple arrays in a single compressed archive file.
@@ -71,7 +75,7 @@ Positional arguments are saved with auto-generated names: arr_0, arr_1, ...
 Keyword arguments are saved with their specified names.
 
 **Arguments**
-- `file` (Union[str, IO[bytes]]): File path or file object to save the data.
+- `file` (Union[str, npt.IO[bytes]]): File path or file object to save the data.
 - `*args` (ArrayLike): Arrays to save with auto-generated keys (arr_0, arr_1, ...).
 - `**kwargs` (ArrayLike): Arrays to save with explicitly named keys.
 
@@ -82,7 +86,9 @@ Keyword arguments are saved with their specified names.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(100)
+>>> import numpy as np
+>>> x = np.arange(100)
+>>> x = ap.ndarray.from_numpy(x)
 >>> y = ap.ones(100)
 >>> ap.savez_compressed('compressed.npz', a=x, b=y)
 ```
@@ -90,16 +96,16 @@ Keyword arguments are saved with their specified names.
 ## asnumpy.load
 
 ```python
-asnumpy.load(file: Union[str, IO[bytes]], mmap_mode: Union[str, None] = None, allow_pickle: bool = False, **kwargs) -> Union[ndarray, _AsnpNpz]
+asnumpy.load(file: Union[str, npt.IO[bytes]], mmap_mode: Union[str, None] = None, allow_pickle: bool = False, **kwargs) -> Union[ndarray, _AsnpNpz]
 ```
 
 Read array data from previously saved binary files.
 
-For `.npy` files, returns an NPUArray stored on the device.
+For `.npy` files, returns an ndarray stored on the device.
 For `.npz` files, returns a lazy-loading container that works like a dictionary.
 
 **Arguments**
-- `file` (Union[str, IO[bytes]]): File path to load from.
+- `file` (Union[str, npt.IO[bytes]]): File path to load from.
 - `mmap_mode` (Union[str, None], default None): Memory mapping mode. If not None, the file is memory-mapped on the host side. Note that memory mapping operates on host memory, not device memory.
 - `allow_pickle` (bool, default False): Whether to allow loading pickled object arrays.
 - `**kwargs`: Additional keyword arguments passed to numpy.load.

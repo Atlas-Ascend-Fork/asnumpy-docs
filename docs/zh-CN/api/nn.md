@@ -26,7 +26,9 @@ softmax 函数通过计算每个元素的指数除以集合中所有元素指数
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.array([1.0, 2.0, 3.0])
+>>> import numpy as np
+>>> x = np.array([1.0, 2.0, 3.0])
+>>> x = ap.ndarray.from_numpy(x)
 >>> ap.softmax(x)
 array([0.09003057, 0.24472847, 0.66524096])
 >>> ap.softmax(x).sum()
