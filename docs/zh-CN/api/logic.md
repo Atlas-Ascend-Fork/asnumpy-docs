@@ -1,5 +1,9 @@
 # 逻辑函数
 
+::: info
+当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
+:::
+
 ## 真值测试
 
 ### asnumpy.all
@@ -25,10 +29,11 @@ asnumpy.all(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.all(ap.array([True, True, True]))
-array(True)
->>> ap.all(ap.array([True, False, True]))
-array(False)
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([True, True, True]))
+>>> ap.all(a)
+>>> b = ap.ndarray.from_numpy(np.array([True, False, True]))
+>>> ap.all(b)
 ```
 
 ### asnumpy.any
@@ -54,10 +59,11 @@ asnumpy.any(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.any(ap.array([False, False, True]))
-array(True)
->>> ap.any(ap.array([False, False, False]))
-array(False)
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([False, False, True]))
+>>> ap.any(a)
+>>> b = ap.ndarray.from_numpy(np.array([False, False, False]))
+>>> ap.any(b)
 ```
 
 ## 逻辑运算
@@ -215,7 +221,8 @@ asnumpy.greater_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> 
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.greater_equal([4, 2, 1], [2, 2, 2])
+>>> import numpy as np
+>>> ap.greater_equal(ap.ndarray.from_numpy(np.array([4, 2, 1], dtype=np.int32)), ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32)))
 array([ True,  True, False])
 ```
 
@@ -267,7 +274,8 @@ asnumpy.less_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nda
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.less_equal([1, 2, 3], [2, 2, 2])
+>>> import numpy as np
+>>> ap.less_equal(ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32)))
 array([ True,  True, False])
 ```
 
@@ -371,7 +379,7 @@ asnumpy.isinf(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isinf([1, np.inf, -np.inf])
+>>> ap.isinf(ap.ndarray.from_numpy(np.array([1, np.inf, -np.inf], dtype=np.float32)))
 array([False,  True,  True])
 ```
 
@@ -396,7 +404,7 @@ asnumpy.isneginf(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isneginf([1, -np.inf, np.inf])
+>>> ap.isneginf(ap.ndarray.from_numpy(np.array([1, -np.inf, np.inf], dtype=np.float32)))
 array([False,  True, False])
 ```
 
@@ -421,6 +429,6 @@ asnumpy.isposinf(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isposinf([1, np.inf, -np.inf])
+>>> ap.isposinf(ap.ndarray.from_numpy(np.array([1, np.inf, -np.inf], dtype=np.float32)))
 array([False,  True, False])
 ```

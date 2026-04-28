@@ -1,11 +1,15 @@
 # Utilities
 
+::: info
+This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
+:::
+
 This module provides utility functions for asnumpy.
 
 ## asnumpy.broadcast_shape
 
 ```python
-asnumpy.broadcast_shape(shape_a: Sequence[int], shape_b: Sequence[int]) -> tuple:
+asnumpy.broadcast_shape(shape_a: Sequence[int], shape_b: Sequence[int]) -> tuple
 ```
 
 Compute the broadcasted shape resulting from two input shapes.

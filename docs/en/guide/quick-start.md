@@ -112,5 +112,10 @@ Runnable scripts are available in the [`examples/`](https://gitcode.com/cann/asn
 | [`01_add.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/01_add.py) | Element-wise addition |
 | [`02_exp2.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/02_exp2.py) | Exponentiation (2^x) |
 | [`03_multiply.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/03_multiply.py) | Element-wise multiply (with benchmark) |
-| [`04_all.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/04_all.py) | Combined operations |
+| [`04_all.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/04_all.py) | Logical AND reduction |
 | [`05_divide.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/05_divide.py) | Element-wise division |
+| [`06_vdot.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/06_vdot.py) | Vector dot product |
+| [`07_full.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/07_full.py) | Create array filled with specified value |
+| [`08_linspace.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/08_linspace.py) | Create evenly spaced sequence |
+| [`09_mean.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/09_mean.py) | Arithmetic mean |
+| [`10_sort.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/10_sort.py) | Sorting |

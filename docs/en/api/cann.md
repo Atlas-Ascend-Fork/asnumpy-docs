@@ -1,5 +1,9 @@
 # CANN Interfaces
 
+::: info
+This API section currently keeps a curated subset of representative APIs.Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes.This document is for reference only.
+:::
+
 This module provides interfaces to the CANN (Compute Architecture for Neural Networks) backend.
 
 ## asnumpy.set_device

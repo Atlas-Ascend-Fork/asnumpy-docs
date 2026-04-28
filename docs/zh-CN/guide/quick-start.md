@@ -112,5 +112,10 @@ ap.set_device(1)
 | [`01_add.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/01_add.py) | 逐元素加法 |
 | [`02_exp2.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/02_exp2.py) | 指数运算 (2^x) |
 | [`03_multiply.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/03_multiply.py) | 逐元素乘法（含性能测试） |
-| [`04_all.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/04_all.py) | 组合运算 |
+| [`04_all.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/04_all.py) | 逻辑与归约 |
 | [`05_divide.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/05_divide.py) | 逐元素除法 |
+| [`06_vdot.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/06_vdot.py) | 向量点积 |
+| [`07_full.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/07_full.py) | 创建指定值填充的数组 |
+| [`08_linspace.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/08_linspace.py) | 创建等差数列 |
+| [`09_mean.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/09_mean.py) | 算术平均值 |
+| [`10_sort.py`](https://gitcode.com/cann/asnumpy/blob/master/examples/10_sort.py) | 排序 |

@@ -1,5 +1,9 @@
 # 输入输出操作
 
+::: info
+当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
+:::
+
 ## asnumpy.save
 
 ```python
@@ -24,9 +28,6 @@ asnumpy.save(file, arr, allow_pickle=False)
 >>> import asnumpy as ap
 >>> x = ap.arange(10)
 >>> ap.save('output.npy', x)
->>> loaded = ap.load('output.npy')
->>> loaded
-array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 ```
 
 ## asnumpy.savez
@@ -54,7 +55,7 @@ asnumpy.savez(file, *args, **kwargs)
 ```python
 >>> import asnumpy as ap
 >>> x = ap.arange(5)
->>> y = ap.ones(5)
+>>> y = ap.ones(5, dtype=ap.float32)
 >>> ap.savez('data.npz', x, y)  # 保存为 arr_0, arr_1
 >>> ap.savez('data.npz', a=x, b=y)  # 保存为 a, b
 ```
@@ -83,10 +84,11 @@ asnumpy.savez_compressed(file, *args, **kwargs)
 ```python
 >>> import asnumpy as ap
 >>> x = ap.arange(100)
->>> y = ap.ones(100)
+>>> y = ap.ones(100, dtype=ap.float32)
 >>> ap.savez_compressed('compressed.npz', a=x, b=y)
 ```
 
+<!--
 ## asnumpy.load
 
 ```python
@@ -131,3 +133,4 @@ asnumpy.load(file, mmap_mode=None, allow_pickle=False, **kwargs)
 >>> type(a)
 <class 'asnumpy.ndarray'>
 ```
+-->

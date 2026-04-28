@@ -1,6 +1,10 @@
 # API Reference
 
-Welcome to the asnumpy API reference documentation! This section provides detailed information about all asnumpy modules and functions.
+::: info
+This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes.This document is for reference only.
+:::
+
+Welcome to the asnumpy API reference documentation! This section provides detailed information about the currently selected asnumpy modules and functions.
 
 ## Core Modules
 

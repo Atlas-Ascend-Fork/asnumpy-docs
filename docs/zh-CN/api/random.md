@@ -1,5 +1,9 @@
 # 随机抽样函数
 
+::: info
+当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
+:::
+
 本模块提供各种概率分布的随机数生成功能。所有样本在加速器设备上生成。
 
 ## 连续分布
@@ -86,7 +90,7 @@ asnumpy.random.standard_normal(size: ShapeLike) -> ndarray
 array([[ 0.42, -1.15,  0.78],
        [-0.33,  1.02, -0.67]])  # 随机
 ```
-
+<!--
 ### asnumpy.random.exponential
 
 ```python
@@ -390,3 +394,4 @@ asnumpy.random.geometric(p: float, size: ShapeLike) -> ndarray
 >>> ap.random.geometric(p=0.25, size=5)
 array([3, 1, 7, 2, 4])  # 随机
 ```
+-->

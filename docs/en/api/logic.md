@@ -1,5 +1,9 @@
 # Logic Functions
 
+::: info
+This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
+:::
+
 ## Truth Value Testing
 
 ### asnumpy.all
@@ -25,10 +29,11 @@ Check whether all elements evaluate to True.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.all(ap.array([True, True, True]))
-array(True)
->>> ap.all(ap.array([True, False, True]))
-array(False)
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([True, True, True]))
+>>> ap.all(a)
+>>> b = ap.ndarray.from_numpy(np.array([True, False, True]))
+>>> ap.all(b)
 ```
 
 ### asnumpy.any
@@ -54,10 +59,11 @@ Check whether any element evaluates to True.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.any(ap.array([False, False, True]))
-array(True)
->>> ap.any(ap.array([False, False, False]))
-array(False)
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([False, False, True]))
+>>> ap.any(a)
+>>> b = ap.ndarray.from_numpy(np.array([False, False, False]))
+>>> ap.any(b)
 ```
 
 ## Logical Operations
@@ -215,7 +221,8 @@ Determine whether elements of x1 are greater than or equal to those of x2.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.greater_equal([4, 2, 1], [2, 2, 2])
+>>> import numpy as np
+>>> ap.greater_equal(ap.ndarray.from_numpy(np.array([4, 2, 1], dtype=np.int32)), ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32)))
 array([ True,  True, False])
 ```
 
@@ -267,7 +274,8 @@ Determine whether elements of x1 are less than or equal to those of x2.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.less_equal([1, 2, 3], [2, 2, 2])
+>>> import numpy as np
+>>> ap.less_equal(ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32)))
 array([ True,  True, False])
 ```
 
@@ -371,7 +379,7 @@ Detect infinite values (both positive and negative) in the input array.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isinf([1, np.inf, -np.inf])
+>>> ap.isinf(ap.ndarray.from_numpy(np.array([1, np.inf, -np.inf], dtype=np.float32)))
 array([False,  True,  True])
 ```
 
@@ -396,7 +404,7 @@ Identify occurrences of negative infinity within the array.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isneginf([1, -np.inf, np.inf])
+>>> ap.isneginf(ap.ndarray.from_numpy(np.array([1, -np.inf, np.inf], dtype=np.float32)))
 array([False,  True, False])
 ```
 
@@ -421,6 +429,6 @@ Identify occurrences of positive infinity within the array.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isposinf([1, np.inf, -np.inf])
+>>> ap.isposinf(ap.ndarray.from_numpy(np.array([1, np.inf, -np.inf], dtype=np.float32)))
 array([False,  True, False])
 ```

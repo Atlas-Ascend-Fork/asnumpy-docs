@@ -1,5 +1,9 @@
 # Statistics Functions
 
+::: info
+This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
+:::
+
 ## Averages and Variances
 
 ### asnumpy.mean
@@ -27,7 +31,8 @@ This function determines the central tendency of values within an array. When no
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> data = ap.array([[5, 8], [2, 9]])
+>>> import numpy as np
+>>> data = ap.ndarray.from_numpy(np.array([[5, 8], [2, 9]], dtype=np.int32))
 >>> ap.mean(data)
 6.0
 >>> ap.mean(data, axis=0)

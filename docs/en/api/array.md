@@ -1,5 +1,9 @@
 # Array Manipulation
 
+::: info
+This API section currently keeps a curated subset of representative APIs that have been validated against unit tests. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes.This document is for reference only.
+:::
+
 ## asnumpy.zeros
 
 ```python
@@ -44,14 +48,11 @@ asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 Return a zero-initialized array with dimensions matching the input.
 
-This function returns a new `asnumpy.ndarray` whose shape matches
-that of the input object. All elements of the returned array are
-initialized to zero. By default, the data type is inferred from the
-input unless explicitly overridden.
+This function returns a new `asnumpy.ndarray` whose shape matches the input object and whose elements are initialized to zero.
 
 **Arguments**
 - `other` (ArrayLike): Reference object that provides the shape of the output array.
-- `dtype` (DTypeLike, optional): Data type of the returned array. If specified, it overrides the data type inferred from `other`.
+- `dtype` (DTypeLike, optional): Data type of the returned array. When not explicitly provided, it is usually inferred from the input; in current AsNumpy test cases, the `*_like` family is typically called with an explicit `dtype` to keep behavior aligned with NumPy.
 
 **Returns**
 - `ndarray`: An array filled with zeros and having the same shape as `other`.
@@ -62,9 +63,10 @@ input unless explicitly overridden.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.arange(4).reshape(2, 2)
->>> ap.zeros_like(x)
+>>> x = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
+>>> ap.zeros_like(x, dtype=x.dtype)
 array([[0, 0],
        [0, 0]])
 ```
@@ -77,8 +79,7 @@ asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike = None) -> nd
 
 Create an array filled with a specific value.
 
-Returns a new asnumpy.ndarray where all elements are set to `value`.
-Shape and dtype are controlled by the `shape` and `dtype` parameters.
+Returns a new `asnumpy.ndarray` where all elements are set to `value`. Shape and dtype are controlled by the `shape` and `dtype` parameters.
 
 **Arguments**
 - `shape` (ShapeLike, int or sequence of ints): Shape of the output array.
@@ -87,6 +88,10 @@ Shape and dtype are controlled by the `shape` and `dtype` parameters.
 
 **Returns**
 - `asnumpy.ndarray`: Array filled with the specified value.
+
+::: tip
+Current test coverage shows that `full` is validated for common floating-point types, signed integers, `uint8`, and `bool`; `uint16` and complex types are not supported by the current implementation.
+:::
 
 **See Also**
 - [`numpy.full`](https://numpy.org/doc/stable/reference/generated/numpy.full.html)
@@ -97,10 +102,10 @@ Shape and dtype are controlled by the `shape` and `dtype` parameters.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.full((2, 2), 7)
+>>> ap.full((2, 2), 7, dtype=ap.int32)
 array([[7, 7],
        [7, 7]])
->>> ap.full((2, 3), 3.5)
+>>> ap.full((2, 3), 3.5, dtype=ap.float32)
 array([[3.5, 3.5, 3.5],
        [3.5, 3.5, 3.5]])
 ```
@@ -116,10 +121,14 @@ Return a new array populated with a scalar value, inheriting shape from the prov
 **Arguments**
 - `other` (ArrayLike): Array whose shape is used for the output.
 - `value` (ScalarLike): Value to fill the array.
-- `dtype` (DTypeLike, optional): Desired data type of the output array.
+- `dtype` (DTypeLike, optional): Desired data type of the output array. In current AsNumpy test cases, `full_like` is typically called with this argument explicitly.
 
 **Returns**
 - `asnumpy.ndarray`: Array filled with `value` matching the shape of `other`.
+
+::: tip
+Current test coverage shows that `full_like` is validated for common floating-point types, signed integers, `uint8`, and `bool`; `uint16` is not supported by the current implementation.
+:::
 
 **See Also**
 - [`numpy.full_like`](https://numpy.org/doc/stable/reference/generated/numpy.full_like.html)
@@ -127,9 +136,10 @@ Return a new array populated with a scalar value, inheriting shape from the prov
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.arange(4)
->>> ap.full_like(x, 9)
+>>> x = ap.ndarray.from_numpy(np.array([1, 2, 3, 4], dtype=np.int32))
+>>> ap.full_like(x, 9, dtype=x.dtype)
 array([9, 9, 9, 9])
 ```
 
@@ -159,8 +169,12 @@ The array shape and dtype are determined by the parameters.
 >>> import asnumpy as ap
 >>> ap.empty((2, 2))
 array([[... , ...],
-       [... , ...]])  # values arbitrary
+       [... , ...]])
 ```
+
+::: tip
+The output above is illustrative only. Values returned by `empty` are undefined and should not be relied on.
+:::
 
 ## asnumpy.empty_like
 
@@ -172,7 +186,7 @@ Allocate an uninitialized array with dimensions copied from the input.
 
 **Arguments**
 - `prototype` (ArrayLike): Array whose shape is used for the output.
-- `dtype` (DTypeLike, optional): Desired data type of the output array.
+- `dtype` (DTypeLike, optional): Desired data type of the output array. In current AsNumpy test cases, `empty_like` is typically called with this argument explicitly.
 
 **Returns**
 - `asnumpy.ndarray`: Array with uninitialized values and same shape as `prototype`.
@@ -182,12 +196,17 @@ Allocate an uninitialized array with dimensions copied from the input.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> a = ap.array([[1, 2], [3, 4]])
->>> ap.empty_like(a)
+>>> a = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
+>>> ap.empty_like(a, dtype=a.dtype)
 array([[... , ...],
-       [... , ...]])  # values arbitrary
+       [... , ...]])
 ```
+
+::: tip
+The output above is illustrative only. Values returned by `empty_like` are undefined and should not be relied on.
+:::
 
 ## asnumpy.eye
 
@@ -207,6 +226,10 @@ and all other positions contain 0.
 **Returns**
 - `asnumpy.ndarray`: Identity matrix of shape (n, n).
 
+::: tip
+Current test coverage shows that `eye` is validated for `float32`, common signed integers, `uint8`, and `bool`; `float64` and `uint16` are not supported by the current implementation.
+:::
+
 **See Also**
 - [`numpy.eye`](https://numpy.org/doc/stable/reference/generated/numpy.eye.html)
 - [`asnumpy.identity`](#asnumpy-identity): Equivalent function to create identity array.
@@ -214,10 +237,10 @@ and all other positions contain 0.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.eye(3)
-array([[1., 0., 0.],
-       [0., 1., 0.],
-       [0., 0., 1.]])
+>>> ap.eye(3, dtype=ap.int32)
+array([[1, 0, 0],
+       [0, 1, 0],
+       [0, 0, 1]])
 ```
 
 ## asnumpy.ones
@@ -235,13 +258,17 @@ Create an array filled with ones.
 **Returns**
 - `asnumpy.ndarray`: Array of ones with specified shape and dtype.
 
+::: tip
+Current test coverage shows that `ones` is validated for `float32`, `float64`, common signed integers, `uint8`, and `bool`; `float16`, `uint16/32/64`, and complex types are not supported, and not every NumPy dtype is currently validated.
+:::
+
 **See Also**
 - [`numpy.ones`](https://numpy.org/doc/stable/reference/generated/numpy.ones.html)
 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.ones(4)
+>>> ap.ones(4, dtype=ap.float32)
 array([1., 1., 1., 1.])
 ```
 
@@ -255,19 +282,24 @@ Return a ones-filled array with dimensions matching the input.
 
 **Arguments**
 - `other` (ArrayLike): Array whose shape is used for output.
-- `dtype` (DTypeLike, optional): Desired data type of the output array.
+- `dtype` (DTypeLike, optional): Desired data type of the output array. In current AsNumpy test cases, `ones_like` is typically called with this argument explicitly.
 
 **Returns**
 - `asnumpy.ndarray`: Array of ones with same shape (and optionally dtype) as `other`.
+
+::: tip
+Current test coverage shows that `ones_like` is validated for `float32`, `float64`, common signed integers, `uint8`, and `bool`; not every NumPy dtype is currently validated.
+:::
 
 **See Also**
 - [`numpy.ones_like`](https://numpy.org/doc/stable/reference/generated/numpy.ones_like.html)
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.arange(6).reshape((2, 3))
->>> ap.ones_like(x)
+>>> x = ap.ndarray.from_numpy(np.array([[0, 1, 2], [3, 4, 5]], dtype=np.int32))
+>>> ap.ones_like(x, dtype=x.dtype)
 array([[1, 1, 1],
        [1, 1, 1]])
 ```
@@ -287,15 +319,20 @@ Generate the identity matrix of given size.
 **Returns**
 - `asnumpy.ndarray`: Identity matrix of shape (n, n).
 
+::: tip
+Current test coverage shows that `identity` is validated for `float32`, common signed integers, `uint8`, and `bool`; `float64` and `uint16` are not supported by the current implementation.
+:::
+
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.identity(3)
-array([[1., 0., 0.],
-       [0., 1., 0.],
-       [0., 0., 1.]])
+>>> ap.identity(3, dtype=ap.int32)
+array([[1, 0, 0],
+       [0, 1, 0],
+       [0, 0, 1]])
 ```
 
+<!--
 ## asnumpy.linspace
 
 ```python
@@ -327,3 +364,4 @@ Produce a sequence of values linearly interpolated between two endpoints.
 >>> ap.linspace(0, 1, 5)
 array([0.  , 0.25, 0.5 , 0.75, 1.  ])
 ```
+-->

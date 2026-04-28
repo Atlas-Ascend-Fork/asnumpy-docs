@@ -1,5 +1,9 @@
 # 统计函数
 
+::: info
+当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
+:::
+
 ## 平均值与方差
 
 ### asnumpy.mean
@@ -27,7 +31,8 @@ asnumpy.mean(a: ArrayLike, axis: AxisLike = None, keepdims: bool = False, dtype:
 **示例**
 ```python
 >>> import asnumpy as ap
->>> data = ap.array([[5, 8], [2, 9]])
+>>> import numpy as np
+>>> data = ap.ndarray.from_numpy(np.array([[5, 8], [2, 9]], dtype=np.int32))
 >>> ap.mean(data)
 6.0
 >>> ap.mean(data, axis=0)

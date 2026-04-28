@@ -1,5 +1,9 @@
 # Random Sampling Functions
 
+::: info
+This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
+:::
+
 This module provides random number generation capabilities for various probability distributions. All samples are generated on the accelerator device.
 
 ## Continuous Distributions
@@ -86,7 +90,7 @@ A convenience function that produces samples from the canonical bell curve cente
 array([[ 0.42, -1.15,  0.78],
        [-0.33,  1.02, -0.67]])  # random
 ```
-
+<!--
 ### asnumpy.random.exponential
 
 ```python
@@ -390,3 +394,4 @@ Produces samples representing the trial number at which the first success occurs
 >>> ap.random.geometric(p=0.25, size=5)
 array([3, 1, 7, 2, 4])  # random
 ```
+-->

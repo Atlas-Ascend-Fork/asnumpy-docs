@@ -1,5 +1,9 @@
 # I/O Operations
 
+::: info
+The current API documentation site only retains a representative set of APIs. Since the AsNumpy frontend and documentation system are still undergoing significant restructuring, the remaining interface documentation is temporarily hidden and will be gradually restored after the frontend stabilizes.This document is for reference only.
+:::
+
 ## asnumpy.save
 
 ```python
@@ -24,9 +28,6 @@ This function transfers the array data from the device (NPU) to the host (CPU) a
 >>> import asnumpy as ap
 >>> x = ap.arange(10)
 >>> ap.save('output.npy', x)
->>> loaded = ap.load('output.npy')
->>> loaded
-array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 ```
 
 ## asnumpy.savez
@@ -54,7 +55,7 @@ Keyword arguments are saved with their specified names.
 ```python
 >>> import asnumpy as ap
 >>> x = ap.arange(5)
->>> y = ap.ones(5)
+>>> y = ap.ones(5, dtype=ap.float32)
 >>> ap.savez('data.npz', x, y)  # saved as arr_0, arr_1
 >>> ap.savez('data.npz', a=x, b=y)  # saved as a, b
 ```
@@ -83,10 +84,11 @@ Keyword arguments are saved with their specified names.
 ```python
 >>> import asnumpy as ap
 >>> x = ap.arange(100)
->>> y = ap.ones(100)
+>>> y = ap.ones(100, dtype=ap.float32)
 >>> ap.savez_compressed('compressed.npz', a=x, b=y)
 ```
 
+<!--
 ## asnumpy.load
 
 ```python
@@ -131,3 +133,4 @@ Load multiple arrays from .npz file:
 >>> type(a)
 <class 'asnumpy.ndarray'>
 ```
+-->
