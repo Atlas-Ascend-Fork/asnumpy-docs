@@ -2,6 +2,7 @@ import type { DefaultTheme } from 'vitepress'
 import { defineConfig } from 'vitepress'
 
 const githubRepo = 'cann/asnumpy'
+const docsRepo = 'cann/asnumpy-docs'
 const siteTitle = 'AsNumpy'
 const siteDescription = 'High-performance NumPy-compatible library accelerated by Ascend NPU'
 
@@ -105,7 +106,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern: `https://gitcode.com/${githubRepo}/edit/main/docs/:path`,
+      pattern: `https://gitcode.com/${docsRepo}/edit/master/docs/:path`,
       text: 'Edit this page on GitCode',
     },
 
@@ -142,7 +143,7 @@ export default defineConfig({
       link: '/zh-CN/',
       themeConfig: {
         editLink: {
-          pattern: `https://gitcode.com/${githubRepo}/edit/main/docs/:path`,
+          pattern: `https://gitcode.com/${docsRepo}/edit/master/docs/:path`,
           text: '在 GitCode 上编辑此页',
         },
         nav: [
