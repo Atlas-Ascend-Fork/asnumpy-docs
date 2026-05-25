@@ -159,3 +159,26 @@
 .custom-block.tip .custom-block-title {
   color: var(--vp-c-brand-1);
 }
+
+/* JetBrains Mono */
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("./fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("./fonts/JetBrainsMono-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  /* 代码 */
+  --vp-font-family-mono:
+    "JetBrains Mono",
+    monospace;
+}
