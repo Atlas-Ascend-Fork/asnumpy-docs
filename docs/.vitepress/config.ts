@@ -122,7 +122,8 @@ export default defineConfig({
 
     footer: {
       message: 'Based on <a href="https://numpy.org" target="_blank">NumPy</a> · Powered by <a href="https://www.hiascend.com" target="_blank">Ascend</a>',
-      copyright: 'Copyright © 2026-PRESENT AsNumpy',
+      copyright: 'Copyright © 2026-PRESENT AsNumpy. All Rights Reserved.<br>'+
+                 'Developed by the AISS Team and ISE Team of Harbin Institute of Technology in collaboration with the Huawei CANN Team.',
     },
 
     outline: {
@@ -155,8 +156,9 @@ export default defineConfig({
           '/zh-CN/': zhSidebar,
         },
         footer: {
-          message: '基于 <a href="https://numpy.org" target="_blank">NumPy</a> · 由 <a href="https://www.hiascend.com" target="_blank">昇腾</a> 驱动',
-          copyright: 'Copyright © 2026-PRESENT AsNumpy',
+          message: '基于 <a href="https://numpy.org" target="_blank">NumPy</a> · 由 <a href="https://www.hiascend.com" target="_blank">昇腾</a> 驱动 ',
+          copyright: 'Copyright © 2026-PRESENT AsNumpy. All Rights Reserved.<br>'+
+                     '本项目由哈尔滨工业大学 AISS 团队、哈尔滨工业大学 ISE 团队联合华为 CANN 团队共同开发',
         },
         outline: {
           level: [2, 4],
