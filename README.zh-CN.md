@@ -1,6 +1,7 @@
 # AsNumpy 文档
 
 这是 [AsNumpy](https://gitcode.com/cann/asnumpy) 的官方文档站点。AsNumpy 是一个轻量级的 Python 科学计算库，专为昇腾 NPU 设计，完全兼容 NumPy API。
+**在线文档：**[https://asnumpy.gitcode.com/](https://asnumpy.gitcode.com/)
 
 ## 关于 AsNumpy
 
@@ -20,8 +21,8 @@ AsNumpy 通过 CANN 算子绑定在华为昇腾 910B NPU 上加速 NumPy 工作�
 ## 快速开始
 
 ```bash
-# 安装依赖
-npm install
+# 根据 package-lock.json 安装依赖
+npm ci
 
 # 启动开发服务器
 npm run docs:dev
@@ -29,9 +30,14 @@ npm run docs:dev
 # 构建生产版本
 npm run docs:build
 
-# 预览生产版本
+# 预览生产构建结果
 npm run docs:preview
 ```
+
+> [!NOTE]
+> 推荐在本地开发和 CI 环境中使用 `npm ci`，以基于 `package-lock.json` 保持依赖版本一致。仅在新增或更新依赖时使用 `npm install`。
+>
+> 安装依赖时可能会报告 3 个来自 VitePress/Vite/esbuild 依赖链的已知安全告警。这些告警主要涉及开发服务器，不会直接影响本地构建或部署后的静态文档站点。基于当前稳定版 VitePress 的依赖约束，这些告警暂时无法通过 `npm audit fix` 进一步解决，后续将在兼容的稳定版依赖更新可用时进行升级。
 
 ## 项目结构
 
@@ -79,6 +85,7 @@ asnumpy-docs/
 │   │   └── developer/
 │   └── index.md                 # 根目录重定向
 ├── package.json
+├── package-lock.json
 ├── LICENSE
 ├── README.md
 └── README.zh-CN.md

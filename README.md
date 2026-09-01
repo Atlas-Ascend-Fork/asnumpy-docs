@@ -1,6 +1,7 @@
 # AsNumpy Documentation
 
 This is the official documentation site for [AsNumpy](https://gitcode.com/cann/asnumpy), a lightweight Python library for scientific computing on Ascend NPU, fully compatible with NumPy API.
+**Online documentation：**[https://asnumpy.gitcode.com/](https://asnumpy.gitcode.com/)
 
 ## About AsNumpy
 
@@ -20,18 +21,23 @@ AsNumpy accelerates NumPy workloads on Huawei Ascend 910B NPU through CANN opera
 ## Quick Start
 
 ```bash
-# Install dependencies
-npm install
+# Install dependencies from package-lock.json
+npm ci
 
-# Start development server
+# Start the development server
 npm run docs:dev
 
 # Build for production
 npm run docs:build
 
-# Preview production build
+# Preview the production build
 npm run docs:preview
 ```
+
+> [!NOTE]
+> `npm ci` is recommended for local development and CI environments to ensure consistent dependency versions based on `package-lock.json`. Use `npm install` only when adding or updating dependencies.
+>
+> Installing dependencies may report 3 known security advisories from the VitePress/Vite/esbuild dependency chain. These advisories primarily affect development server behavior and do not directly affect local builds or the deployed static documentation site. With the current dependency constraints of the stable VitePress release, they cannot currently be further resolved by `npm audit fix` and will be addressed when compatible stable updates become available.
 
 ## Project Structure
 
@@ -79,6 +85,7 @@ asnumpy-docs/
 │   │   └── developer/
 │   └── index.md                 # Root redirect
 ├── package.json
+├── package-lock.json
 ├── LICENSE
 ├── README.md
 └── README.zh-CN.md
