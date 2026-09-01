@@ -1,6 +1,7 @@
 # AsNumpy 文档
 
 这是 [AsNumpy](https://gitcode.com/cann/asnumpy) 的官方文档站点。AsNumpy 是一个轻量级的 Python 科学计算库，专为昇腾 NPU 设计，完全兼容 NumPy API。
+**在线文档：**[https://asnumpy.gitcode.com/](https://asnumpy.gitcode.com/)
 
 ## 关于 AsNumpy
 
