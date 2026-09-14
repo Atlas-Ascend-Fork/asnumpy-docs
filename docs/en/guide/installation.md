@@ -19,7 +19,7 @@ This guide covers how to install AsNumpy on your system.
 | **GCC** | >= 11.2 |
 | **CMake** | >= 3.26 |
 | **ninja-build** | >= 1.12 (recommended) |
-| **Python** | >= 3.9 |
+| **Python** | >= 3.10 |
 | **CANN** | >= 8.2.RC1.alpha003 |
 
 ## Prerequisites
@@ -57,7 +57,7 @@ gcc --version  # Should be >= 11.2
 cmake --version  # Should be >= 3.26
 
 # Check Python version
-python --version  # Should be >= 3.9
+python --version  # Should be >= 3.10
 ```
 
 ## Installation Methods
@@ -135,12 +135,12 @@ np_array = np.array([1, 2, 3, 4, 5], dtype=np.float32)
 # Convert to AsNumpy array (transfer to NPU)
 npu_array = ap.ndarray.from_numpy(np_array)
 
-# Perform operations on NPU
+# Perform operations on NPU (returns a Python scalar when axis is None)
 result = ap.sum(npu_array)
-print(f"Sum of array: {result.to_numpy()}")
+print(f"Sum of array: {result}")
 
 # Verify result
-assert result.to_numpy() == 15.0
+assert result == 15.0
 print("✓ Installation verified successfully!")
 ```
 

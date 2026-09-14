@@ -8,7 +8,7 @@ AsNumpy 建立在三层结构上，清晰地分离关注点：
 
 ```
 +------------------------------------------+
-|     Python 前端 (asnumpy/*.py)            |
+|     Python 前端 (src/asnumpy/*.py)        |
 |  - __init__.py   122+ 导出符号            |
 |  - array.py      数组创建 (10 个函数)     |
 |  - math.py       数学运算 (80+ 个函数)    |
@@ -19,11 +19,11 @@ AsNumpy 建立在三层结构上，清晰地分离关注点：
 |  - statistics.py 统计函数 (mean)          |
 +------------------------------------------+
                     |
-         pybind11 绑定层 (python/*.cpp)
-         PYBIND11_MODULE(asnumpy_core, ...)
+         pybind11 绑定层 (bindings/python/*.cpp)
+         PYBIND11_MODULE(_core, ...)
                     |
 +------------------------------------------+
-|     C++ 核心 (src/, include/)             |
+|     C++ 核心 (csrc/, include/)            |
 |  - NPUArray      核心数据结构             |
 |  - namespace asnumpy  算子实现            |
 |  - Ascend ACL / ACLNN 算子封装            |
@@ -68,6 +68,8 @@ AsNumpy 建立在三层结构上，清晰地分离关注点：
 
 AsNumpy 的 API 分为**功能模块**和**基础模块**：
 
+<img src="/images/feature-modules.png" alt="API 功能模块架构图" width="60%">
+
 **功能模块**涵盖主要的科学计算领域：
 
 | 模块 | Python | C++ 命名空间 | 状态 |
@@ -86,14 +88,16 @@ AsNumpy 的 API 分为**功能模块**和**基础模块**：
 
 | 模块 | 角色 |
 |--------|------|
-| `NPUArray` (`src/utils/`) | 核心数据结构 |
-| `CANN driver` (`src/cann/`) | 设备初始化和生命周期 |
-| `dtypes` (`src/dtypes/`) | 数据类型注册 |
-| `pybind11 bindings` (`python/`) | Python-C++ 接口 |
+| `NPUArray` (`csrc/utils/`) | 核心数据结构 |
+| `CANN driver` (`csrc/cann/`) | 设备初始化和生命周期 |
+| `dtypes` (`csrc/dtypes/`) | 数据类型注册 |
+| `pybind11 bindings` (`bindings/python/`) | Python-C++ 接口 |
 
 ## NPU 扩展模块
 
 CANN 的内置算子主要针对深度学习（训练和推理）。AsNumpy 面向通用科学计算 — 数据分析、数值方法、信号处理 — 这需要比 CANN 单独提供的更广泛的算子集。
+
+<img src="/images/npu-extension-modules.png" alt="NPU 扩展功能模块图" width="60%">
 
 **差距：** CANN 内置算子无法覆盖所有 NumPy API。
 

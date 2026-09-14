@@ -26,7 +26,7 @@ x_cpu = np.array([1, 2, 3], dtype=np.float32)
 x_npu = ap.ndarray.from_numpy(x_cpu)
 
 # x_npu 现在是当前设备上的 asnumpy.ndarray
-print(type(x_npu))  # <class 'asnumpy.ndarray'>
+print(type(x_npu))  # <class 'asnumpy.utils.ndarray'>
 ```
 
 ### 属性
@@ -41,12 +41,12 @@ print(type(x_npu))  # <class 'asnumpy.ndarray'>
 dtype('float32')
 ```
 
-> **注意：** `ndim` 和 `size` 等属性可以从 `shape` 派生：
+> **注意：** `ndim` 属性可直接使用；`size` 可从 `shape` 派生：
 > ```python
-> >>> len(x.shape)  # ndim
+> >>> x.ndim  # 维度数
 > 2
 > >>> import numpy as np
-> >>> int(np.prod(x.shape))  # size
+> >>> int(np.prod(x.shape))  # size（元素总数）
 > 4
 > ```
 
@@ -152,7 +152,7 @@ import asnumpy as ap
 # 直接在 NPU 上创建数组
 zeros = ap.zeros((3, 4), dtype=ap.float32)
 ones = ap.ones((3, 4), dtype=ap.float32)
-full = ap.full((3, 4), fill_value=5.0, dtype=ap.float32)
+full = ap.full((3, 4), 5.0, dtype=ap.float32)
 ```
 
 ## 数学运算
@@ -209,7 +209,7 @@ import numpy as np
 
 arr = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.float32))
 
-total = ap.sum(arr)      # 10.0
+total = ap.sum(arr)      # 10.0（无 axis 时返回 Python 标量）
 mean_val = ap.mean(arr)  # 2.5
 max_val = ap.max(arr)    # 4.0
 min_val = ap.min(arr)    # 1.0
@@ -243,8 +243,8 @@ import asnumpy as ap
 def compute():
     # 在 NPU 上分配数组
     arr = ap.ones((1000, 1000), dtype=ap.float32)
-    result = ap.sum(arr)
-    return result.to_numpy()
+    result = ap.sum(arr)  # 无 axis 时返回 Python 标量
+    return result
     # arr 在离开作用域时自动释放
 
 # 没有内存泄漏！
@@ -276,12 +276,12 @@ NPU 加速对大数组最有效：
 # ❌ 不好：频繁传输
 for i in range(1000):
     arr = ap.ndarray.from_numpy(np_array)  # 每次迭代都传输
-    result = ap.sum(arr)
+    result = ap.multiply(arr, arr)
     cpu_result = result.to_numpy()  # 每次迭代都传回
 
 # ✅ 好：传输一次，计算多次
 arr = ap.ndarray.from_numpy(np_array)  # 传输一次
 for i in range(1000):
-    result = ap.sum(arr)
+    result = ap.multiply(arr, arr)
 cpu_result = result.to_numpy()  # 最后传输一次
 ```

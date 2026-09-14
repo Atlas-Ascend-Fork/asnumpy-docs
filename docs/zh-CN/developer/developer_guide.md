@@ -13,22 +13,26 @@ Asnumpy 是一个基于华为昇腾 NPU 的数值计算库，提供与 NumPy 兼
 
 ```
 asnumpy/
-├── asnumpy/                 # Python 包
-│   ├── __init__.py         # 主包初始化
-│   ├── math.py             # 数学模块
-│   ├── linalg/             # 线性代数模块
-│   ├── random/             # 随机数模块
+├── src/                    # Python 包（src-layout）
+│   └── asnumpy/
+│       ├── __init__.py     # 主包初始化
+│       ├── math.py         # 数学模块
+│       ├── linalg/         # 线性代数模块
+│       ├── random/         # 随机数模块
+│       └── ...
+├── csrc/                   # C++ 源文件
+│   ├── math/               # 数学模块实现
 │   └── ...
 ├── include/                # C++ 头文件
 │   └── asnumpy/
 │       ├── math/           # 数学模块头文件
 │       └── ...
-├── src/                    # C++ 源文件
-│   ├── math/               # 数学模块实现
-│   └── ...
-├── python/                 # Pybind11 绑定
-│   ├── bind_math.cpp       # 数学模块绑定
-│   └── ...
+├── bindings/               # Pybind11 绑定
+│   └── python/
+│       ├── bind_math.cpp   # 数学模块绑定
+│       └── ...
+├── examples/               # 示例脚本
+├── benchmarks/             # 性能基准测试
 ├── tests/                  # 测试文件
 │   └── asnumpy_tests/      # 测试用例
 └── ...
@@ -43,13 +47,13 @@ asnumpy/
 ```
 1. 添加函数声明 (include/)
    ↓
-2. 实现函数逻辑 (src/)
+2. 实现函数逻辑 (csrc/)
    ↓
-3. 添加 Python 绑定 (python/)
+3. 添加 Python 绑定 (bindings/python/)
    ↓
-4. 添加 Python 包装层 (asnumpy/math.py)
+4. 添加 Python 包装层 (src/asnumpy/math.py)
    ↓
-5. 导出到主命名空间 (asnumpy/__init__.py)
+5. 导出到主命名空间 (src/asnumpy/__init__.py)
    ↓
 6. 编写测试用例 (tests/)
    ↓
@@ -297,7 +301,7 @@ NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype = std::nullopt);
 
 在对应的源文件中实现函数逻辑：
 
-**文件位置**: `src/math/other_special_functions.cpp`
+**文件位置**: `csrc/math/other_special_functions.cpp`
 
 ```cpp
 NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype) {
@@ -406,7 +410,7 @@ if (error != ACL_SUCCESS) {
 
 在对应的绑定文件中添加函数绑定：
 
-**文件位置**: `python/bind_math.cpp`
+**文件位置**: `bindings/python/bind_math.cpp`
 
 ```cpp
 namespace asnumpy {
@@ -435,15 +439,13 @@ namespace asnumpy {
 
 在对应的 Python 模块中导入 C++ 函数，并添加 Python 包装层：
 
-**文件位置**: `asnumpy/math.py`
+**文件位置**: `src/asnumpy/math.py`
 
 首先，从编译好的 C++ 扩展导入函数：
 
 ```python
-from .lib.asnumpy_core.math import (
-    sin as _ap_sin,
-    cos as _ap_cos,
-    sinc as _ap_sinc,
+from ._core.math import (
+    sinc as _sinc,
     # ... 其他函数
 )
 from .utils import ndarray, _convert_dtype
@@ -452,15 +454,15 @@ from .utils import ndarray, _convert_dtype
 然后，为每个函数添加 Python 包装层：
 
 ```python
-def sinc(x: ndarray, dtype: Optional[np.dtype] = None) -> ndarray:
-    return ndarray(_ap_sinc(x, _convert_dtype(dtype)))
+def sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray:
+    return ndarray(_sinc(x, _convert_dtype(dtype)))
 ```
 
 ### 6.2 导出到主命名空间
 
 在主包的 `__init__.py` 中添加函数：
 
-**文件位置**: `asnumpy/__init__.py`
+**文件位置**: `src/asnumpy/__init__.py`
 
 ```python
 from .math import (
@@ -491,13 +493,13 @@ tests/
 ├── conftest.py                    # pytest 配置
 └── asnumpy_tests/
     ├── math_tests/
-    │   └── test_miscellaneous.py  # 测试用例
+    │   └── test_other_special_functions.py  # 测试用例
     └── ...
 ```
 
 ### 7.2 编写测试用例
 
-**文件位置**: `tests/asnumpy_tests/math_tests/test_miscellaneous.py`
+**文件位置**: `tests/asnumpy_tests/math_tests/test_other_special_functions.py`
 
 ```python
 import numpy
@@ -512,21 +514,20 @@ def _create_array(xp, data, dtype):
     return xp.ndarray.from_numpy(np_arr)
 
 
-@testing.for_float_dtypes(no_float16=True)
-@testing.numpy_asnumpy_allclose(rtol=1e-4, atol=1e-5)
+@testing.for_dtypes([numpy.float64])
+@testing.numpy_asnumpy_allclose(atol=1e-5, rtol=1e-5)
 def test_sinc_basic(xp, dtype):
-    """基础随机测试"""
-    numpy.random.seed(42)
-    np_a = numpy.random.uniform(low=-5.0, high=5.0, size=(10, 10)).astype(dtype)
-    a = _create_array(xp, np_a, dtype)
+    """测试 sinc 基础功能（已知支持的浮点类型）"""
+    data = [-3.0, -1.5, 0.5, 2.0, 3.5]
+    a = _create_array(xp, data, dtype)
     return xp.sinc(a)
 
 
-@testing.for_float_dtypes(no_float16=True)
-@testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
-def test_sinc_at_zero(xp, dtype):
-    """测试 sinc 在 x=0 处的行为"""
-    data = [0.0, -0.0]
+@testing.for_dtypes([numpy.float64])
+@testing.numpy_asnumpy_allclose()
+def test_sinc_zero(xp, dtype):
+    """测试 sinc(0) = 1"""
+    data = [0.0]
     a = _create_array(xp, data, dtype)
     return xp.sinc(a)
 ```
@@ -620,10 +621,10 @@ pytest tests/asnumpy_tests/math_tests/
 
 ```bash
 # 运行特定测试文件
-pytest tests/asnumpy_tests/math_tests/test_miscellaneous.py
+pytest tests/asnumpy_tests/math_tests/test_other_special_functions.py
 
 # 运行特定测试函数
-pytest tests/asnumpy_tests/math_tests/test_miscellaneous.py::test_sinc_basic
+pytest tests/asnumpy_tests/math_tests/test_other_special_functions.py::test_sinc_basic
 ```
 
 ## 附录：常用命令速查
@@ -636,7 +637,7 @@ pip install -e .
 pytest tests/
 
 # 运行特定测试
-pytest tests/asnumpy_tests/math_tests/test_miscellaneous.py
+pytest tests/asnumpy_tests/math_tests/test_other_special_functions.py
 
 # 详细输出
 pytest -v

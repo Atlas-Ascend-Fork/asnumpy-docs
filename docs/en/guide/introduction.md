@@ -23,13 +23,13 @@ result = ap.multiply(a_npu, b_npu)
 
 ### Ascend NPU Acceleration
 
-Operators run directly on NPU via CANN ACLNN without framework overhead:
+Operators run directly on NPU via CANN ACLNN without framework overhead. Taking the `mean()` reduction operator as an example (full data in [Benchmarks](benchmarks)):
 
-| Shape | AsNumpy (NPU) | NumPy (CPU) | Speedup |
-|-------|---------------|-------------|---------|
-| (1000, 1000) | 0.0692 s | 0.7029 s | 10.16× |
-| (2000, 2000) | 0.1033 s | 3.8387 s | 37.17× |
-| (3000, 3000) | 0.1115 s | 14.3567 s | **128.70×** |
+| Shape | AsNumpy (ms) | NumPy (ms) | Speedup |
+|-------|--------------|------------|---------|
+| (1000, 1000) | 0.1510 | 0.4904 | 3.25× |
+| (2000, 2000) | 0.1636 | 1.9372 | 11.84× |
+| (3000, 3000) | 0.1857 | 6.6303 | **35.70×** |
 
 ### Automatic Resource Management
 
@@ -71,7 +71,7 @@ AsNumpy is ideal for:
 |-----------|-------|
 | **Version** | 0.2.0 |
 | **License** | Apache 2.0 |
-| **Python** | 3.9+ |
+| **Python** | 3.10+ |
 | **CANN** | 8.2.RC1+ |
 | **Platform** | Ascend 910B |
 

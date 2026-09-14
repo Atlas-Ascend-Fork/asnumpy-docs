@@ -87,9 +87,9 @@ import asnumpy as ap  # 自动初始化
 
 | 形状 | 加速比 |
 |-------|---------|
-| (500, 500) | 0.09×（CPU 更快） |
-| (1000, 1000) | 10.16× |
-| (3000, 3000) | **128.70×** |
+| (500, 500) | 0.99×（基本持平） |
+| (1000, 1000) | 3.25× |
+| (3000, 3000) | **35.70×** |
 
 详细数据请参见 [性能测试](benchmarks)。
 
@@ -137,6 +137,7 @@ AsNumpy 支持以下数据类型：
 | **浮点数** | `float16`, `float32`, `float64` |
 | **整数** | `int8`, `int16`, `int32`, `int64` |
 | **无符号整数** | `uint8`, `uint16`, `uint32`, `uint64` |
+| **复数** | `complex64`, `complex128` |
 | **布尔** | `bool` |
 
 > **注意：** 某些操作可能对特定数据类型有限制。详情请查看 API 文档。
@@ -189,7 +190,7 @@ AsNumpy 支持以下数据类型：
 ```python
 import numpy as np
 
-npu_result = ap.sum(arr).to_numpy()
+npu_result = ap.sum(arr)  # 无 axis 时返回 Python 标量
 np_result = np.sum(cpu_arr)
 
 # 允许小容差

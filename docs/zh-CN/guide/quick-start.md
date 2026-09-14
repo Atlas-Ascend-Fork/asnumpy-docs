@@ -6,7 +6,7 @@
 
 - 已安装 AsNumpy（[安装指南](installation)）
 - 昇腾 910B NPU，CANN 8.2.RC1.alpha003+
-- Python 3.9+
+- Python 3.10+
 
 ## NumPy vs AsNumpy
 
