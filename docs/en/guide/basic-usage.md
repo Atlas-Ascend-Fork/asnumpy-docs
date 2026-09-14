@@ -26,7 +26,7 @@ x_cpu = np.array([1, 2, 3], dtype=np.float32)
 x_npu = ap.ndarray.from_numpy(x_cpu)
 
 # x_npu is now an asnumpy.ndarray on the current device
-print(type(x_npu))  # <class 'asnumpy.ndarray'>
+print(type(x_npu))  # <class 'asnumpy.utils.ndarray'>
 ```
 
 ### Properties
@@ -41,12 +41,12 @@ Like NumPy arrays, `ndarray` objects have standard properties:
 dtype('float32')
 ```
 
-> **Note:** Additional properties like `ndim` and `size` can be derived from `shape`:
+> **Note:** The `ndim` property is available directly; `size` can be derived from `shape`:
 > ```python
-> >>> len(x.shape)  # ndim
+> >>> x.ndim  # number of dimensions
 > 2
 > >>> import numpy as np
-> >>> int(np.prod(x.shape))  # size
+> >>> int(np.prod(x.shape))  # size (total number of elements)
 > 4
 > ```
 
@@ -152,7 +152,7 @@ import asnumpy as ap
 # Create arrays directly on NPU
 zeros = ap.zeros((3, 4), dtype=ap.float32)
 ones = ap.ones((3, 4), dtype=ap.float32)
-full = ap.full((3, 4), fill_value=5.0, dtype=ap.float32)
+full = ap.full((3, 4), 5.0, dtype=ap.float32)
 ```
 
 ## Mathematical Operations
@@ -209,7 +209,7 @@ import numpy as np
 
 arr = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.float32))
 
-total = ap.sum(arr)      # 10.0
+total = ap.sum(arr)      # 10.0 (Python scalar when axis is None)
 mean_val = ap.mean(arr)  # 2.5
 max_val = ap.max(arr)    # 4.0
 min_val = ap.min(arr)    # 1.0
@@ -243,8 +243,8 @@ import asnumpy as ap
 def compute():
     # Array allocated on NPU
     arr = ap.ones((1000, 1000), dtype=ap.float32)
-    result = ap.sum(arr)
-    return result.to_numpy()
+    result = ap.sum(arr)  # Python scalar when axis is None
+    return result
     # arr is automatically freed when it goes out of scope
 
 # No memory leak!
@@ -276,12 +276,12 @@ NPU acceleration is most effective for large arrays:
 # ❌ Bad: Frequent transfers
 for i in range(1000):
     arr = ap.ndarray.from_numpy(np_array)  # Transfer every iteration
-    result = ap.sum(arr)
+    result = ap.multiply(arr, arr)
     cpu_result = result.to_numpy()  # Transfer back every iteration
 
 # ✅ Good: Transfer once, compute many times
 arr = ap.ndarray.from_numpy(np_array)  # Transfer once
 for i in range(1000):
-    result = ap.sum(arr)
+    result = ap.multiply(arr, arr)
 cpu_result = result.to_numpy()  # Transfer once at the end
 ```

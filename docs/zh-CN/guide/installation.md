@@ -19,7 +19,7 @@
 | **GCC** | >= 11.2 |
 | **CMake** | >= 3.26 |
 | **ninja-build** | >= 1.12（推荐） |
-| **Python** | >= 3.9 |
+| **Python** | >= 3.10 |
 | **CANN** | >= 8.2.RC1.alpha003 |
 
 ## 安装前准备
@@ -57,7 +57,7 @@ gcc --version  # 应 >= 11.2
 cmake --version  # 应 >= 3.26
 
 # 检查 Python 版本
-python --version  # 应 >= 3.9
+python --version  # 应 >= 3.10
 ```
 
 ## 安装方式
@@ -135,12 +135,12 @@ np_array = np.array([1, 2, 3, 4, 5], dtype=np.float32)
 # 转换为 AsNumpy 数组（传输到 NPU）
 npu_array = ap.ndarray.from_numpy(np_array)
 
-# 在 NPU 上执行操作
+# 在 NPU 上执行操作（无 axis 时返回 Python 标量）
 result = ap.sum(npu_array)
-print(f"数组求和: {result.to_numpy()}")
+print(f"数组求和: {result}")
 
 # 验证结果
-assert result.to_numpy() == 15.0
+assert result == 15.0
 print("✓ 安装验证成功！")
 ```
 

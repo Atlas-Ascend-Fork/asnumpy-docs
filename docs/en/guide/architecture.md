@@ -8,7 +8,7 @@ AsNumpy is built on three layers that cleanly separate concerns:
 
 ```
 +------------------------------------------+
-|     Python Frontend (asnumpy/*.py)        |
+|     Python Frontend (src/asnumpy/*.py)    |
 |  - __init__.py   122+ exported symbols    |
 |  - array.py      array creation (10 fn)   |
 |  - math.py       math ops (80+ fn)        |
@@ -19,11 +19,11 @@ AsNumpy is built on three layers that cleanly separate concerns:
 |  - statistics.py statistics (mean)        |
 +------------------------------------------+
                     |
-         pybind11 binding layer (python/*.cpp)
-         PYBIND11_MODULE(asnumpy_core, ...)
+         pybind11 binding layer (bindings/python/*.cpp)
+         PYBIND11_MODULE(_core, ...)
                     |
 +------------------------------------------+
-|     C++ Core (src/, include/)             |
+|     C++ Core (csrc/, include/)            |
 |  - NPUArray      core data structure      |
 |  - namespace asnumpy  operator impls      |
 |  - Ascend ACL / ACLNN operator wrappers   |
@@ -68,6 +68,8 @@ Data transfer:
 
 AsNumpy's API is divided into **functional modules** and **foundation modules**:
 
+<img src="/images/feature-modules.png" alt="API functional modules diagram" width="60%">
+
 **Functional modules** cover the primary scientific computing domains:
 
 | Module | Python | C++ namespace | Status |
@@ -86,14 +88,16 @@ AsNumpy's API is divided into **functional modules** and **foundation modules**:
 
 | Module | Role |
 |--------|------|
-| `NPUArray` (`src/utils/`) | Core data structure |
-| `CANN driver` (`src/cann/`) | Device initialization and lifecycle |
-| `dtypes` (`src/dtypes/`) | Data type registration |
-| `pybind11 bindings` (`python/`) | Python-C++ interface |
+| `NPUArray` (`csrc/utils/`) | Core data structure |
+| `CANN driver` (`csrc/cann/`) | Device initialization and lifecycle |
+| `dtypes` (`csrc/dtypes/`) | Data type registration |
+| `pybind11 bindings` (`bindings/python/`) | Python-C++ interface |
 
 ## NPU Extension Module
 
 CANN's built-in operators are primarily designed for deep learning (training and inference). AsNumpy targets general scientific computing — data analysis, numerical methods, signal processing — which requires a broader operator set than CANN alone provides.
+
+<img src="/images/npu-extension-modules.png" alt="NPU extension modules diagram" width="60%">
 
 **The gap:** CANN built-in operators cannot cover all of NumPy's API surface.
 

@@ -13,22 +13,26 @@ AsNumpy is a numerical computing library based on Huawei Ascend NPU, providing a
 
 ```
 asnumpy/
-├── asnumpy/                 # Python package
-│   ├── __init__.py         # Main package initialization
-│   ├── math.py             # Math module
-│   ├── linalg/             # Linear algebra module
-│   ├── random/             # Random module
+├── src/                    # Python package (src-layout)
+│   └── asnumpy/
+│       ├── __init__.py     # Main package initialization
+│       ├── math.py         # Math module
+│       ├── linalg/         # Linear algebra module
+│       ├── random/         # Random module
+│       └── ...
+├── csrc/                   # C++ source files
+│   ├── math/               # Math module implementation
 │   └── ...
 ├── include/                # C++ headers
 │   └── asnumpy/
 │       ├── math/           # Math module headers
 │       └── ...
-├── src/                    # C++ source files
-│   ├── math/               # Math module implementation
-│   └── ...
-├── python/                 # Pybind11 bindings
-│   ├── bind_math.cpp       # Math module bindings
-│   └── ...
+├── bindings/               # Pybind11 bindings
+│   └── python/
+│       ├── bind_math.cpp   # Math module bindings
+│       └── ...
+├── examples/               # Example scripts
+├── benchmarks/             # Performance benchmarks
 ├── tests/                  # Test files
 │   └── asnumpy_tests/      # Test cases
 └── ...
@@ -43,13 +47,13 @@ Developing new features typically follows these steps:
 ```
 1. Add function declaration (include/)
    ↓
-2. Implement function logic (src/)
+2. Implement function logic (csrc/)
    ↓
-3. Add Python binding (python/)
+3. Add Python binding (bindings/python/)
    ↓
-4. Add Python wrapper layer (asnumpy/math.py)
+4. Add Python wrapper layer (src/asnumpy/math.py)
    ↓
-5. Export to main namespace (asnumpy/__init__.py)
+5. Export to main namespace (src/asnumpy/__init__.py)
    ↓
 6. Write test cases (tests/)
    ↓
@@ -297,7 +301,7 @@ NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype = std::nullopt);
 
 Implement the function logic in the corresponding source file:
 
-**File location**: `src/math/other_special_functions.cpp`
+**File location**: `csrc/math/other_special_functions.cpp`
 
 ```cpp
 NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype) {
@@ -406,7 +410,7 @@ A typical NPU operator execution flow includes:
 
 Add function binding in the corresponding binding file:
 
-**File location**: `python/bind_math.cpp`
+**File location**: `bindings/python/bind_math.cpp`
 
 ```cpp
 namespace asnumpy {
@@ -435,15 +439,13 @@ Frontend development primarily involves exposing C++ functions to the Python lay
 
 Import C++ functions in the corresponding Python module and add Python wrapper layer:
 
-**File location**: `asnumpy/math.py`
+**File location**: `src/asnumpy/math.py`
 
 First, import functions from the compiled C++ extension:
 
 ```python
-from .lib.asnumpy_core.math import (
-    sin as _ap_sin,
-    cos as _ap_cos,
-    sinc as _ap_sinc,
+from ._core.math import (
+    sinc as _sinc,
     # ... other functions
 )
 from .utils import ndarray, _convert_dtype
@@ -452,15 +454,15 @@ from .utils import ndarray, _convert_dtype
 Then, add Python wrapper layer for each function:
 
 ```python
-def sinc(x: ndarray, dtype: Optional[np.dtype] = None) -> ndarray:
-    return ndarray(_ap_sinc(x, _convert_dtype(dtype)))
+def sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray:
+    return ndarray(_sinc(x, _convert_dtype(dtype)))
 ```
 
 ### 6.2 Export to Main Namespace
 
 Add functions in the main package's `__init__.py`:
 
-**File location**: `asnumpy/__init__.py`
+**File location**: `src/asnumpy/__init__.py`
 
 ```python
 from .math import (
@@ -491,13 +493,13 @@ tests/
 ├── conftest.py                    # pytest configuration
 └── asnumpy_tests/
     ├── math_tests/
-    │   └── test_miscellaneous.py  # Test cases
+    │   └── test_other_special_functions.py  # Test cases
     └── ...
 ```
 
 ### 7.2 Writing Test Cases
 
-**File location**: `tests/asnumpy_tests/math_tests/test_miscellaneous.py`
+**File location**: `tests/asnumpy_tests/math_tests/test_other_special_functions.py`
 
 ```python
 import numpy
@@ -512,21 +514,20 @@ def _create_array(xp, data, dtype):
     return xp.ndarray.from_numpy(np_arr)
 
 
-@testing.for_float_dtypes(no_float16=True)
-@testing.numpy_asnumpy_allclose(rtol=1e-4, atol=1e-5)
+@testing.for_dtypes([numpy.float64])
+@testing.numpy_asnumpy_allclose(atol=1e-5, rtol=1e-5)
 def test_sinc_basic(xp, dtype):
-    """Basic random test"""
-    numpy.random.seed(42)
-    np_a = numpy.random.uniform(low=-5.0, high=5.0, size=(10, 10)).astype(dtype)
-    a = _create_array(xp, np_a, dtype)
+    """Test sinc basic functionality (known supported float types)"""
+    data = [-3.0, -1.5, 0.5, 2.0, 3.5]
+    a = _create_array(xp, data, dtype)
     return xp.sinc(a)
 
 
-@testing.for_float_dtypes(no_float16=True)
-@testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
-def test_sinc_at_zero(xp, dtype):
-    """Test sinc behavior at x=0"""
-    data = [0.0, -0.0]
+@testing.for_dtypes([numpy.float64])
+@testing.numpy_asnumpy_allclose()
+def test_sinc_zero(xp, dtype):
+    """Test sinc(0) = 1"""
+    data = [0.0]
     a = _create_array(xp, data, dtype)
     return xp.sinc(a)
 ```
@@ -620,10 +621,10 @@ pytest tests/asnumpy_tests/math_tests/
 
 ```bash
 # Run specific test file
-pytest tests/asnumpy_tests/math_tests/test_miscellaneous.py
+pytest tests/asnumpy_tests/math_tests/test_other_special_functions.py
 
 # Run specific test function
-pytest tests/asnumpy_tests/math_tests/test_miscellaneous.py::test_sinc_basic
+pytest tests/asnumpy_tests/math_tests/test_other_special_functions.py::test_sinc_basic
 ```
 
 ## Appendix: Common Commands Reference
@@ -636,7 +637,7 @@ pip install -e .
 pytest tests/
 
 # Run specific test
-pytest tests/asnumpy_tests/math_tests/test_miscellaneous.py
+pytest tests/asnumpy_tests/math_tests/test_other_special_functions.py
 
 # Verbose output
 pytest -v

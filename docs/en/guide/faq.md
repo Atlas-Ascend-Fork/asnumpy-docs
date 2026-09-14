@@ -23,6 +23,14 @@ cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
    pip install -e . --no-build-isolation
    ```
 
+### What are the hardware requirements?
+
+| Requirement | Specification |
+|-------------|---------------|
+| **CPU** | AArch64 or X86_64 |
+| **NPU** | Ascend 910B |
+| **OS** | Linux (Ubuntu 20.04+ recommended) |
+
 ## Usage
 
 ### How compatible is AsNumpy with NumPy?
@@ -49,9 +57,9 @@ For small tensors (e.g., 500×500), NPU kernel launch overhead dominates the mea
 
 | Shape | Speedup |
 |-------|---------|
-| (500, 500) | 0.09× (CPU faster) |
-| (1000, 1000) | 10.16× |
-| (3000, 3000) | **128.70×** |
+| (500, 500) | 0.99× (roughly on par) |
+| (1000, 1000) | 3.25× |
+| (3000, 3000) | **35.70×** |
 
 ### How do I transfer data between CPU and NPU?
 
@@ -92,6 +100,7 @@ AsNumpy supports the following data types:
 | **Float** | `float16`, `float32`, `float64` |
 | **Integer** | `int8`, `int16`, `int32`, `int64` |
 | **Unsigned** | `uint8`, `uint16`, `uint32`, `uint64` |
+| **Complex** | `complex64`, `complex128` |
 | **Boolean** | `bool` |
 
 > **Note:** Some operations may have restrictions on certain data types. Check the API documentation for details.
@@ -144,7 +153,7 @@ Use `np.allclose()` for comparison:
 ```python
 import numpy as np
 
-npu_result = ap.sum(arr).to_numpy()
+npu_result = ap.sum(arr)  # Returns a Python scalar when axis is None
 np_result = np.sum(cpu_arr)
 
 # Allow small tolerance
