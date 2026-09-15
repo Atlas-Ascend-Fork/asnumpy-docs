@@ -186,13 +186,13 @@ print("✓ 安装验证成功！")
 **解决方案：**
 1. 对于小数组（< 1000×1000），由于 NPU 启动开销，CPU 可能更快
 2. 尝试更大的数组以体验 NPU 加速效果
-3. 查看 [性能测试](benchmarks) 了解预期性能
+3. 查看 [性能测试](./benchmarks.md) 了解预期性能
 
 ### 获取帮助
 
 如果遇到本文未涵盖的问题：
 
-1. 查看 [常见问题](faq)
+1. 查看 [常见问题](./faq.md)
 2. 搜索已有的 [Issue](https://gitcode.com/cann/asnumpy/issues)
 3. 创建新 Issue，包含：
    - 系统信息（操作系统、Python 版本、CANN 版本）

@@ -23,7 +23,7 @@ result = ap.multiply(a_npu, b_npu)
 
 ### Ascend NPU 加速
 
-算子通过 CANN ACLNN 直接在 NPU 上运行，无框架开销。以 `mean()` 归约算子为例（完整数据见[性能测试](benchmarks)）：
+算子通过 CANN ACLNN 直接在 NPU 上运行，无框架开销。以 `mean()` 归约算子为例（完整数据见[性能测试](./benchmarks.md)）：
 
 | 形状 | AsNumpy (ms) | NumPy (ms) | 加速比 |
 |-------|--------------|------------|--------|
@@ -91,13 +91,13 @@ AsNumpy 适用于：
 
 ## 资源
 
-- [快速开始](quick-start) — 5 分钟入门
-- [安装指南](installation) — 详细安装说明
-- [基本用法](basic-usage) — 核心概念和操作
-- [架构设计](architecture) — 系统设计和内部实现
-- [性能测试](benchmarks) — 性能数据
-- [常见问题](faq) — 常见问题解答
-- [开发指南](../developer/developer_guide) — 如何开发
-- [API 参考](../api/index) — 完整 API 文档
+- [快速开始](./quick-start.md) — 5 分钟入门
+- [安装指南](./installation.md) — 详细安装说明
+- [基本用法](./basic-usage.md) — 核心概念和操作
+- [架构设计](./architecture.md) — 系统设计和内部实现
+- [性能测试](./benchmarks.md) — 性能数据
+- [常见问题](./faq.md) — 常见问题解答
+- [开发指南](../developer/developer_guide.md) — 如何开发
+- [API 参考](../api/index.md) — 完整 API 文档
 - [Issue 追踪](https://gitcode.com/cann/asnumpy/issues) — 报告 Bug
 - [OpenBOAT](https://gitcode.com/HIT1920/OpenBOAT) — 算子库

@@ -23,7 +23,7 @@ result = ap.multiply(a_npu, b_npu)
 
 ### Ascend NPU Acceleration
 
-Operators run directly on NPU via CANN ACLNN without framework overhead. Taking the `mean()` reduction operator as an example (full data in [Benchmarks](benchmarks)):
+Operators run directly on NPU via CANN ACLNN without framework overhead. Taking the `mean()` reduction operator as an example (full data in [Benchmarks](./benchmarks.md)):
 
 | Shape | AsNumpy (ms) | NumPy (ms) | Speedup |
 |-------|--------------|------------|---------|
@@ -91,13 +91,13 @@ AsNumpy is ideal for:
 
 ## Resources
 
-- [Quick Start](quick-start) — Get started in 5 minutes
-- [Installation](installation) — Detailed installation guide
-- [Basic Usage](basic-usage) — Core concepts and operations
-- [Architecture](architecture) — System design and internals
-- [Benchmarks](benchmarks) — Performance data
-- [FAQ](faq) — Frequently asked questions
-- [Developer Guide](../developer/developer_guide) — How to develop
-- [API Reference](../api/index) — Complete API documentation
+- [Quick Start](./quick-start.md) — Get started in 5 minutes
+- [Installation](./installation.md) — Detailed installation guide
+- [Basic Usage](./basic-usage.md) — Core concepts and operations
+- [Architecture](./architecture.md) — System design and internals
+- [Benchmarks](./benchmarks.md) — Performance data
+- [FAQ](./faq.md) — Frequently asked questions
+- [Developer Guide](../developer/developer_guide.md) — How to develop
+- [API Reference](../api/index.md) — Complete API documentation
 - [Issue Tracker](https://gitcode.com/cann/asnumpy/issues) — Report bugs
 - [OpenBOAT](https://gitcode.com/HIT1920/OpenBOAT) — Operator library
