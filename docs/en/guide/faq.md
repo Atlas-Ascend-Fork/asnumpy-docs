@@ -37,7 +37,7 @@ cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
 
 AsNumpy is designed to be API-compatible with NumPy, but operator coverage is not yet complete. The current version (v0.2.0) covers the most common math, logic, sorting, and array-creation APIs.
 
-The roadmap target is to cover the **top 100 most-used NumPy APIs** by v1.0. See the [Roadmap](introduction#roadmap) for the full plan.
+The roadmap target is to cover the **top 100 most-used NumPy APIs** by v1.0. See the [Roadmap](./introduction.md#roadmap) for the full plan.
 
 ### Do I need to manually initialize or finalize the NPU?
 
@@ -53,7 +53,7 @@ import asnumpy as ap  # Auto-initialized
 
 ### Why is AsNumpy slower than NumPy for small arrays?
 
-For small tensors (e.g., 500×500), NPU kernel launch overhead dominates the measured time. NPU acceleration becomes significant starting around 1000×1000 (`float32`). See [Benchmarks](benchmarks) for detailed data.
+For small tensors (e.g., 500×500), NPU kernel launch overhead dominates the measured time. NPU acceleration becomes significant starting around 1000×1000 (`float32`). See [Benchmarks](./benchmarks.md) for detailed data.
 
 | Shape | Speedup |
 |-------|---------|
@@ -164,7 +164,7 @@ assert np.allclose(npu_result, np_result, rtol=1e-5, atol=1e-8)
 
 ### How to develop?
 
-For more details, please refer to the [Developer Guide](../developer/developer_guide).
+For more details, please refer to the [Developer Guide](../developer/developer_guide.md).
 
 ### Where can I report bugs?
 

@@ -186,13 +186,13 @@ print("✓ Installation verified successfully!")
 **Solution:**
 1. For small arrays (< 1000×1000), CPU may be faster due to NPU launch overhead
 2. Try larger arrays to see NPU acceleration benefits
-3. See [Benchmarks](benchmarks) for expected performance
+3. See [Benchmarks](./benchmarks.md) for expected performance
 
 ### Getting Help
 
 If you encounter issues not covered here:
 
-1. Check the [FAQ](faq)
+1. Check the [FAQ](./faq.md)
 2. Search existing [issues](https://gitcode.com/cann/asnumpy/issues)
 3. Open a new issue with:
    - Your system information (OS, Python version, CANN version)

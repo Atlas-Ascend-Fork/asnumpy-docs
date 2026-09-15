@@ -56,7 +56,7 @@ AsNumpy 设计为与 NumPy API 兼容，但算子覆盖尚不完整。
 | v0.2.0（当前） | 常用数学、逻辑、排序、数组创建 API |
 | v1.0 | 最常用的 100 个 NumPy API |
 
-完整计划请参见 [路线图](introduction#roadmap)。
+完整计划请参见 [路线图](./introduction.md#路线图)。
 
 ### 需要手动初始化或终结 NPU 吗？
 
@@ -91,7 +91,7 @@ import asnumpy as ap  # 自动初始化
 | (1000, 1000) | 3.25× |
 | (3000, 3000) | **35.70×** |
 
-详细数据请参见 [性能测试](benchmarks)。
+详细数据请参见 [性能测试](./benchmarks.md)。
 
 ### 如何在 CPU 和 NPU 之间传输数据？
 
@@ -201,7 +201,7 @@ assert np.allclose(npu_result, np_result, rtol=1e-5, atol=1e-8)
 
 ### 如何开发？
 
-详情请参见 [开发指南](../developer/developer_guide)。
+详情请参见 [开发指南](../developer/developer_guide.md)。
 
 ### 在哪里报告 Bug？
 
@@ -216,6 +216,6 @@ assert np.allclose(npu_result, np_result, rtol=1e-5, atol=1e-8)
 
 如果您的问题在这里没有找到答案：
 
-1. 查看 [API 参考](../api/index)
+1. 查看 [API 参考](../api/index.md)
 2. 搜索 [已有 Issue](https://gitcode.com/cann/asnumpy/issues)
 3. 创建新 Issue
