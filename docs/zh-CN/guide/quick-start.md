@@ -96,9 +96,6 @@ print("验证通过。")
 ```python
 import asnumpy as ap
 
-# 查询可用的NPU设备
-print(ap.get_device_count())  # e.g. 8
-
 # 切换到特定的NPU（默认为0）
 ap.set_device(1)
 ```
