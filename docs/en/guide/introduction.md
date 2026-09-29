@@ -86,7 +86,7 @@ AsNumpy is ideal for:
 ## Acknowledgements
 
 - AISS Group, School of Computer Science, Harbin Institute of Technology — Prof. Su Tonghua's team
--  ISE Group，School of Computer Science, Harbin Institute of Technology — Prof. Wang Tiantian's team
+-  ISE Group, School of Computer Science, Harbin Institute of Technology — Prof. Wang Tiantian's team
 - Huawei CANN team
 
 ## Resources
