@@ -1,7 +1,7 @@
 # AsNumpy Documentation
 
 This is the official documentation site for [AsNumpy](https://gitcode.com/cann/asnumpy), a lightweight Python library for scientific computing on Ascend NPU, fully compatible with NumPy API.
-**Online documentation：**[https://asnumpy.gitcode.com/](https://asnumpy.gitcode.com/)
+**Online documentation:** [https://asnumpy.gitcode.com/](https://asnumpy.gitcode.com/)
 
 ## About AsNumpy
 
