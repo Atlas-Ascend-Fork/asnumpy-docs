@@ -1496,8 +1496,9 @@ asnumpy.clip(a: ArrayLike, a_min: Union[ArrayLike, float], a_max: Union[ArrayLik
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> a = ap.arange(5)
+>>> a = ap.ndarray.from_numpy(np.arange(5))
 >>> ap.clip(a, 1, 3)
 array([1, 1, 2, 3, 3])
 ```

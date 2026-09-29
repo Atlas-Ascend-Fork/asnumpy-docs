@@ -25,8 +25,9 @@ asnumpy.save(file, arr, allow_pickle=False)
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.arange(10)
+>>> x = ap.ndarray.from_numpy(np.arange(10))
 >>> ap.save('output.npy', x)
 ```
 
@@ -53,8 +54,9 @@ asnumpy.savez(file, *args, **kwargs)
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.arange(5)
+>>> x = ap.ndarray.from_numpy(np.arange(5))
 >>> y = ap.ones(5, dtype=ap.float32)
 >>> ap.savez('data.npz', x, y)  # 保存为 arr_0, arr_1
 >>> ap.savez('data.npz', a=x, b=y)  # 保存为 a, b
@@ -82,8 +84,9 @@ asnumpy.savez_compressed(file, *args, **kwargs)
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.arange(100)
+>>> x = ap.ndarray.from_numpy(np.arange(100))
 >>> y = ap.ones(100, dtype=ap.float32)
 >>> ap.savez_compressed('compressed.npz', a=x, b=y)
 ```

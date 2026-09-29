@@ -1495,8 +1495,9 @@ This function limits the values in `a` to be within the interval [`a_min`, `a_ma
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> a = ap.arange(5)
+>>> a = ap.ndarray.from_numpy(np.arange(5))
 >>> ap.clip(a, 1, 3)
 array([1, 1, 2, 3, 3])
 ```

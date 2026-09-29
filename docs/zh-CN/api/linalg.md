@@ -70,8 +70,9 @@ asnumpy.einsum(subscripts: str, *operands: ArrayLike) -> ndarray
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> a = ap.arange(9).reshape(3, 3)
+>>> a = ap.ndarray.from_numpy(np.arange(9)).reshape(3, 3)
 >>> ap.einsum('ii', a)  # 迹
 12
 >>> ap.einsum('ii->i', a)  # 对角线

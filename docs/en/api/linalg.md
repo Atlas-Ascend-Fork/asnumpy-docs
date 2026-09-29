@@ -71,8 +71,9 @@ Execute tensor operations using subscript notation to specify contraction patter
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> a = ap.arange(9).reshape(3, 3)
+>>> a = ap.ndarray.from_numpy(np.arange(9)).reshape(3, 3)
 >>> ap.einsum('ii', a)  # Trace
 12
 >>> ap.einsum('ii->i', a)  # Diagonal

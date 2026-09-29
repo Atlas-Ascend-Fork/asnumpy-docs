@@ -25,8 +25,9 @@ This function transfers the array data from the device (NPU) to the host (CPU) a
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.arange(10)
+>>> x = ap.ndarray.from_numpy(np.arange(10))
 >>> ap.save('output.npy', x)
 ```
 
@@ -53,8 +54,9 @@ Keyword arguments are saved with their specified names.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.arange(5)
+>>> x = ap.ndarray.from_numpy(np.arange(5))
 >>> y = ap.ones(5, dtype=ap.float32)
 >>> ap.savez('data.npz', x, y)  # saved as arr_0, arr_1
 >>> ap.savez('data.npz', a=x, b=y)  # saved as a, b
@@ -82,8 +84,9 @@ Keyword arguments are saved with their specified names.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.arange(100)
+>>> x = ap.ndarray.from_numpy(np.arange(100))
 >>> y = ap.ones(100, dtype=ap.float32)
 >>> ap.savez_compressed('compressed.npz', a=x, b=y)
 ```
