@@ -1,6 +1,6 @@
 # AsNumpy Developer Guide
 
-## 1. Project Overview
+## Project Overview
 
 AsNumpy is a numerical computing library based on Huawei Ascend NPU, providing a NumPy-compatible API that offloads computation tasks to the NPU. The project adopts a layered architecture:
 
@@ -40,7 +40,7 @@ asnumpy/
 
 ---
 
-## 2. Development Workflow
+## Development Workflow
 
 Developing new features typically follows these steps:
 
@@ -62,9 +62,9 @@ Developing new features typically follows these steps:
 
 ---
 
-## 3. Branch Management
+## Branch Management
 
-### 3.1 Overview
+### Overview
 
 Asnumpy uses a simplified branching model based on a single main branch with release branches for stabilization:
 
@@ -78,7 +78,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
                                                 PR to master
 ```
 
-### 3.2 Branch Types
+### Branch Types
 
 | Branch | Purpose | Lifetime |
 |--------|---------|----------|
@@ -88,7 +88,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
 | `release/vX.Y.Z` | Stabilize and test a release. | Per release |
 | `hotfix/<name>` | Backport a fix from a release branch to master. | Short-lived |
 
-### 3.3 Workflow
+### Workflow
 
 #### Feature Development
 
@@ -116,7 +116,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
    git tag v0.3.0
    ```
 4. If additional fixes are needed after tagging, apply them on the release branch and tag a new patch version (e.g., `v0.3.1`).
-5. Cherry-pick those fixes back to `master` (see [Hotfix Process](#333-hotfix-process)).
+5. Cherry-pick those fixes back to `master` (see [Hotfix Process](#hotfix-process)).
 6. Delete the release branch when the release series is no longer maintained:
    ```bash
    git branch -d release/v0.3.0
@@ -142,7 +142,7 @@ When a bug is fixed on a release branch, the fix must be brought back to `master
 > **Why use a separate hotfix branch instead of cherry-picking directly to master?**
 > A dedicated branch allows the fix to go through PR review and CI checks, ensuring the same quality standards as any other contribution.
 
-### 3.4 Merge Strategy
+### Merge Strategy
 
 **Always use merge commits. Never squash.**
 
@@ -154,7 +154,7 @@ git merge --no-ff feature/my-feature
 
 **Rationale:** Squash merges create a new commit that discards the original commit history and authorship. This breaks contribution statistics on the repository homepage and makes it harder to trace changes back to their original authors. Merge commits preserve the full history and ensure every contributor is properly credited.
 
-### 3.5 Branch Naming Conventions
+### Branch Naming Conventions
 
 | Pattern | Example | Description |
 |---------|---------|-------------|
@@ -165,7 +165,7 @@ git merge --no-ff feature/my-feature
 
 Use lowercase kebab-case for branch names. Keep names concise but descriptive.
 
-### 3.6 CI/CD Pipeline
+### CI/CD Pipeline
 
 CI/CD pipelines are triggered by events, not by branch types. Configure the following rules:
 
@@ -177,7 +177,7 @@ CI/CD pipelines are triggered by events, not by branch types. Configure the foll
 
 No additional CI configuration is needed for `feature/`, `fix/`, or `hotfix/` branches. As long as the PR targets `master`, CI will run regardless of the source branch name.
 
-### 3.7 Contributor Workflow
+### Contributor Workflow
 
 #### Team Members (with push access)
 
@@ -221,7 +221,7 @@ git push fork fix/signbit-error
 - **All code changes go through PR.** No direct pushes to `master`.
 - **All PRs go through CI and code review.** Regardless of whether the contributor is a team member or an external contributor.
 
-### 3.8 Commit Hygiene and Review Norms
+### Commit Hygiene and Review Norms
 
 #### Commit Quality
 
@@ -272,11 +272,11 @@ git push --force  # Update the remote branch after rebase
 
 ---
 
-## 4. Backend Development (C++)
+## Backend Development (C++)
 
 Backend development primarily involves implementing NPU operator invocation logic at the C++ level. This section uses developing the `sinc` function as an example.
 
-### 4.1 Add Function Declaration
+### Add Function Declaration
 
 Add the function declaration in the corresponding header file. `sinc` belongs to the special functions in the math module, with the declaration located at:
 
@@ -297,7 +297,7 @@ Add the function declaration in the corresponding header file. `sinc` belongs to
 NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype = std::nullopt);
 ```
 
-### 4.2 Implement Function Body
+### Implement Function Body
 
 Implement the function logic in the corresponding source file:
 
@@ -373,7 +373,7 @@ NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype) {
 }
 ```
 
-### 4.3 Key Implementation Points
+### Key Implementation Points
 
 #### Error Handling
 
@@ -404,9 +404,9 @@ A typical NPU operator execution flow includes:
 
 ---
 
-## 5. Binding Layer (Pybind11)
+## Binding Layer (Pybind11)
 
-### 5.1 Add Function Binding
+### Add Function Binding
 
 Add function binding in the corresponding binding file:
 
@@ -431,11 +431,11 @@ namespace asnumpy {
 
 ---
 
-## 6. Frontend Development (Python)
+## Frontend Development (Python)
 
 Frontend development primarily involves exposing C++ functions to the Python layer and ensuring APIs are compatible with NumPy.
 
-### 6.1 Add Python Wrapper Layer
+### Add Python Wrapper Layer
 
 Import C++ functions in the corresponding Python module and add Python wrapper layer:
 
@@ -458,7 +458,7 @@ def sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray:
     return ndarray(_sinc(x, _convert_dtype(dtype)))
 ```
 
-### 6.2 Export to Main Namespace
+### Export to Main Namespace
 
 Add functions in the main package's `__init__.py`:
 
@@ -480,11 +480,11 @@ __all__ = [
 
 ---
 
-## 7. Writing Tests
+## Writing Tests
 
 AsNumpy uses pytest and a custom testing framework to write tests.
 
-### 7.1 Test File Organization
+### Test File Organization
 
 Test files are organized by module in the `tests/asnumpy_tests/` directory:
 
@@ -497,7 +497,7 @@ tests/
     └── ...
 ```
 
-### 7.2 Writing Test Cases
+### Writing Test Cases
 
 **File location**: `tests/asnumpy_tests/math_tests/test_other_special_functions.py`
 
@@ -532,7 +532,7 @@ def test_sinc_zero(xp, dtype):
     return xp.sinc(a)
 ```
 
-### 7.3 Decorator Reference
+### Decorator Reference
 
 AsNumpy provides rich test decorators for parameterized testing and result comparison.
 
@@ -592,9 +592,9 @@ def test_func(n):
 
 ---
 
-## 8. Build and Run
+## Build and Run
 
-### 8.1 Build Project
+### Build Project
 
 Install and build the project in development mode:
 
@@ -602,7 +602,7 @@ Install and build the project in development mode:
 pip install -e .
 ```
 
-### 8.2 Run Tests
+### Run Tests
 
 #### Run All Tests
 
