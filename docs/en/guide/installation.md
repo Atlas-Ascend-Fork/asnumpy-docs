@@ -24,7 +24,7 @@ This guide covers how to install AsNumpy on your system.
 
 ## Prerequisites
 
-### 1. Install CANN
+### Install CANN
 
 Ensure CANN is installed on your system. You can verify the installation:
 
@@ -32,7 +32,7 @@ Ensure CANN is installed on your system. You can verify the installation:
 cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
 ```
 
-### 2. Set Environment Variables
+### Set Environment Variables
 
 Set the CANN environment variable before building:
 
@@ -47,7 +47,7 @@ echo 'export ASCEND_TOOLKIT_HOME=/usr/local/Ascend/ascend-toolkit/latest' >> ~/.
 source ~/.bashrc
 ```
 
-### 3. Verify Build Tools
+### Verify Build Tools
 
 ```bash
 # Check GCC version

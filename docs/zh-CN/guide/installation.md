@@ -24,7 +24,7 @@
 
 ## 安装前准备
 
-### 1. 安装 CANN
+### 安装 CANN
 
 确保系统已安装 CANN。可以通过以下命令验证安装：
 
@@ -32,7 +32,7 @@
 cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
 ```
 
-### 2. 设置环境变量
+### 设置环境变量
 
 在构建前设置 CANN 环境变量：
 
@@ -47,7 +47,7 @@ echo 'export ASCEND_TOOLKIT_HOME=/usr/local/Ascend/ascend-toolkit/latest' >> ~/.
 source ~/.bashrc
 ```
 
-### 3. 验证构建工具
+### 验证构建工具
 
 ```bash
 # 检查 GCC 版本
