@@ -58,6 +58,7 @@ AsNumpy 有一个*当前设备*的概念 — 这是数组分配和操作发生�
 
 ```python
 import asnumpy as ap
+import numpy as np
 
 # 默认设备是 0
 ap.set_device(0)
