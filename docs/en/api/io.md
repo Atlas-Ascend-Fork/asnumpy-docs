@@ -21,7 +21,6 @@ This function transfers the array data from the device (NPU) to the host (CPU) a
 
 **See Also**
 - [`numpy.save`](https://numpy.org/doc/stable/reference/generated/numpy.save.html)
-- [`asnumpy.load`](#asnumpy-load): Load arrays from files.
 
 **Examples**
 ```python

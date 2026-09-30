@@ -182,7 +182,6 @@ This function computes the inverse tangent (arctangent) for every element in `x`
 - [`asnumpy.tan`](#asnumpy-tan)
 - [`asnumpy.arcsin`](#asnumpy-arcsin)
 - [`asnumpy.arccos`](#asnumpy-arccos)
-- [`asnumpy.arctan2`](#asnumpy-arctan2)
 
 **Examples**
 ```python

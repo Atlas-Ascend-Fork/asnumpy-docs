@@ -182,7 +182,6 @@ asnumpy.arctan(x: ArrayLike) -> ndarray
 - [`asnumpy.tan`](#asnumpy-tan)
 - [`asnumpy.arcsin`](#asnumpy-arcsin)
 - [`asnumpy.arccos`](#asnumpy-arccos)
-- [`asnumpy.arctan2`](#asnumpy-arctan2)
 
 **示例**
 ```python
