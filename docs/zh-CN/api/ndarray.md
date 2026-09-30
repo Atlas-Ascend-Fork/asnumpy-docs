@@ -45,7 +45,7 @@ asnumpy.ndarray.from_numpy(host_data: numpy.ndarray) -> "ndarray"
 >>> type(x_cpu)
 <class 'numpy.ndarray'>
 >>> type(x_npu)
-<class 'asnumpy.ndarray'>
+<class 'asnumpy.utils.ndarray'>
 ```
 
 ## 属性

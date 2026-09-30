@@ -50,7 +50,7 @@ This function copies the data from the host (CPU) to the device (NPU).
 >>> type(x_cpu)
 <class 'numpy.ndarray'>
 >>> type(x_npu)
-<class 'asnumpy.ndarray'>
+<class 'asnumpy.utils.ndarray'>
 ```
 
 ## Properties
