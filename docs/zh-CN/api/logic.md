@@ -24,7 +24,7 @@ asnumpy.all(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 
 **参见**
 - [`numpy.all`](https://numpy.org/doc/stable/reference/generated/numpy.all.html)
-- [`asnumpy.any`](#asnumpy-any)
+- [`asnumpy.any`](#asnumpyany)
 
 **示例**
 ```python
@@ -54,7 +54,7 @@ asnumpy.any(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 
 **参见**
 - [`numpy.any`](https://numpy.org/doc/stable/reference/generated/numpy.any.html)
-- [`asnumpy.all`](#asnumpy-all)
+- [`asnumpy.all`](#asnumpyall)
 
 **示例**
 ```python

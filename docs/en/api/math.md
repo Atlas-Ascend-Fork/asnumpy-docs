@@ -28,8 +28,8 @@ Current test coverage indicates int32 is a known failing scenario (missing auto-
 
 **See Also**
 - [`numpy.sin`](https://numpy.org/doc/stable/reference/generated/numpy.sin.html)
-- [`asnumpy.cos`](#asnumpy-cos)
-- [`asnumpy.tan`](#asnumpy-tan)
+- [`asnumpy.cos`](#asnumpycos)
+- [`asnumpy.tan`](#asnumpytan)
 
 **Examples**
 ```python
@@ -59,8 +59,8 @@ Current test coverage indicates bool is a known failing scenario (missing auto-c
 
 **See Also**
 - [`numpy.cos`](https://numpy.org/doc/stable/reference/generated/numpy.cos.html)
-- [`asnumpy.sin`](#asnumpy-sin)
-- [`asnumpy.tan`](#asnumpy-tan)
+- [`asnumpy.sin`](#asnumpysin)
+- [`asnumpy.tan`](#asnumpytan)
 
 **Examples**
 ```python
@@ -88,8 +88,8 @@ This function computes the tangent for every element in the input array `x`. Inp
 
 **See Also**
 - [`numpy.tan`](https://numpy.org/doc/stable/reference/generated/numpy.tan.html)
-- [`asnumpy.sin`](#asnumpy-sin)
-- [`asnumpy.cos`](#asnumpy-cos)
+- [`asnumpy.sin`](#asnumpysin)
+- [`asnumpy.cos`](#asnumpycos)
 
 **Examples**
 ```python
@@ -117,9 +117,9 @@ This function computes the inverse sine (arcsine) for every element in `x`. The 
 
 **See Also**
 - [`numpy.arcsin`](https://numpy.org/doc/stable/reference/generated/numpy.arcsin.html)
-- [`asnumpy.sin`](#asnumpy-sin)
-- [`asnumpy.arccos`](#asnumpy-arccos)
-- [`asnumpy.arctan`](#asnumpy-arctan)
+- [`asnumpy.sin`](#asnumpysin)
+- [`asnumpy.arccos`](#asnumpyarccos)
+- [`asnumpy.arctan`](#asnumpyarctan)
 
 **Examples**
 ```python
@@ -149,9 +149,9 @@ Current test coverage indicates out-of-domain input (|x| > 1) may throw a Runtim
 
 **See Also**
 - [`numpy.arccos`](https://numpy.org/doc/stable/reference/generated/numpy.arccos.html)
-- [`asnumpy.cos`](#asnumpy-cos)
-- [`asnumpy.arcsin`](#asnumpy-arcsin)
-- [`asnumpy.arctan`](#asnumpy-arctan)
+- [`asnumpy.cos`](#asnumpycos)
+- [`asnumpy.arcsin`](#asnumpyarcsin)
+- [`asnumpy.arctan`](#asnumpyarctan)
 
 **Examples**
 ```python
@@ -179,9 +179,9 @@ This function computes the inverse tangent (arctangent) for every element in `x`
 
 **See Also**
 - [`numpy.arctan`](https://numpy.org/doc/stable/reference/generated/numpy.arctan.html)
-- [`asnumpy.tan`](#asnumpy-tan)
-- [`asnumpy.arcsin`](#asnumpy-arcsin)
-- [`asnumpy.arccos`](#asnumpy-arccos)
+- [`asnumpy.tan`](#asnumpytan)
+- [`asnumpy.arcsin`](#asnumpyarcsin)
+- [`asnumpy.arccos`](#asnumpyarccos)
 - [`asnumpy.arctan2`](#asnumpy-arctan2)
 
 **Examples**
@@ -211,8 +211,8 @@ This function computes the inverse tangent of `x1/x2`, using the signs of both a
 
 **See Also**
 - [`numpy.arctan2`](https://numpy.org/doc/stable/reference/generated/numpy.arctan2.html)
-- [`asnumpy.arctan`](#asnumpy-arctan)
-- [`asnumpy.tan`](#asnumpy-tan)
+- [`asnumpy.arctan`](#asnumpyarctan)
+- [`asnumpy.tan`](#asnumpytan)
 
 **Examples**
 ```python

@@ -48,7 +48,7 @@ Keyword arguments are saved with their specified names.
 
 **See Also**
 - [`numpy.savez`](https://numpy.org/doc/stable/reference/generated/numpy.savez.html)
-- [`asnumpy.save`](#asnumpy-save): Save a single array.
+- [`asnumpy.save`](#asnumpysave): Save a single array.
 - [`asnumpy.savez_compressed`](#asnumpy-savez-compressed): Save with compression.
 
 **Examples**
@@ -77,7 +77,7 @@ Keyword arguments are saved with their specified names.
 - `**kwargs` (array): Arrays to save with explicitly named keys.
 
 **See Also**
-- [`asnumpy.savez`](#asnumpy-savez): Save without compression.
+- [`asnumpy.savez`](#asnumpysavez): Save without compression.
 - [`numpy.savez_compressed`](https://numpy.org/doc/stable/reference/generated/numpy.savez_compressed.html)
 
 **Examples**
@@ -112,7 +112,7 @@ For `.npz` files, returns a lazy-loading container that works like a dictionary.
 
 **See Also**
 - [`numpy.load`](https://numpy.org/doc/stable/reference/generated/numpy.load.html)
-- [`asnumpy.save`](#asnumpy-save): Save a single array.
+- [`asnumpy.save`](#asnumpysave): Save a single array.
 
 **Examples**
 
