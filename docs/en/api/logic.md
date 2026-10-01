@@ -4,6 +4,9 @@
 This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
 :::
 
+Host values and NumPy arrays are not transferred to the NPU automatically.
+Convert array operands with `ap.ndarray.from_numpy()` first.
+
 ## Truth Value Testing
 
 ### asnumpy.all
@@ -88,10 +91,15 @@ Apply boolean AND logic across corresponding elements of two arrays.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.logical_and(True, False)
+>>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
+>>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
+>>> ap.logical_and(x1, x2)
 array(False)
->>> ap.logical_and([True, False], [True, True])
+>>> x1 = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
+>>> x2 = ap.ndarray.from_numpy(np.array([True, True], dtype=np.bool_))
+>>> ap.logical_and(x1, x2)
 array([ True, False])
 ```
 
@@ -115,8 +123,11 @@ Apply boolean OR logic across corresponding elements of two arrays.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.logical_or(True, False)
+>>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
+>>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
+>>> ap.logical_or(x1, x2)
 array(True)
 ```
 
@@ -139,10 +150,13 @@ Invert the boolean value of each array element.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.logical_not(True)
+>>> x = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
+>>> ap.logical_not(x)
 array(False)
->>> ap.logical_not([True, False])
+>>> x = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
+>>> ap.logical_not(x)
 array([False,  True])
 ```
 
@@ -166,8 +180,11 @@ Apply exclusive OR logic across corresponding elements of two arrays.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.logical_xor(True, False)
+>>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
+>>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
+>>> ap.logical_xor(x1, x2)
 array(True)
 ```
 
@@ -194,8 +211,11 @@ Determine whether elements of x1 are greater than those of x2.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.greater([4, 2], [2, 2])
+>>> x1 = ap.ndarray.from_numpy(np.array([4, 2], dtype=np.int32))
+>>> x2 = ap.ndarray.from_numpy(np.array([2, 2], dtype=np.int32))
+>>> ap.greater(x1, x2)
 array([ True, False])
 ```
 
@@ -247,8 +267,11 @@ Determine whether elements of x1 are less than those of x2.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.less([1, 2, 3], [2, 2, 2])
+>>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> x2 = ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32))
+>>> ap.less(x1, x2)
 array([ True, False, False])
 ```
 
@@ -300,8 +323,11 @@ Compare two arrays for equality element by element.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.equal([1, 2, 3], [1, 4, 3])
+>>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
+>>> ap.equal(x1, x2)
 array([ True, False,  True])
 ```
 
@@ -326,8 +352,11 @@ Compare two arrays for inequality element by element.
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.not_equal([1, 2, 3], [1, 4, 3])
+>>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
+>>> ap.not_equal(x1, x2)
 array([False,  True, False])
 ```
 
@@ -352,9 +381,10 @@ Identify which array elements are regular numbers (not infinity or NaN).
 
 **Examples**
 ```python
->>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isfinite([1, np.inf, np.nan])
+>>> import asnumpy as ap
+>>> x = ap.ndarray.from_numpy(np.array([1, np.inf, np.nan], dtype=np.float32))
+>>> ap.isfinite(x)
 array([ True, False, False])
 ```
 
