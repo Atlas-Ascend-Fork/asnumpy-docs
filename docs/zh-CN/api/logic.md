@@ -4,6 +4,9 @@
 当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
 :::
 
+主机端值和 NumPy 数组不会自动传到 NPU。
+数组操作数需先使用 `ap.ndarray.from_numpy()` 转换。
+
 ## 真值测试
 
 ### asnumpy.all
@@ -88,10 +91,15 @@ asnumpy.logical_and(x1: ArrayLike, x2: ArrayLike) -> ndarray
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.logical_and(True, False)
+>>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
+>>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
+>>> ap.logical_and(x1, x2)
 array(False)
->>> ap.logical_and([True, False], [True, True])
+>>> x1 = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
+>>> x2 = ap.ndarray.from_numpy(np.array([True, True], dtype=np.bool_))
+>>> ap.logical_and(x1, x2)
 array([ True, False])
 ```
 
@@ -115,8 +123,11 @@ asnumpy.logical_or(x1: ArrayLike, x2: ArrayLike) -> ndarray
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.logical_or(True, False)
+>>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
+>>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
+>>> ap.logical_or(x1, x2)
 array(True)
 ```
 
@@ -139,10 +150,13 @@ asnumpy.logical_not(x: ArrayLike) -> ndarray
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.logical_not(True)
+>>> x = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
+>>> ap.logical_not(x)
 array(False)
->>> ap.logical_not([True, False])
+>>> x = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
+>>> ap.logical_not(x)
 array([False,  True])
 ```
 
@@ -166,8 +180,11 @@ asnumpy.logical_xor(x1: ArrayLike, x2: ArrayLike) -> ndarray
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.logical_xor(True, False)
+>>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
+>>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
+>>> ap.logical_xor(x1, x2)
 array(True)
 ```
 
@@ -194,8 +211,11 @@ asnumpy.greater(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.greater([4, 2], [2, 2])
+>>> x1 = ap.ndarray.from_numpy(np.array([4, 2], dtype=np.int32))
+>>> x2 = ap.ndarray.from_numpy(np.array([2, 2], dtype=np.int32))
+>>> ap.greater(x1, x2)
 array([ True, False])
 ```
 
@@ -247,8 +267,11 @@ asnumpy.less(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.less([1, 2, 3], [2, 2, 2])
+>>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> x2 = ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32))
+>>> ap.less(x1, x2)
 array([ True, False, False])
 ```
 
@@ -300,8 +323,11 @@ asnumpy.equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.equal([1, 2, 3], [1, 4, 3])
+>>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
+>>> ap.equal(x1, x2)
 array([ True, False,  True])
 ```
 
@@ -326,8 +352,11 @@ asnumpy.not_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndar
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> ap.not_equal([1, 2, 3], [1, 4, 3])
+>>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
+>>> ap.not_equal(x1, x2)
 array([False,  True, False])
 ```
 
@@ -352,9 +381,10 @@ asnumpy.isfinite(x: ArrayLike) -> ndarray
 
 **示例**
 ```python
->>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isfinite([1, np.inf, np.nan])
+>>> import asnumpy as ap
+>>> x = ap.ndarray.from_numpy(np.array([1, np.inf, np.nan], dtype=np.float32))
+>>> ap.isfinite(x)
 array([ True, False, False])
 ```
 
