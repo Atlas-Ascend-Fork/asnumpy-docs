@@ -28,8 +28,8 @@ asnumpy.sin(x: ArrayLike) -> ndarray
 
 **另请参阅**
 - [`numpy.sin`](https://numpy.org/doc/stable/reference/generated/numpy.sin.html)
-- [`asnumpy.cos`](#asnumpy-cos)
-- [`asnumpy.tan`](#asnumpy-tan)
+- [`asnumpy.cos`](#asnumpycos)
+- [`asnumpy.tan`](#asnumpytan)
 
 **示例**
 ```python
@@ -59,8 +59,8 @@ asnumpy.cos(x: ArrayLike) -> ndarray
 
 **另请参阅**
 - [`numpy.cos`](https://numpy.org/doc/stable/reference/generated/numpy.cos.html)
-- [`asnumpy.sin`](#asnumpy-sin)
-- [`asnumpy.tan`](#asnumpy-tan)
+- [`asnumpy.sin`](#asnumpysin)
+- [`asnumpy.tan`](#asnumpytan)
 
 **示例**
 ```python
@@ -88,8 +88,8 @@ asnumpy.tan(x: ArrayLike) -> ndarray
 
 **另请参阅**
 - [`numpy.tan`](https://numpy.org/doc/stable/reference/generated/numpy.tan.html)
-- [`asnumpy.sin`](#asnumpy-sin)
-- [`asnumpy.cos`](#asnumpy-cos)
+- [`asnumpy.sin`](#asnumpysin)
+- [`asnumpy.cos`](#asnumpycos)
 
 **示例**
 ```python
@@ -117,9 +117,9 @@ asnumpy.arcsin(x: ArrayLike) -> ndarray
 
 **另请参阅**
 - [`numpy.arcsin`](https://numpy.org/doc/stable/reference/generated/numpy.arcsin.html)
-- [`asnumpy.sin`](#asnumpy-sin)
-- [`asnumpy.arccos`](#asnumpy-arccos)
-- [`asnumpy.arctan`](#asnumpy-arctan)
+- [`asnumpy.sin`](#asnumpysin)
+- [`asnumpy.arccos`](#asnumpyarccos)
+- [`asnumpy.arctan`](#asnumpyarctan)
 
 **示例**
 ```python
@@ -149,9 +149,9 @@ asnumpy.arccos(x: ArrayLike) -> ndarray
 
 **另请参阅**
 - [`numpy.arccos`](https://numpy.org/doc/stable/reference/generated/numpy.arccos.html)
-- [`asnumpy.cos`](#asnumpy-cos)
-- [`asnumpy.arcsin`](#asnumpy-arcsin)
-- [`asnumpy.arctan`](#asnumpy-arctan)
+- [`asnumpy.cos`](#asnumpycos)
+- [`asnumpy.arcsin`](#asnumpyarcsin)
+- [`asnumpy.arctan`](#asnumpyarctan)
 
 **示例**
 ```python
@@ -179,9 +179,9 @@ asnumpy.arctan(x: ArrayLike) -> ndarray
 
 **另请参阅**
 - [`numpy.arctan`](https://numpy.org/doc/stable/reference/generated/numpy.arctan.html)
-- [`asnumpy.tan`](#asnumpy-tan)
-- [`asnumpy.arcsin`](#asnumpy-arcsin)
-- [`asnumpy.arccos`](#asnumpy-arccos)
+- [`asnumpy.tan`](#asnumpytan)
+- [`asnumpy.arcsin`](#asnumpyarcsin)
+- [`asnumpy.arccos`](#asnumpyarccos)
 - [`asnumpy.arctan2`](#asnumpy-arctan2)
 
 **示例**
@@ -212,8 +212,8 @@ asnumpy.arctan2(x1: ArrayLike, x2: ArrayLike) -> ndarray
 
 **另请参阅**
 - [`numpy.arctan2`](https://numpy.org/doc/stable/reference/generated/numpy.arctan2.html)
-- [`asnumpy.arctan`](#asnumpy-arctan)
-- [`asnumpy.tan`](#asnumpy-tan)
+- [`asnumpy.arctan`](#asnumpyarctan)
+- [`asnumpy.tan`](#asnumpytan)
 
 **示例**
 ```python
