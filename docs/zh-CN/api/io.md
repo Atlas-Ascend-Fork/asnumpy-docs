@@ -48,7 +48,7 @@ asnumpy.savez(file, *args, **kwargs)
 
 **参见**
 - [`numpy.savez`](https://numpy.org/doc/stable/reference/generated/numpy.savez.html)
-- [`asnumpy.save`](#asnumpy-save): 保存单个数组。
+- [`asnumpy.save`](#asnumpysave): 保存单个数组。
 - [`asnumpy.savez_compressed`](#asnumpy-savez-compressed): 压缩保存。
 
 **示例**
@@ -77,7 +77,7 @@ asnumpy.savez_compressed(file, *args, **kwargs)
 - `**kwargs` (array): 使用显式命名键保存的数组。
 
 **参见**
-- [`asnumpy.savez`](#asnumpy-savez): 不压缩保存。
+- [`asnumpy.savez`](#asnumpysavez): 不压缩保存。
 - [`numpy.savez_compressed`](https://numpy.org/doc/stable/reference/generated/numpy.savez_compressed.html)
 
 **示例**
@@ -112,7 +112,7 @@ asnumpy.load(file, mmap_mode=None, allow_pickle=False, **kwargs)
 
 **参见**
 - [`numpy.load`](https://numpy.org/doc/stable/reference/generated/numpy.load.html)
-- [`asnumpy.save`](#asnumpy-save): 保存单个数组。
+- [`asnumpy.save`](#asnumpysave): 保存单个数组。
 
 **示例**
 

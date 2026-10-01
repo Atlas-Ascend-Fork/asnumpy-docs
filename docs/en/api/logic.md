@@ -24,7 +24,7 @@ Check whether all elements evaluate to True.
 
 **See Also**
 - [`numpy.all`](https://numpy.org/doc/stable/reference/generated/numpy.all.html)
-- [`asnumpy.any`](#asnumpy-any)
+- [`asnumpy.any`](#asnumpyany)
 
 **Examples**
 ```python
@@ -54,7 +54,7 @@ Check whether any element evaluates to True.
 
 **See Also**
 - [`numpy.any`](https://numpy.org/doc/stable/reference/generated/numpy.any.html)
-- [`asnumpy.all`](#asnumpy-all)
+- [`asnumpy.all`](#asnumpyall)
 
 **Examples**
 ```python

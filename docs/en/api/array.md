@@ -58,7 +58,7 @@ This function returns a new `asnumpy.ndarray` whose shape matches the input obje
 - `ndarray`: An array filled with zeros and having the same shape as `other`.
 
 **See Also**
-- [`asnumpy.zeros`](#asnumpy-zeros)
+- [`asnumpy.zeros`](#asnumpyzeros)
 - [`numpy.zeros_like`](https://numpy.org/doc/stable/reference/generated/numpy.zeros_like.html)
 
 **Examples**
@@ -96,8 +96,8 @@ Current test coverage shows that `full` is validated for common floating-point t
 **See Also**
 - [`numpy.full`](https://numpy.org/doc/stable/reference/generated/numpy.full.html)
 - [`asnumpy.full_like`](#asnumpy-full-like): Create an array filled with value matching another array.
-- [`asnumpy.zeros`](#asnumpy-zeros): Create an array of zeros.
-- [`asnumpy.ones`](#asnumpy-ones): Create an array of ones.
+- [`asnumpy.zeros`](#asnumpyzeros): Create an array of zeros.
+- [`asnumpy.ones`](#asnumpyones): Create an array of ones.
 
 **Examples**
 ```python
@@ -132,7 +132,7 @@ Current test coverage shows that `full_like` is validated for common floating-po
 
 **See Also**
 - [`numpy.full_like`](https://numpy.org/doc/stable/reference/generated/numpy.full_like.html)
-- [`asnumpy.full`](#asnumpy-full): Create a full array from shape.
+- [`asnumpy.full`](#asnumpyfull): Create a full array from shape.
 
 **Examples**
 ```python
@@ -232,7 +232,7 @@ Current test coverage shows that `eye` is validated for `float32`, common signed
 
 **See Also**
 - [`numpy.eye`](https://numpy.org/doc/stable/reference/generated/numpy.eye.html)
-- [`asnumpy.identity`](#asnumpy-identity): Equivalent function to create identity array.
+- [`asnumpy.identity`](#asnumpyidentity): Equivalent function to create identity array.
 
 **Examples**
 ```python

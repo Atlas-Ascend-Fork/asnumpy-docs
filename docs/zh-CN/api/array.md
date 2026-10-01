@@ -56,7 +56,7 @@ asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 - `ndarray`: 填充零且与 `other` 形状相同的数组。
 
 **参见**
-- [`asnumpy.zeros`](#asnumpy-zeros)
+- [`asnumpy.zeros`](#asnumpyzeros)
 - [`numpy.zeros_like`](https://numpy.org/doc/stable/reference/generated/numpy.zeros_like.html)
 
 **示例**
@@ -94,8 +94,8 @@ asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike = None) -> nd
 **参见**
 - [`numpy.full`](https://numpy.org/doc/stable/reference/generated/numpy.full.html)
 - [`asnumpy.full_like`](#asnumpy-full-like): 创建与另一个数组形状匹配的填充数组。
-- [`asnumpy.zeros`](#asnumpy-zeros): 创建零数组。
-- [`asnumpy.ones`](#asnumpy-ones): 创建 1 数组。
+- [`asnumpy.zeros`](#asnumpyzeros): 创建零数组。
+- [`asnumpy.ones`](#asnumpyones): 创建 1 数组。
 
 **示例**
 ```python
@@ -130,7 +130,7 @@ asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) 
 
 **参见**
 - [`numpy.full_like`](https://numpy.org/doc/stable/reference/generated/numpy.full_like.html)
-- [`asnumpy.full`](#asnumpy-full): 从形状创建填充数组。
+- [`asnumpy.full`](#asnumpyfull): 从形状创建填充数组。
 
 **示例**
 ```python
@@ -228,7 +228,7 @@ asnumpy.eye(n: int, dtype: DTypeLike = None) -> ndarray
 
 **参见**
 - [`numpy.eye`](https://numpy.org/doc/stable/reference/generated/numpy.eye.html)
-- [`asnumpy.identity`](#asnumpy-identity): 创建单位数组的等效函数。
+- [`asnumpy.identity`](#asnumpyidentity): 创建单位数组的等效函数。
 
 **示例**
 ```python
