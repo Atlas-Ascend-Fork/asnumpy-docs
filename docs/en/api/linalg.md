@@ -86,9 +86,9 @@ array([0, 4, 8])
 asnumpy.inner(a: ArrayLike, b: ArrayLike) -> ndarray
 ```
 
-Calculate the inner product over the last dimension of the inputs.
+For two 1-D inputs, compute the vector inner product.
 
-For 1-D inputs, this function returns the standard vector inner product; for higher-dimensional inputs, it sums over the last axis, matching `numpy.inner` behavior.
+The current AsNumpy implementation's two-2-D-input branch calls matrix multiplication directly, with output shape `(a.shape[0], b.shape[1])` and no transpose of `b`. This differs from `numpy.inner`, which contracts both inputs' last axes and produces `(a.shape[0], b.shape[0])`. Do not use this branch as a NumPy-compatible 2-D inner product. Other dimensionality combinations, including N-D inputs, are currently rejected.
 
 **Arguments**
 - `a` (ArrayLike): The first input array.

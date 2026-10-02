@@ -84,9 +84,9 @@ array([0, 4, 8])
 asnumpy.inner(a: ArrayLike, b: ArrayLike) -> ndarray
 ```
 
-计算两个数组最后一维上的内积。
+对于两个 1-D 输入，计算向量内积。
 
-对于一维输入，该函数返回标准向量内积；对于更高维输入，它会在最后一个轴上执行求和，行为与 `numpy.inner` 一致。
+当前 AsNumpy 的双 2-D 输入分支直接调用矩阵乘法，输出形状为 `(a.shape[0], b.shape[1])`，不会转置 `b`。这与 `numpy.inner` 同时缩并两个输入的末轴、输出 `(a.shape[0], b.shape[0])` 的语义不同；不要将该分支作为兼容 NumPy 的二维内积使用。其他维数组合（包括 N-D 输入）当前会被拒绝。
 
 **参数**
 - `a` (ArrayLike): 第一个输入数组。
