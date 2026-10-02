@@ -58,10 +58,10 @@ asnumpy.init() -> None
 
 初始化 CANN 后端。
 
-此函数初始化 CANN 运行时并为 NPU 计算做准备。
+此函数初始化 CANN 运行时，不选择设备；设备选择需要独立调用 `set_device(device_id)`。
 
 ::: tip
-在大多数情况下，您不需要显式调用此函数。当您首次使用 asnumpy 时，它会自动调用。
+导入 `asnumpy` 时已依次调用 `init()` 和 `set_device(0)`，发生在首次数组操作之前，通常不应再次调用 `init()`。导入后可通过 `set_device(device_id)` 选择另一块可用设备。
 :::
 
 ## asnumpy.finalize
@@ -75,5 +75,5 @@ asnumpy.finalize() -> None
 此函数释放 CANN 资源，当您完成使用 asnumpy 时应调用此函数。
 
 ::: warning
-调用 `finalize()` 后，必须再次调用 `init()` 才能使用任何 asnumpy 函数。
+显式终止运行时后，开始下一轮使用需要按顺序完成运行时初始化和设备选择：先 `ap.init()`，再 `ap.set_device(device_id)`。仅调用 `init()` 不会重放导入时的设备选择。结束一轮使用前应释放已有数组并完成设备操作，不要重用上一轮的数组。
 :::
