@@ -62,7 +62,7 @@ AsNumpy 建立在三层结构上，清晰地分离关注点：
 
 数据传输：
 - `FromNumpy` — 使用 `ACL_MEMCPY_HOST_TO_DEVICE`
-- `ToNumpy` — 使用 `ACL_MEMCPY_DEVICE_TO_HOST`；`float16` / `BF16` 需要特殊的 `uint16_t` 解包处理
+- `ToNumpy` — 按保存的 NumPy dtype 和 shape 创建 Host 数组，校验 Host 与设备张量字节数一致，再通过 `ACL_MEMCPY_DEVICE_TO_HOST` 原样复制。当前映射中的类型（包括 `float16`）均无需特殊解包。`BF16` 不在当前 NumPy–ACL 支持映射中；诊断用的字节大小条目不代表 Python 数据传输支持。
 
 ## API 架构
 
