@@ -17,7 +17,7 @@ asnumpy.all(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **参数**
 - `x` (ArrayLike): 要检查的输入数组。
 - `axis` (AxisLike, 可选): 执行逻辑与归约的轴。
-- `keepdims` (bool, 可选): 如果为 True，在结果中保留缩减的轴。
+- `keepdims` (bool, 可选): 显式提供 `axis` 时为True可保留缩减的轴。当前实现的 `axis=None` 使用全量归约重载，忽略 `keepdims` 并返回0-D ndarray。
 
 **返回值**
 - `ndarray`: 指示所有元素是否都为 True 的布尔数组或标量。
@@ -25,6 +25,8 @@ asnumpy.all(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **参见**
 - [`numpy.all`](https://numpy.org/doc/stable/reference/generated/numpy.all.html)
 - [`asnumpy.any`](#asnumpy-any)
+
+全量归约需要保留所有轴时，可显式传入非负轴序列，例如 `ap.all(a, axis=list(range(a.ndim)), keepdims=True)`，选择带axis的归约重载。当前版本直接调用 `ap.all(a, keepdims=True)` 不会保留轴。
 
 **示例**
 ```python
@@ -47,7 +49,7 @@ asnumpy.any(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **参数**
 - `x` (ArrayLike): 要检查的输入数组。
 - `axis` (AxisLike, 可选): 执行逻辑或归约的轴。
-- `keepdims` (bool, 可选): 如果为 True，在结果中保留缩减的轴。
+- `keepdims` (bool, 可选): 显式提供 `axis` 时为True可保留缩减的轴。当前实现的 `axis=None` 使用全量归约重载，忽略 `keepdims` 并返回0-D ndarray。
 
 **返回值**
 - `ndarray`: 指示是否有任何元素为 True 的布尔数组或标量。
@@ -55,6 +57,8 @@ asnumpy.any(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **参见**
 - [`numpy.any`](https://numpy.org/doc/stable/reference/generated/numpy.any.html)
 - [`asnumpy.all`](#asnumpy-all)
+
+全量归约需要保留所有轴时，可显式传入非负轴序列，例如 `ap.any(a, axis=list(range(a.ndim)), keepdims=True)`，选择带axis的归约重载。当前版本直接调用 `ap.any(a, keepdims=True)` 不会保留轴。
 
 **示例**
 ```python
