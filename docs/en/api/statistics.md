@@ -20,7 +20,7 @@ This function determines the central tendency of values within an array. When no
 - `a` (ArrayLike): Input data for averaging.
 - `axis` (AxisLike, int or tuple of ints, optional): Dimension(s) over which to perform averaging. Omitting this argument averages all elements.
 - `keepdims` (bool, optional): When enabled, preserves reduced dimensions with length one in the output shape. Defaults to False.
-- `dtype` (DTypeLike, optional): Numerical precision for the calculation. Integer inputs use float64 by default; float inputs retain their original precision.
+- `dtype` (DTypeLike, optional): Numerical precision for the calculation. When omitted, the current implementation uses the input dtype, including for integer inputs. It does not automatically promote integers to float64. Use floating-point input or specify a floating-point dtype (for example, np.float32) when a fractional mean is required.
 
 **Returns**
 - `ndarray` or `float`: The computed average value(s).
@@ -32,7 +32,7 @@ This function determines the central tendency of values within an array. When no
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> data = ap.ndarray.from_numpy(np.array([[5, 8], [2, 9]], dtype=np.int32))
+>>> data = ap.ndarray.from_numpy(np.array([[5, 8], [2, 9]], dtype=np.float32))
 >>> ap.mean(data)
 6.0
 >>> ap.mean(data, axis=0)
