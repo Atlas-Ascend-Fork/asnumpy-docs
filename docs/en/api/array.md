@@ -4,6 +4,10 @@
 This API section currently keeps a curated subset of representative APIs that have been validated against unit tests. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes.This document is for reference only.
 :::
 
+::: tip
+The public `asnumpy.ndarray` display is `ndarray(shape=..., dtype=...)`. The examples below call `.to_numpy()` to display array values; this copies data from the device to the host. The displayed values are illustrative; NumPy may also show a dtype annotation.
+:::
+
 ## asnumpy.zeros
 
 ```python
@@ -33,9 +37,9 @@ The returned array is allocated by asnumpy and may reside on an accelerator devi
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.zeros(3)
+>>> ap.zeros(3).to_numpy()
 array([0., 0., 0.])
->>> ap.zeros((2, 2), dtype=int)
+>>> ap.zeros((2, 2), dtype=int).to_numpy()
 array([[0, 0],
        [0, 0]])
 ```
@@ -66,7 +70,7 @@ This function returns a new `asnumpy.ndarray` whose shape matches the input obje
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> ap.zeros_like(x, dtype=x.dtype)
+>>> ap.zeros_like(x, dtype=x.dtype).to_numpy()
 array([[0, 0],
        [0, 0]])
 ```
@@ -102,10 +106,10 @@ Current test coverage shows that `full` is validated for common floating-point t
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.full((2, 2), 7, dtype=ap.int32)
+>>> ap.full((2, 2), 7, dtype=ap.int32).to_numpy()
 array([[7, 7],
        [7, 7]])
->>> ap.full((2, 3), 3.5, dtype=ap.float32)
+>>> ap.full((2, 3), 3.5, dtype=ap.float32).to_numpy()
 array([[3.5, 3.5, 3.5],
        [3.5, 3.5, 3.5]])
 ```
@@ -139,7 +143,7 @@ Current test coverage shows that `full_like` is validated for common floating-po
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([1, 2, 3, 4], dtype=np.int32))
->>> ap.full_like(x, 9, dtype=x.dtype)
+>>> ap.full_like(x, 9, dtype=x.dtype).to_numpy()
 array([9, 9, 9, 9])
 ```
 
@@ -167,7 +171,7 @@ The array shape and dtype are determined by the parameters.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.empty((2, 2))
+>>> ap.empty((2, 2)).to_numpy()
 array([[... , ...],
        [... , ...]])
 ```
@@ -199,7 +203,7 @@ Allocate an uninitialized array with dimensions copied from the input.
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> a = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> ap.empty_like(a, dtype=a.dtype)
+>>> ap.empty_like(a, dtype=a.dtype).to_numpy()
 array([[... , ...],
        [... , ...]])
 ```
@@ -237,7 +241,7 @@ Current test coverage shows that `eye` is validated for `float32`, common signed
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.eye(3, dtype=ap.int32)
+>>> ap.eye(3, dtype=ap.int32).to_numpy()
 array([[1, 0, 0],
        [0, 1, 0],
        [0, 0, 1]])
@@ -268,7 +272,7 @@ Current test coverage shows that `ones` is validated for `float32`, `float64`, c
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.ones(4, dtype=ap.float32)
+>>> ap.ones(4, dtype=ap.float32).to_numpy()
 array([1., 1., 1., 1.])
 ```
 
@@ -299,7 +303,7 @@ Current test coverage shows that `ones_like` is validated for `float32`, `float6
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([[0, 1, 2], [3, 4, 5]], dtype=np.int32))
->>> ap.ones_like(x, dtype=x.dtype)
+>>> ap.ones_like(x, dtype=x.dtype).to_numpy()
 array([[1, 1, 1],
        [1, 1, 1]])
 ```
@@ -326,7 +330,7 @@ Current test coverage shows that `identity` is validated for `float32`, common s
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.identity(3, dtype=ap.int32)
+>>> ap.identity(3, dtype=ap.int32).to_numpy()
 array([[1, 0, 0],
        [0, 1, 0],
        [0, 0, 1]])

@@ -4,6 +4,10 @@
 当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
 :::
 
+::: tip
+公开 `asnumpy.ndarray` 的显示形式为 `ndarray(shape=..., dtype=...)`。下面的示例调用 `.to_numpy()` 显示数组数值；该操作会将数据从设备复制到主机。输出中的数值仅作示意，NumPy 也可能显示 dtype 标注。
+:::
+
 ## asnumpy.zeros
 
 ```python
@@ -31,9 +35,9 @@ asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.zeros(3)
+>>> ap.zeros(3).to_numpy()
 array([0., 0., 0.])
->>> ap.zeros((2, 2), dtype=int)
+>>> ap.zeros((2, 2), dtype=int).to_numpy()
 array([[0, 0],
        [0, 0]])
 ```
@@ -64,7 +68,7 @@ asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> ap.zeros_like(x, dtype=x.dtype)
+>>> ap.zeros_like(x, dtype=x.dtype).to_numpy()
 array([[0, 0],
        [0, 0]])
 ```
@@ -100,10 +104,10 @@ asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike = None) -> nd
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.full((2, 2), 7, dtype=ap.int32)
+>>> ap.full((2, 2), 7, dtype=ap.int32).to_numpy()
 array([[7, 7],
        [7, 7]])
->>> ap.full((2, 3), 3.5, dtype=ap.float32)
+>>> ap.full((2, 3), 3.5, dtype=ap.float32).to_numpy()
 array([[3.5, 3.5, 3.5],
        [3.5, 3.5, 3.5]])
 ```
@@ -137,7 +141,7 @@ asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) 
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([1, 2, 3, 4], dtype=np.int32))
->>> ap.full_like(x, 9, dtype=x.dtype)
+>>> ap.full_like(x, 9, dtype=x.dtype).to_numpy()
 array([9, 9, 9, 9])
 ```
 
@@ -164,7 +168,7 @@ asnumpy.empty(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.empty((2, 2))
+>>> ap.empty((2, 2)).to_numpy()
 array([[... , ...],
        [... , ...]])
 ```
@@ -196,7 +200,7 @@ asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike = None) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> a = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> ap.empty_like(a, dtype=a.dtype)
+>>> ap.empty_like(a, dtype=a.dtype).to_numpy()
 array([[... , ...],
        [... , ...]])
 ```
@@ -233,7 +237,7 @@ asnumpy.eye(n: int, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.eye(3, dtype=ap.int32)
+>>> ap.eye(3, dtype=ap.int32).to_numpy()
 array([[1, 0, 0],
        [0, 1, 0],
        [0, 0, 1]])
@@ -264,7 +268,7 @@ asnumpy.ones(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.ones(4, dtype=ap.float32)
+>>> ap.ones(4, dtype=ap.float32).to_numpy()
 array([1., 1., 1., 1.])
 ```
 
@@ -295,7 +299,7 @@ asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([[0, 1, 2], [3, 4, 5]], dtype=np.int32))
->>> ap.ones_like(x, dtype=x.dtype)
+>>> ap.ones_like(x, dtype=x.dtype).to_numpy()
 array([[1, 1, 1],
        [1, 1, 1]])
 ```
@@ -322,7 +326,7 @@ asnumpy.identity(n: int, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.identity(3, dtype=ap.int32)
+>>> ap.identity(3, dtype=ap.int32).to_numpy()
 array([[1, 0, 0],
        [0, 1, 0],
        [0, 0, 1]])
