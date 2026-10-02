@@ -20,11 +20,11 @@ Current test coverage indicates verified support for `int8`, `int16`, `int32`, `
 
 **Arguments**
 - `a` (ArrayLike): The input array whose elements will be rearranged.
-- `axis` (int or None, optional): Dimension for sorting operations. Defaults to the final dimension (-1). Supplying None flattens the array prior to sorting.
+- `axis` (int, optional): Dimension for sorting operations. Defaults to the final dimension (-1). The current native binding requires an integer axis; `axis=None` does not flatten the input and is not supported.
 - `stable` (bool, optional): Whether to perform a stable sort that preserves the order of equal elements. Default is False.
 
 **Returns**
-- `ndarray`: A new array with elements sorted along the specified axis. Shape matches the input except when flattened.
+- `ndarray`: A new array with elements sorted along the specified axis. Shape matches the input.
 
 **See Also**
 - [`numpy.sort`](https://numpy.org/doc/stable/reference/generated/numpy.sort.html): NumPy equivalent for sorting arrays.
@@ -44,9 +44,19 @@ array([[1, 3],
 >>> ap.sort(arr, axis=0)
 array([[2, 1],
        [3, 4]])
->>> ap.sort(arr, axis=None)
-array([1, 2, 3, 4])
 >>> ap.sort(arr, stable=True)
 array([[1, 3],
        [2, 4]])
 ```
+
+::: warning
+Unlike `numpy.sort`, the current AsNumPy wrapper forwards `axis` to an integer-only native binding. To sort all elements, explicitly flatten the host array, upload it, and use the default axis:
+
+```python
+>>> flat = ap.ndarray.from_numpy(arr.to_numpy().reshape(-1))
+>>> ap.sort(flat).to_numpy()
+array([1, 2, 3, 4], dtype=int32)
+```
+
+This workaround copies data to the host and back to the device.
+:::

@@ -20,11 +20,11 @@ asnumpy.sort(a: ArrayLike, axis: int = -1, stable: bool = False) -> ndarray
 
 **参数**
 - `a` (ArrayLike): 要重新排列元素的输入数组。
-- `axis` (int 或 None, 可选): 排序操作的维度。默认为最后一个维度 (-1)。提供 None 则在排序前展平数组。
+- `axis` (int, 可选): 排序操作的维度。默认为最后一个维度 (-1)。当前原生绑定要求整数轴；`axis=None` 不会展平输入，尚不支持。
 - `stable` (bool, 可选): 是否执行保持相等元素顺序的稳定排序。默认为 False。
 
 **返回值**
-- `ndarray`: 沿指定轴排序元素的新数组。除非展平，否则形状与输入匹配。
+- `ndarray`: 沿指定轴排序元素的新数组。形状与输入匹配。
 
 **参见**
 - [`numpy.sort`](https://numpy.org/doc/stable/reference/generated/numpy.sort.html): NumPy 数组排序等效函数。
@@ -44,9 +44,19 @@ array([[1, 3],
 >>> ap.sort(arr, axis=0)
 array([[2, 1],
        [3, 4]])
->>> ap.sort(arr, axis=None)
-array([1, 2, 3, 4])
 >>> ap.sort(arr, stable=True)
 array([[1, 3],
        [2, 4]])
 ```
+
+::: warning
+当前 AsNumPy 包装器将 `axis` 直接传给只接收整数轴的原生绑定，与 `numpy.sort` 的 `axis=None` 行为不同。若需对全部元素排序，可先在 Host 显式展平，再上传并使用默认轴：
+
+```python
+>>> flat = ap.ndarray.from_numpy(arr.to_numpy().reshape(-1))
+>>> ap.sort(flat).to_numpy()
+array([1, 2, 3, 4], dtype=int32)
+```
+
+该替代方式会将数据复制到 Host，再复制回设备。
+:::
