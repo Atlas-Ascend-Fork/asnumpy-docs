@@ -17,7 +17,7 @@ Check whether all elements evaluate to True.
 **Arguments**
 - `x` (ArrayLike): The input array to be checked.
 - `axis` (AxisLike, optional): The axis or axes along which to perform the logical AND reduction.
-- `keepdims` (bool, optional): If True, reduced axes are retained in the result.
+- `keepdims` (bool, optional): Retains reduced axes when `axis` is explicitly provided. In the current implementation, `axis=None` uses the global reduction overload, which ignores `keepdims` and returns a 0-D ndarray.
 
 **Returns**
 - `ndarray`: A boolean array or scalar indicating whether all elements evaluate to True.
@@ -25,6 +25,8 @@ Check whether all elements evaluate to True.
 **See Also**
 - [`numpy.all`](https://numpy.org/doc/stable/reference/generated/numpy.all.html)
 - [`asnumpy.any`](#asnumpy-any)
+
+To retain every axis during a full reduction, pass the explicit non-negative axis sequence, for example `ap.all(a, axis=list(range(a.ndim)), keepdims=True)`. This selects the axis reduction overload; `ap.all(a, keepdims=True)` does not retain the axes in the current version.
 
 **Examples**
 ```python
@@ -47,7 +49,7 @@ Check whether any element evaluates to True.
 **Arguments**
 - `x` (ArrayLike): The input array to be checked.
 - `axis` (AxisLike, optional): The axis or axes along which to perform the logical OR reduction.
-- `keepdims` (bool, optional): If True, reduced axes are retained in the result.
+- `keepdims` (bool, optional): Retains reduced axes when `axis` is explicitly provided. In the current implementation, `axis=None` uses the global reduction overload, which ignores `keepdims` and returns a 0-D ndarray.
 
 **Returns**
 - `ndarray`: A boolean array or scalar indicating whether any element evaluates to True.
@@ -55,6 +57,8 @@ Check whether any element evaluates to True.
 **See Also**
 - [`numpy.any`](https://numpy.org/doc/stable/reference/generated/numpy.any.html)
 - [`asnumpy.all`](#asnumpy-all)
+
+To retain every axis during a full reduction, pass the explicit non-negative axis sequence, for example `ap.any(a, axis=list(range(a.ndim)), keepdims=True)`. This selects the axis reduction overload; `ap.any(a, keepdims=True)` does not retain the axes in the current version.
 
 **Examples**
 ```python
