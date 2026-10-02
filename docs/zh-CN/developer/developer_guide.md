@@ -558,10 +558,18 @@ def test_func(xp, dtype):
 - `for_orders(orders)` - 指定内存顺序列表
 - `for_cf_orders()` - C 和 F 顺序
 
+此例复用上文导入的 `numpy` 和 `testing`，测试 C/F 顺序的主机输入。AsNumpy 的 `zeros` 没有 `order` 参数；上传前先转换为连续 C 顺序，这并不要求设备数组使用 Fortran 顺序存储。外层 dtype 装饰器使 pytest 入口无需参数。
+
 ```python
+import asnumpy as ap
+
+@testing.for_dtypes([numpy.float32, numpy.float64])
 @testing.for_orders(['C', 'F'])
-def test_func(xp, order):
-    return xp.zeros((3, 3), order=order)
+def test_func(dtype, order):
+    host = numpy.array([[1, 2, 3], [4, 5, 6]], dtype=dtype, order=order)
+    # Normalize the host input before transferring it to the device.
+    actual = ap.ndarray.from_numpy(numpy.ascontiguousarray(host))
+    testing.assert_array_equal(actual.to_numpy(), host)
 ```
 
 #### NumPy-Asnumpy 比较装饰器
