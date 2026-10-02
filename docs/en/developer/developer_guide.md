@@ -546,10 +546,13 @@ AsNumpy provides rich test decorators for parameterized testing and result compa
 - `for_unsigned_dtypes()` - Unsigned integers (uint8-16)
 - `for_complex_dtypes()` - Complex types (complex64, complex128)
 
+Reuse the imports and `_create_array` helper from the test case above. The outer dtype decorator supplies `dtype`; the inner comparison decorator supplies `xp` and compares both results. The dtype decorator alone does not supply `xp`.
+
 ```python
 @testing.for_float_dtypes(no_float16=True)
+@testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
 def test_func(xp, dtype):
-    a = xp.array([1.0, 2.0, 3.0], dtype=dtype)
+    a = _create_array(xp, [1.0, 2.0, 3.0], dtype)
     return xp.sinc(a)
 ```
 
@@ -570,9 +573,10 @@ def test_func(xp, order):
 - `numpy_asnumpy_allclose(rtol=1e-7, atol=0)` - Compare floating-point arrays for closeness (set relative/absolute tolerance)
 
 ```python
+@testing.for_dtypes([numpy.float32, numpy.float64])
 @testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
 def test_func(xp, dtype):
-    a = xp.array([1.0, 2.0, 3.0], dtype=dtype)
+    a = _create_array(xp, [1.0, 2.0, 3.0], dtype)
     return xp.sinc(a)
 ```
 

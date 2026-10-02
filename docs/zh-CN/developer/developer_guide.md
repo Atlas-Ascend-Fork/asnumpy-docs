@@ -546,10 +546,13 @@ asnumpy 提供了丰富的测试装饰器，用于参数化测试和结果比较
 - `for_unsigned_dtypes()` - 无符号整数（uint8-16）
 - `for_complex_dtypes()` - 复数类型（complex64、complex128）
 
+复用上面测试用例中的导入和 `_create_array` 辅助函数。外层数据类型装饰器提供 `dtype`，内层比较装饰器提供 `xp` 并比较两个结果；数据类型装饰器本身不会提供 `xp`。
+
 ```python
 @testing.for_float_dtypes(no_float16=True)
+@testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
 def test_func(xp, dtype):
-    a = xp.array([1.0, 2.0, 3.0], dtype=dtype)
+    a = _create_array(xp, [1.0, 2.0, 3.0], dtype)
     return xp.sinc(a)
 ```
 
@@ -570,9 +573,10 @@ def test_func(xp, order):
 - `numpy_asnumpy_allclose(rtol=1e-7, atol=0)` - 比较浮点数组是否接近（设置相对/绝对容差）
 
 ```python
+@testing.for_dtypes([numpy.float32, numpy.float64])
 @testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
 def test_func(xp, dtype):
-    a = xp.array([1.0, 2.0, 3.0], dtype=dtype)
+    a = _create_array(xp, [1.0, 2.0, 3.0], dtype)
     return xp.sinc(a)
 ```
 
