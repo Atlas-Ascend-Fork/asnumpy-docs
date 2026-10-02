@@ -146,6 +146,8 @@ print("✓ Installation verified successfully!")
 
 ## Troubleshooting
 
+Source-install commands below run from the cloned AsNumpy implementation repository. Keep pip's default build isolation so it installs the build requirements declared in that checkout's `pyproject.toml`. If you deliberately use `--no-build-isolation`, first install all requirements in `[build-system].requires` into the active Python environment, including their version constraints; pip will not bootstrap them for you. This does not replace the CANN, compiler, or system prerequisites. See the [pip option reference](https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-no-build-isolation).
+
 ### Common Issues
 
 #### Import Error
@@ -155,7 +157,7 @@ print("✓ Installation verified successfully!")
 **Solution:**
 1. Ensure AsNumpy is installed: `pip list | grep asnumpy`
 2. Check you're using the correct Python environment
-3. Try reinstalling: `pip install -e . --no-build-isolation`
+3. Try reinstalling: `python -m pip install -e .`
 
 #### Compilation Error
 
@@ -165,9 +167,9 @@ print("✓ Installation verified successfully!")
 1. Check CMake version: `cmake --version` (need >= 3.26)
 2. Check GCC version: `gcc --version` (need >= 11.2)
 3. Verify environment variable: `echo $ASCEND_TOOLKIT_HOME`
-4. Clean rebuild:
+4. Retry the source installation:
    ```bash
-   pip install -e . --no-build-isolation
+   python -m pip install -e .
    ```
 
 #### Runtime Error

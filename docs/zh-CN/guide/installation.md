@@ -146,6 +146,8 @@ print("✓ 安装验证成功！")
 
 ## 故障排除
 
+下列源码安装命令应在已克隆的 AsNumpy 实现仓库中执行。保留 pip 默认的构建隔离，以自动安装该版本 `pyproject.toml` 声明的构建依赖。若确实需要 `--no-build-isolation`，请先在当前 Python 环境安装 `[build-system].requires` 中的全部依赖并满足版本约束；该选项不会自动补齐构建依赖。CANN、编译器及系统依赖仍需按前述要求准备。参见 [pip 选项说明](https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-no-build-isolation)。
+
 ### 常见问题
 
 #### 导入错误
@@ -155,7 +157,7 @@ print("✓ 安装验证成功！")
 **解决方案：**
 1. 确认 AsNumpy 已安装：`pip list | grep asnumpy`
 2. 检查是否使用了正确的 Python 环境
-3. 尝试重新安装：`pip install -e . --no-build-isolation`
+3. 尝试重新安装：`python -m pip install -e .`
 
 #### 编译错误
 
@@ -165,9 +167,9 @@ print("✓ 安装验证成功！")
 1. 检查 CMake 版本：`cmake --version`（需要 >= 3.26）
 2. 检查 GCC 版本：`gcc --version`（需要 >= 11.2）
 3. 验证环境变量：`echo $ASCEND_TOOLKIT_HOME`
-4. 清理并重新构建：
+4. 重新安装源码：
    ```bash
-   pip install -e . --no-build-isolation
+   python -m pip install -e .
    ```
 
 #### 运行时错误

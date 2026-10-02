@@ -34,7 +34,7 @@ cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
 
 4. **尝试清理重建**：
    ```bash
-   pip install -e . --no-build-isolation
+   python -m pip install -e .
    ```
 
 ### 硬件要求是什么？
@@ -144,6 +144,8 @@ AsNumpy 支持以下数据类型：
 
 ## 故障排除
 
+下列源码安装命令应在已克隆的 AsNumpy 实现仓库中执行。保留 pip 默认的构建隔离，以自动安装该版本 `pyproject.toml` 声明的构建依赖。若确实需要 `--no-build-isolation`，请先在当前 Python 环境安装 `[build-system].requires` 中的全部依赖并满足版本约束；该选项不会自动补齐构建依赖。CANN、编译器及系统依赖仍需按前述要求准备。参见 [pip 选项说明](https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-no-build-isolation)。
+
 ### 出现 `ModuleNotFoundError: No module named 'asnumpy'`
 
 1. 验证安装：
@@ -158,7 +160,7 @@ AsNumpy 支持以下数据类型：
 
 3. 重新安装：
    ```bash
-   pip install -e . --no-build-isolation
+   python -m pip install -e .
    ```
 
 ### 出现 `RuntimeError: ACL error ...`
