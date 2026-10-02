@@ -12,13 +12,12 @@ This page currently documents a curated subset of representative APIs that have 
 asnumpy.dot(a: ArrayLike, b: ArrayLike) -> ndarray
 ```
 
-Perform a dot product or tensor contraction depending on the input dimensions.
+The implementation selects its computation path from the input dtypes:
 
-This function processes inputs `a` and `b` according to their dimensions.
-- For 1-D arrays, it computes the inner product of vectors.
-- For 2-D arrays, it performs matrix multiplication.
-- For 0-D (scalar) inputs, it performs scalar multiplication.
-- For N-D arrays, it generally computes a sum product over the last axis of `a` and the second-to-last axis of `b`.
+- If either input has dtype `float64`, the Python wrapper uses Host `numpy.dot`, including its scalar and N-D dimensionality rules, then converts the result to an AsNumpy ndarray.
+- Otherwise, the native implementation currently handles only pairs of two 0-D inputs, two 1-D inputs (vector dot product), or two 2-D inputs (matrix multiplication). Mixed-dimensional pairs and inputs with more than two dimensions are rejected by this path.
+
+The NumPy reference below describes NumPy's general semantics. Those additional dimensionality combinations are available through the float64 Host fallback, but are not implemented by the native path.
 
 **Arguments**
 - `a` (ArrayLike): The first input array.
