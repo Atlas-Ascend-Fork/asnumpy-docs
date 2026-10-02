@@ -50,7 +50,7 @@ asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `other` (ArrayLike): 提供输出数组形状的参考对象。
-- `dtype` (DTypeLike, 可选): 返回数组的数据类型。未显式指定时通常按输入推断；在当前 asnumpy 测试用例中，`*_like` 系列通常显式传入 `dtype` 以确保行为与 NumPy 对齐。
+- `dtype` (DTypeLike, 可选): 返回数组的数据类型。当前前端将该参数转发给 native 函数；native 根据 `other.shape` 和传入 dtype 构造结果，没有选择 `other.dtype` 的逻辑。若需保留输入类型，应像示例一样显式传入 `dtype=other.dtype`，不要依赖省略参数时的 NumPy 式 dtype 继承。
 
 **返回值**
 - `ndarray`: 填充零且与 `other` 形状相同的数组。
