@@ -51,7 +51,7 @@ m2_npu = ap.ndarray.from_numpy(m2)
 # 在 NPU 上计算
 product = ap.multiply(m1_npu, m2_npu)
 result = ap.sum(product)
-print(result.to_numpy())
+print(result)
 ```
 
 </td>
@@ -83,7 +83,7 @@ npu_total = ap.sum(npu_prod)
 # 4. 将结果传回 CPU
 print("Sum:   ", npu_sum.to_numpy())    # [11. 22. 33. 44.]
 print("Prod:  ", npu_prod.to_numpy())   # [ 10.  40.  90. 160.]
-print("Total: ", npu_total.to_numpy())  # 300.0
+print("Total: ", npu_total)  # 300.0
 
 # 5. 与 NumPy 结果进行验证
 assert np.allclose(npu_sum.to_numpy(), np.add(np_a, np_b))
