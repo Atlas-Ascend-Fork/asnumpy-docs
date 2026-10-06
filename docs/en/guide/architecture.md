@@ -62,7 +62,7 @@ Users never interact with these fields directly; the Python layer presents a cle
 
 Data transfer:
 - `FromNumpy` — uses `ACL_MEMCPY_HOST_TO_DEVICE`
-- `ToNumpy` — uses `ACL_MEMCPY_DEVICE_TO_HOST`; `float16` / `BF16` require special `uint16_t` unpacking
+- `ToNumpy` — uses `ACL_MEMCPY_DEVICE_TO_HOST`; it creates the host array from the array's `dtype`/`shape`, verifies that the host buffer and device tensor byte sizes match, and then performs a single raw copy — `float16` and other types are copied directly in their binary representation, with no `uint16_t` unpacking. The supported dtype table includes `float16` but not `BF16` (`BF16` appears only in `UnsupportedItemSize` for byte-size diagnostics and is not transferable to Python)
 
 ## API Architecture
 
