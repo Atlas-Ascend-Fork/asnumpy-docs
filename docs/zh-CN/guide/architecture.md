@@ -62,7 +62,7 @@ AsNumpy 建立在三层结构上，清晰地分离关注点：
 
 数据传输：
 - `FromNumpy` — 使用 `ACL_MEMCPY_HOST_TO_DEVICE`
-- `ToNumpy` — 使用 `ACL_MEMCPY_DEVICE_TO_HOST`；`float16` / `BF16` 需要特殊的 `uint16_t` 解包处理
+- `ToNumpy` — 使用 `ACL_MEMCPY_DEVICE_TO_HOST`；按数组的 `dtype`/`shape` 创建主机数组并校验两端字节数一致后，统一原样复制，`float16` 等类型直接按其二进制表示拷贝，无需 `uint16_t` 解包。受支持的 dtype 表中包含 `float16` 而不含 `BF16`（`BF16` 仅用于 `UnsupportedItemSize` 的字节大小诊断，不支持传输到 Python）
 
 ## API 架构
 
