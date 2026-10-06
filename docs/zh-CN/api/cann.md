@@ -61,7 +61,7 @@ asnumpy.init() -> None
 此函数初始化 CANN 运行时并为 NPU 计算做准备。
 
 ::: tip
-在大多数情况下，您不需要显式调用此函数。当您首次使用 asnumpy 时，它会自动调用。
+该调用发生在 `import asnumpy` 阶段：模块在导入时会自动执行 `init()` 与 `set_device(0)` 两步，因此在大多数情况下您不需要显式调用本函数。注意 `init()` 本身只转发底层 `aclInit`，并不会选择设备；设备选择由 `set_device` 独立完成。
 :::
 
 ## asnumpy.finalize
@@ -75,5 +75,5 @@ asnumpy.finalize() -> None
 此函数释放 CANN 资源，当您完成使用 asnumpy 时应调用此函数。
 
 ::: warning
-调用 `finalize()` 后，必须再次调用 `init()` 才能使用任何 asnumpy 函数。
+调用 `finalize()` 后若要继续使用 asnumpy，需要先调用 `init()` 重新初始化，再调用 `set_device(0)` 选择设备（选择设备是独立于 `init()` 的一步）。重新初始化前请先释放上一轮的数组并结束相关操作，避免复用已释放的资源。
 :::
