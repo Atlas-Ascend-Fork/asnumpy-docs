@@ -52,7 +52,7 @@ This function returns a new `asnumpy.ndarray` whose shape matches the input obje
 
 **Arguments**
 - `other` (ArrayLike): Reference object that provides the shape of the output array.
-- `dtype` (DTypeLike, optional): Data type of the returned array. When not explicitly provided, it is usually inferred from the input; in current AsNumpy test cases, the `*_like` family is typically called with an explicit `dtype` to keep behavior aligned with NumPy.
+- `dtype` (DTypeLike, optional): Data type of the returned array. When omitted, `None` is forwarded unchanged to the underlying `Zeros_like`, which constructs the array solely from `other`'s shape and the passed `dtype`; it is not inferred from `other`. To keep the input dtype, pass `dtype=other.dtype` explicitly.
 
 **Returns**
 - `ndarray`: An array filled with zeros and having the same shape as `other`.
