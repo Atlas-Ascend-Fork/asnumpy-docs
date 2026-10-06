@@ -61,7 +61,7 @@ Initialize the CANN backend.
 This function initializes the CANN runtime and prepares the NPU for computation.
 
 ::: tip
-In most cases, you don't need to call this function explicitly. It will be called automatically when you first use asnumpy.
+This call happens during `import asnumpy`: the module automatically runs `init()` followed by `set_device(0)` at import time, so in most cases you don't need to call it explicitly. Note that `init()` itself only forwards to the underlying `aclInit` and does not select a device; device selection is performed separately by `set_device`.
 :::
 
 ## asnumpy.finalize
@@ -75,5 +75,5 @@ Finalize the CANN backend.
 This function releases CANN resources and should be called when you're done using asnumpy.
 
 ::: warning
-After calling `finalize()`, you must call `init()` again before using any asnumpy functions.
+After calling `finalize()`, you must call `init()` to re-initialize and then `set_device(0)` to select the device (device selection is a separate step that `init()` does not perform) before using any asnumpy functions. Release the arrays from the previous session and finish pending operations first to avoid reusing freed resources.
 :::
