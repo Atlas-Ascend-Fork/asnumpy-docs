@@ -4,6 +4,10 @@
 当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
 :::
 
+::: tip
+公开 `asnumpy.ndarray` 的显示形式为 `ndarray(shape=..., dtype=...)`。下面的示例调用 `.to_numpy()` 显示数组数值；该操作会将数据从设备复制到主机。示例显式指定dtype，并在输出中保留对应的NumPy dtype标注；`empty` 和 `empty_like` 中未初始化的数值仍仅作示意。
+:::
+
 ## asnumpy.zeros
 
 ```python
@@ -31,11 +35,11 @@ asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.zeros(3)
-array([0., 0., 0.])
->>> ap.zeros((2, 2), dtype=int)
+>>> ap.zeros(3, dtype=ap.float32).to_numpy()
+array([0., 0., 0.], dtype=float32)
+>>> ap.zeros((2, 2), dtype=ap.int32).to_numpy()
 array([[0, 0],
-       [0, 0]])
+       [0, 0]], dtype=int32)
 ```
 
 ## asnumpy.zeros_like
@@ -64,9 +68,9 @@ asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> ap.zeros_like(x, dtype=x.dtype)
+>>> ap.zeros_like(x, dtype=x.dtype).to_numpy()
 array([[0, 0],
-       [0, 0]])
+       [0, 0]], dtype=int32)
 ```
 
 ## asnumpy.full
@@ -100,12 +104,12 @@ asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike = None) -> nd
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.full((2, 2), 7, dtype=ap.int32)
+>>> ap.full((2, 2), 7, dtype=ap.int32).to_numpy()
 array([[7, 7],
-       [7, 7]])
->>> ap.full((2, 3), 3.5, dtype=ap.float32)
+       [7, 7]], dtype=int32)
+>>> ap.full((2, 3), 3.5, dtype=ap.float32).to_numpy()
 array([[3.5, 3.5, 3.5],
-       [3.5, 3.5, 3.5]])
+       [3.5, 3.5, 3.5]], dtype=float32)
 ```
 
 ## asnumpy.full_like
@@ -137,8 +141,8 @@ asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) 
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([1, 2, 3, 4], dtype=np.int32))
->>> ap.full_like(x, 9, dtype=x.dtype)
-array([9, 9, 9, 9])
+>>> ap.full_like(x, 9, dtype=x.dtype).to_numpy()
+array([9, 9, 9, 9], dtype=int32)
 ```
 
 ## asnumpy.empty
@@ -164,9 +168,9 @@ asnumpy.empty(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.empty((2, 2))
+>>> ap.empty((2, 2), dtype=ap.float32).to_numpy()
 array([[... , ...],
-       [... , ...]])
+       [... , ...]], dtype=float32)
 ```
 
 ::: tip
@@ -196,9 +200,9 @@ asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike = None) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> a = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> ap.empty_like(a, dtype=a.dtype)
+>>> ap.empty_like(a, dtype=a.dtype).to_numpy()
 array([[... , ...],
-       [... , ...]])
+       [... , ...]], dtype=int32)
 ```
 
 ::: tip
@@ -233,10 +237,10 @@ asnumpy.eye(n: int, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.eye(3, dtype=ap.int32)
+>>> ap.eye(3, dtype=ap.int32).to_numpy()
 array([[1, 0, 0],
        [0, 1, 0],
-       [0, 0, 1]])
+       [0, 0, 1]], dtype=int32)
 ```
 
 ## asnumpy.ones
@@ -264,8 +268,8 @@ asnumpy.ones(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.ones(4, dtype=ap.float32)
-array([1., 1., 1., 1.])
+>>> ap.ones(4, dtype=ap.float32).to_numpy()
+array([1., 1., 1., 1.], dtype=float32)
 ```
 
 ## asnumpy.ones_like
@@ -295,9 +299,9 @@ asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([[0, 1, 2], [3, 4, 5]], dtype=np.int32))
->>> ap.ones_like(x, dtype=x.dtype)
+>>> ap.ones_like(x, dtype=x.dtype).to_numpy()
 array([[1, 1, 1],
-       [1, 1, 1]])
+       [1, 1, 1]], dtype=int32)
 ```
 
 ## asnumpy.identity
@@ -322,10 +326,10 @@ asnumpy.identity(n: int, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.identity(3, dtype=ap.int32)
+>>> ap.identity(3, dtype=ap.int32).to_numpy()
 array([[1, 0, 0],
        [0, 1, 0],
-       [0, 0, 1]])
+       [0, 0, 1]], dtype=int32)
 ```
 <!--
 ## asnumpy.linspace
