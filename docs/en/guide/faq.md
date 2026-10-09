@@ -12,7 +12,7 @@ cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
 
 ### What should I do if I encounter a compilation error?
 
-1. Confirm CMake version >= 3.26: `cmake --version`
+1. Confirm CMake version >= 3.22: `cmake --version`
 2. Confirm GCC version >= 11.2: `gcc --version`
 3. Ensure the CANN environment variable is set:
    ```bash
@@ -35,9 +35,9 @@ cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
 
 ### How compatible is AsNumpy with NumPy?
 
-AsNumpy is designed to be API-compatible with NumPy, but operator coverage is not yet complete. The current version (v0.2.0) covers the most common math, logic, sorting, and array-creation APIs.
+AsNumpy is designed to be API-compatible with NumPy, but operator coverage is not yet complete. The current release (v0.4.0) covers the common math, logic, sorting, and array-creation functions, along with the `linalg`, `random`, `statistics`, `nn`, and `io` module interfaces; see the [API Reference](../api/index.md) for the full function list of each module.
 
-The roadmap target is to cover the **top 100 most-used NumPy APIs** by v1.0. See the [Roadmap](./introduction.md#roadmap) for the full plan.
+See [Version History](./introduction.md#version-history) for what each released version delivered.
 
 ### Do I need to manually initialize or finalize the NPU?
 
@@ -53,13 +53,21 @@ import asnumpy as ap  # Auto-initialized
 
 ### Why is AsNumpy slower than NumPy for small arrays?
 
-For small tensors (e.g., 500×500), NPU kernel launch overhead dominates the measured time. NPU acceleration becomes significant starting around 1000×1000 (`float32`). See [Benchmarks](./benchmarks.md) for detailed data.
+For small tensors (e.g., 500×500), NPU kernel launch overhead dominates the measured time. The overhead includes:
+
+- Kernel compilation/loading
+- Memory allocation on the device
+- Command queue submission
+
+**Solution:** from roughly 1000×1000 (`float32`) upward, NPU acceleration becomes significant.
 
 | Shape | Speedup |
 |-------|---------|
 | (500, 500) | 0.99× (roughly on par) |
 | (1000, 1000) | 3.25× |
 | (3000, 3000) | **35.70×** |
+
+See [Benchmarks](./benchmarks.md) for detailed data.
 
 ### How do I transfer data between CPU and NPU?
 
@@ -84,11 +92,11 @@ import asnumpy as ap
 
 # Use device 0
 ap.set_device(0)
-arr0 = ap.ones((100, 100))
+arr0 = ap.ones((100, 100), dtype=ap.float32)
 
 # Use device 1
 ap.set_device(1)
-arr1 = ap.ones((100, 100))
+arr1 = ap.ones((100, 100), dtype=ap.float32)
 ```
 
 ### What data types are supported?
@@ -154,6 +162,7 @@ Use `np.allclose()` for comparison:
 
 ```python
 import numpy as np
+import asnumpy as ap
 
 npu_result = ap.sum(arr)  # Returns a Python scalar when axis is None
 np_result = np.sum(cpu_arr)
@@ -176,3 +185,11 @@ Please include:
 - System information (OS, Python version, CANN version)
 - Complete error message
 - Minimal reproducible example
+
+## More Questions?
+
+If your question is not answered here:
+
+1. Check the [API Reference](../api/index.md)
+2. Search [existing issues](https://gitcode.com/cann/asnumpy/issues)
+3. Open a new issue

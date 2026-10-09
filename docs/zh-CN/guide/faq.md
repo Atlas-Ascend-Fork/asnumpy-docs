@@ -16,7 +16,7 @@ cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
 
 ### 遇到编译错误怎么办？
 
-1. **检查 CMake 版本**（必须 >= 3.26）：
+1. **检查 CMake 版本**（必须 >= 3.22）：
    ```bash
    cmake --version
    ```
@@ -49,14 +49,9 @@ cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
 
 ### AsNumpy 与 NumPy 的兼容性如何？
 
-AsNumpy 设计为与 NumPy API 兼容，但算子覆盖尚不完整。
+AsNumpy 设计为与 NumPy API 兼容，但算子覆盖尚不完整。当前版本（v0.4.0）已覆盖常用数学、逻辑、排序与数组创建函数，以及 `linalg`、`random`、`statistics`、`nn`、`io` 等模块的接口；各模块的完整函数清单见 [API 参考](../api/index.md)。
 
-| 版本 | 覆盖目标 |
-|---------|-----------------|
-| v0.2.0（当前） | 常用数学、逻辑、排序、数组创建 API |
-| v1.0 | 最常用的 100 个 NumPy API |
-
-完整计划请参见 [路线图](./introduction.md#路线图)。
+已发布版本的主要交付内容见 [版本历史](./introduction.md#版本历史)。
 
 ### 需要手动初始化或终结 NPU 吗？
 
@@ -116,11 +111,11 @@ import asnumpy as ap
 
 # 使用设备 0
 ap.set_device(0)
-arr0 = ap.ones((100, 100))
+arr0 = ap.ones((100, 100), dtype=ap.float32)
 
 # 使用设备 1
 ap.set_device(1)
-arr1 = ap.ones((100, 100))
+arr1 = ap.ones((100, 100), dtype=ap.float32)
 ```
 
 > **注意：** 要检查可用的 NPU 设备，请使用系统命令：
@@ -191,6 +186,7 @@ AsNumpy 支持以下数据类型：
 
 ```python
 import numpy as np
+import asnumpy as ap
 
 npu_result = ap.sum(arr)  # 无 axis 时返回 Python 标量
 np_result = np.sum(cpu_arr)
