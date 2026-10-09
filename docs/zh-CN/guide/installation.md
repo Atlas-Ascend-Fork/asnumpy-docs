@@ -17,7 +17,7 @@
 | 要求 | 版本 |
 |-------------|---------|
 | **GCC** | >= 11.2 |
-| **CMake** | >= 3.26 |
+| **CMake** | >= 3.22 |
 | **ninja-build** | >= 1.12（推荐） |
 | **Python** | >= 3.10 |
 | **CANN** | >= 8.2.RC1.alpha003 |
@@ -54,7 +54,7 @@ source ~/.bashrc
 gcc --version  # 应 >= 11.2
 
 # 检查 CMake 版本
-cmake --version  # 应 >= 3.26
+cmake --version  # 应 >= 3.22
 
 # 检查 Python 版本
 python --version  # 应 >= 3.10
@@ -164,7 +164,7 @@ print("✓ 安装验证成功！")
 **症状：** 构建失败，出现 CMake 或 GCC 错误
 
 **解决方案：**
-1. 检查 CMake 版本：`cmake --version`（需要 >= 3.26）
+1. 检查 CMake 版本：`cmake --version`（需要 >= 3.22）
 2. 检查 GCC 版本：`gcc --version`（需要 >= 11.2）
 3. 验证环境变量：`echo $ASCEND_TOOLKIT_HOME`
 4. 重新安装源码：

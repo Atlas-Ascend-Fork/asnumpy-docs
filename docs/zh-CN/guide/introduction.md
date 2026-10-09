@@ -69,19 +69,21 @@ AsNumpy 适用于：
 
 | 属性 | 值 |
 |-----------|-------|
-| **版本** | 0.2.0 |
+| **版本** | 0.4.0 |
 | **许可证** | Apache 2.0 |
 | **Python** | 3.10+ |
-| **CANN** | 8.2.RC1+ |
+| **CANN** | 8.2.RC1.alpha003+ |
 | **平台** | Ascend 910B |
 
-## 路线图
+## 版本历史
 
-| 版本 | 季度 | 关键交付内容 |
+下表列出已发布版本及其主要交付内容。
+
+| 版本 | 发布日期 | 主要交付内容 |
 |---------|---------|-----------------|
-| **v0.3.0** | 26Q1 | 文档网站（VitePress + GitCode Pages）、带硬件白名单的 CI/CD 流水线、代码质量改进（spdlog, clang-format）、PyPI 发布 |
-| **v0.4.0** | 26Q2 | 数学函数 100% API 覆盖、Ascend 950 验证、triton-ascend 算子集成（10 个算子）、内存池（实验性） |
-| **v0.5.0** | 26Q2 | 线性代数完整覆盖、triton-ascend 算子库扩展至 20 个算子、多 NPU 分布式计算研究 |
+| **v0.3.0** | 2026-05-29 | 仓库重构为 src-layout；C++ 代码拆分为 `csrc/`、`bindings/`、`include/`；引入 setuptools-scm 版本管理与 towncrier CHANGELOG |
+| **v0.3.1** | 2026-08-27 | 建立 NumPy 2.x 基线（依赖 `numpy>=2.0`）；逐元素算子改为 NumPy 式 dtype 提升；补齐 NumPy ufunc 互操作；更新 dtype 表并新增 CI 流水线 |
+| **v0.4.0** | 2026-09-24 | 新增 `nanmin`；角度/弧度算子改用 aclnnMuls（修复 float16/float32 量级错误并原生支持 float64）；修复 `hypot`/`mean` 数值错误；修复 `clip` 等 4 处 host 侧内存泄漏与 `radians`/`around`/`round_` 的 NPU 流泄漏；`linspace` 保留显式 int64 dtype |
 
 ## 致谢
 

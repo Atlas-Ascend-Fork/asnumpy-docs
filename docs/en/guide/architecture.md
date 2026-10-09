@@ -9,14 +9,16 @@ AsNumpy is built on three layers that cleanly separate concerns:
 ```
 +------------------------------------------+
 |     Python Frontend (src/asnumpy/*.py)    |
-|  - __init__.py   122+ exported symbols    |
-|  - array.py      array creation (10 fn)   |
-|  - math.py       math ops (80+ fn)        |
+|  - __init__.py   149 exported symbols     |
+|  - array.py      array creation (11 fn)   |
+|  - math.py       math ops (86 fn)         |
 |  - linalg/       linear algebra           |
 |  - random/       random sampling          |
 |  - logic.py      logic functions (16 fn)  |
+|  - sorting.py    sorting (1 fn)           |
 |  - nn.py         neural network (softmax) |
 |  - statistics.py statistics (mean)        |
+|  - io.py         I/O (4 fn)               |
 +------------------------------------------+
                     |
          pybind11 binding layer (bindings/python/*.cpp)
