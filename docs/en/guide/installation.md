@@ -24,7 +24,7 @@ This guide covers how to install AsNumpy on your system.
 
 ## Prerequisites
 
-### Install CANN
+### 1. Install CANN
 
 Ensure CANN is installed on your system. You can verify the installation:
 
@@ -32,7 +32,7 @@ Ensure CANN is installed on your system. You can verify the installation:
 cat /usr/local/Ascend/ascend-toolkit/latest/version.cfg
 ```
 
-### Set Environment Variables
+### 2. Set Environment Variables
 
 Set the CANN environment variable before building:
 
@@ -47,7 +47,7 @@ echo 'export ASCEND_TOOLKIT_HOME=/usr/local/Ascend/ascend-toolkit/latest' >> ~/.
 source ~/.bashrc
 ```
 
-### Verify Build Tools
+### 3. Verify Build Tools
 
 ```bash
 # Check GCC version
@@ -146,8 +146,6 @@ print("✓ Installation verified successfully!")
 
 ## Troubleshooting
 
-Source-install commands below run from the cloned AsNumpy implementation repository. Keep pip's default build isolation so it installs the build requirements declared in that checkout's `pyproject.toml`. If you deliberately use `--no-build-isolation`, first install all requirements in `[build-system].requires` into the active Python environment, including their version constraints; pip will not bootstrap them for you. This does not replace the CANN, compiler, or system prerequisites. See the [pip option reference](https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-no-build-isolation).
-
 ### Common Issues
 
 #### Import Error
@@ -157,7 +155,7 @@ Source-install commands below run from the cloned AsNumpy implementation reposit
 **Solution:**
 1. Ensure AsNumpy is installed: `pip list | grep asnumpy`
 2. Check you're using the correct Python environment
-3. Try reinstalling: `python -m pip install -e .`
+3. Try reinstalling: `pip install -e . --no-build-isolation`
 
 #### Compilation Error
 
@@ -167,9 +165,9 @@ Source-install commands below run from the cloned AsNumpy implementation reposit
 1. Check CMake version: `cmake --version` (need >= 3.26)
 2. Check GCC version: `gcc --version` (need >= 11.2)
 3. Verify environment variable: `echo $ASCEND_TOOLKIT_HOME`
-4. Retry the source installation:
+4. Clean rebuild:
    ```bash
-   python -m pip install -e .
+   pip install -e . --no-build-isolation
    ```
 
 #### Runtime Error

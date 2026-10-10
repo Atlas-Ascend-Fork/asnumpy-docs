@@ -1,6 +1,6 @@
 # Asnumpy 开发指南
 
-## 项目概述
+## 一、项目概述
 
 Asnumpy 是一个基于华为昇腾 NPU 的数值计算库，提供与 NumPy 兼容的 API，将计算任务转移到 NPU 上执行。项目采用分层架构：
 
@@ -40,7 +40,7 @@ asnumpy/
 
 ---
 
-## 开发流程
+## 二、开发流程
 
 开发新功能通常遵循以下步骤：
 
@@ -62,9 +62,9 @@ asnumpy/
 
 ---
 
-## 分支管理
+## 三、分支管理
 
-### 概述
+### 3.1 概述
 
 Asnumpy 采用简化的分支模型，基于单一主干分支，配合发布分支进行版本稳定：
 
@@ -78,7 +78,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
                                                 PR to master
 ```
 
-### 分支类型
+### 3.2 分支类型
 
 | 分支 | 用途 | 生命周期 |
 |------|------|----------|
@@ -88,7 +88,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
 | `release/vX.Y.Z` | 稳定版本并测试 | 随版本 |
 | `hotfix/<name>` | 将发布分支的修复回溯到主干 | 短期 |
 
-### 工作流
+### 3.3 工作流
 
 #### 功能开发
 
@@ -116,7 +116,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
    git tag v0.3.0
    ```
 4. 如果打标签后需要额外修复，在发布分支上应用修复并打新的补丁版本标签（例如 `v0.3.1`）。
-5. 将这些修复 cherry-pick 回 `master`（参见 [热修复流程](#热修复流程)）。
+5. 将这些修复 cherry-pick 回 `master`（参见 [热修复流程](#333-热修复流程)）。
 6. 当该发布系列不再维护时，删除发布分支：
    ```bash
    git branch -d release/v0.3.0
@@ -142,7 +142,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
 > **为什么要使用单独的热修复分支，而不是直接 cherry-pick 到 master？**
 > 专用分支允许修复经过 PR 审查和 CI 检查，确保与其他任何贡献保持相同的质量标准。
 
-### 合并策略
+### 3.4 合并策略
 
 **始终使用合并提交，不要 squash。**
 
@@ -154,7 +154,7 @@ git merge --no-ff feature/my-feature
 
 **原因：** Squash 合并会创建一个新提交，丢弃原始提交历史和作者信息。这会破坏仓库主页上的贡献统计数据，并使追溯原始作者变得更加困难。合并提交保留完整历史，并确保每位贡献者都得到正确署名。
 
-### 分支命名规范
+### 3.5 分支命名规范
 
 | 模式 | 示例 | 说明 |
 |------|------|------|
@@ -165,7 +165,7 @@ git merge --no-ff feature/my-feature
 
 分支名称使用小写 kebab-case。保持名称简洁但具有描述性。
 
-### CI/CD 流水线
+### 3.6 CI/CD 流水线
 
 CI/CD 流水线由事件触发，而非分支类型。配置以下规则：
 
@@ -177,7 +177,7 @@ CI/CD 流水线由事件触发，而非分支类型。配置以下规则：
 
 `feature/`、`fix/` 或 `hotfix/` 分支不需要额外的 CI 配置。只要 PR 以 `master` 为目标，无论源分支名称如何，CI 都会运行。
 
-### 贡献者工作流
+### 3.7 贡献者工作流
 
 #### 团队成员（有推送权限）
 
@@ -221,7 +221,7 @@ git push fork fix/signbit-error
 - **所有代码变更都经过 PR。** 禁止直接推送到 `master`。
 - **所有 PR 都经过 CI 和代码审查。** 无论贡献者是团队成员还是外部贡献者。
 
-### 提交规范与审查准则
+### 3.8 提交规范与审查准则
 
 #### 提交质量
 
@@ -272,11 +272,11 @@ git push --force  # rebase 后更新远程分支
 
 ---
 
-## 后端开发 (C++)
+## 四、后端开发 (C++)
 
 后端开发主要涉及在 C++ 层面实现 NPU 算子调用逻辑。本节以开发 `sinc` 函数为例。
 
-### 添加函数声明
+### 4.1 添加函数声明
 
 在对应的头文件中添加函数声明。`sinc` 属于数学模块的特殊函数，声明位于：
 
@@ -297,7 +297,7 @@ git push --force  # rebase 后更新远程分支
 NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype = std::nullopt);
 ```
 
-### 实现函数主体
+### 4.2 实现函数主体
 
 在对应的源文件中实现函数逻辑：
 
@@ -373,7 +373,7 @@ NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype) {
 }
 ```
 
-### 关键实现要点
+### 4.3 关键实现要点
 
 #### 错误处理
 
@@ -404,9 +404,9 @@ if (error != ACL_SUCCESS) {
 
 ---
 
-## 绑定层 (Pybind11)
+## 五、绑定层 (Pybind11)
 
-### 添加函数绑定
+### 5.1 添加函数绑定
 
 在对应的绑定文件中添加函数绑定：
 
@@ -431,11 +431,11 @@ namespace asnumpy {
 
 ---
 
-## 前端开发 (Python)
+## 六、前端开发 (Python)
 
 前端开发主要涉及将 C++ 函数暴露到 Python 层，并确保 API 与 NumPy 兼容。
 
-### 添加 Python 包装层
+### 6.1 添加 Python 包装层
 
 在对应的 Python 模块中导入 C++ 函数，并添加 Python 包装层：
 
@@ -458,7 +458,7 @@ def sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray:
     return ndarray(_sinc(x, _convert_dtype(dtype)))
 ```
 
-### 导出到主命名空间
+### 6.2 导出到主命名空间
 
 在主包的 `__init__.py` 中添加函数：
 
@@ -480,11 +480,11 @@ __all__ = [
 
 ---
 
-## 测试编写
+## 七、测试编写
 
 asnumpy 使用 pytest 和自定义测试框架编写测试。
 
-### 测试文件组织
+### 7.1 测试文件组织
 
 测试文件按模块组织，位于 `tests/asnumpy_tests/` 目录：
 
@@ -497,7 +497,7 @@ tests/
     └── ...
 ```
 
-### 编写测试用例
+### 7.2 编写测试用例
 
 **文件位置**: `tests/asnumpy_tests/math_tests/test_other_special_functions.py`
 
@@ -532,7 +532,7 @@ def test_sinc_zero(xp, dtype):
     return xp.sinc(a)
 ```
 
-### 装饰器说明
+### 7.3 装饰器说明
 
 asnumpy 提供了丰富的测试装饰器，用于参数化测试和结果比较。
 
@@ -546,13 +546,10 @@ asnumpy 提供了丰富的测试装饰器，用于参数化测试和结果比较
 - `for_unsigned_dtypes()` - 无符号整数（uint8-16）
 - `for_complex_dtypes()` - 复数类型（complex64、complex128）
 
-复用上面测试用例中的导入和 `_create_array` 辅助函数。外层数据类型装饰器提供 `dtype`，内层比较装饰器提供 `xp` 并比较两个结果；数据类型装饰器本身不会提供 `xp`。
-
 ```python
 @testing.for_float_dtypes(no_float16=True)
-@testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
 def test_func(xp, dtype):
-    a = _create_array(xp, [1.0, 2.0, 3.0], dtype)
+    a = xp.array([1.0, 2.0, 3.0], dtype=dtype)
     return xp.sinc(a)
 ```
 
@@ -561,18 +558,10 @@ def test_func(xp, dtype):
 - `for_orders(orders)` - 指定内存顺序列表
 - `for_cf_orders()` - C 和 F 顺序
 
-此例复用上文导入的 `numpy` 和 `testing`，测试 C/F 顺序的主机输入。AsNumpy 的 `zeros` 没有 `order` 参数；上传前先转换为连续 C 顺序，这并不要求设备数组使用 Fortran 顺序存储。外层 dtype 装饰器使 pytest 入口无需参数。
-
 ```python
-import asnumpy as ap
-
-@testing.for_dtypes([numpy.float32, numpy.float64])
 @testing.for_orders(['C', 'F'])
-def test_func(dtype, order):
-    host = numpy.array([[1, 2, 3], [4, 5, 6]], dtype=dtype, order=order)
-    # Normalize the host input before transferring it to the device.
-    actual = ap.ndarray.from_numpy(numpy.ascontiguousarray(host))
-    testing.assert_array_equal(actual.to_numpy(), host)
+def test_func(xp, order):
+    return xp.zeros((3, 3), order=order)
 ```
 
 #### NumPy-Asnumpy 比较装饰器
@@ -581,10 +570,9 @@ def test_func(dtype, order):
 - `numpy_asnumpy_allclose(rtol=1e-7, atol=0)` - 比较浮点数组是否接近（设置相对/绝对容差）
 
 ```python
-@testing.for_dtypes([numpy.float32, numpy.float64])
 @testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
 def test_func(xp, dtype):
-    a = _create_array(xp, [1.0, 2.0, 3.0], dtype)
+    a = xp.array([1.0, 2.0, 3.0], dtype=dtype)
     return xp.sinc(a)
 ```
 
@@ -604,9 +592,9 @@ def test_func(n):
 
 ---
 
-## 编译与运行
+## 八、编译与运行
 
-### 编译项目
+### 8.1 编译项目
 
 在开发模式下安装和编译项目：
 
@@ -614,7 +602,7 @@ def test_func(n):
 pip install -e .
 ```
 
-### 运行测试
+### 8.2 运行测试
 
 #### 运行所有测试
 

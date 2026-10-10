@@ -21,6 +21,7 @@ asnumpy.save(file, arr, allow_pickle=False)
 
 **参见**
 - [`numpy.save`](https://numpy.org/doc/stable/reference/generated/numpy.save.html)
+- [`asnumpy.load`](#asnumpy-load): 从文件加载数组。
 
 **示例**
 ```python

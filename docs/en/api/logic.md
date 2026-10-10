@@ -4,9 +4,6 @@
 This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
 :::
 
-Host values and NumPy arrays are not transferred to the NPU automatically.
-Convert array operands with `ap.ndarray.from_numpy()` first.
-
 ## Truth Value Testing
 
 ### asnumpy.all
@@ -20,7 +17,7 @@ Check whether all elements evaluate to True.
 **Arguments**
 - `x` (ArrayLike): The input array to be checked.
 - `axis` (AxisLike, optional): The axis or axes along which to perform the logical AND reduction.
-- `keepdims` (bool, optional): Retains reduced axes when `axis` is explicitly provided. In the current implementation, `axis=None` uses the global reduction overload, which ignores `keepdims` and returns a 0-D ndarray.
+- `keepdims` (bool, optional): If True, reduced axes are retained in the result.
 
 **Returns**
 - `ndarray`: A boolean array or scalar indicating whether all elements evaluate to True.
@@ -28,8 +25,6 @@ Check whether all elements evaluate to True.
 **See Also**
 - [`numpy.all`](https://numpy.org/doc/stable/reference/generated/numpy.all.html)
 - [`asnumpy.any`](#asnumpy-any)
-
-To retain every axis during a full reduction, pass the explicit non-negative axis sequence, for example `ap.all(a, axis=list(range(a.ndim)), keepdims=True)`. This selects the axis reduction overload; `ap.all(a, keepdims=True)` does not retain the axes in the current version.
 
 **Examples**
 ```python
@@ -52,7 +47,7 @@ Check whether any element evaluates to True.
 **Arguments**
 - `x` (ArrayLike): The input array to be checked.
 - `axis` (AxisLike, optional): The axis or axes along which to perform the logical OR reduction.
-- `keepdims` (bool, optional): Retains reduced axes when `axis` is explicitly provided. In the current implementation, `axis=None` uses the global reduction overload, which ignores `keepdims` and returns a 0-D ndarray.
+- `keepdims` (bool, optional): If True, reduced axes are retained in the result.
 
 **Returns**
 - `ndarray`: A boolean array or scalar indicating whether any element evaluates to True.
@@ -60,8 +55,6 @@ Check whether any element evaluates to True.
 **See Also**
 - [`numpy.any`](https://numpy.org/doc/stable/reference/generated/numpy.any.html)
 - [`asnumpy.all`](#asnumpy-all)
-
-To retain every axis during a full reduction, pass the explicit non-negative axis sequence, for example `ap.any(a, axis=list(range(a.ndim)), keepdims=True)`. This selects the axis reduction overload; `ap.any(a, keepdims=True)` does not retain the axes in the current version.
 
 **Examples**
 ```python
@@ -95,15 +88,10 @@ Apply boolean AND logic across corresponding elements of two arrays.
 
 **Examples**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
->>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
->>> ap.logical_and(x1, x2)
+>>> ap.logical_and(True, False)
 array(False)
->>> x1 = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
->>> x2 = ap.ndarray.from_numpy(np.array([True, True], dtype=np.bool_))
->>> ap.logical_and(x1, x2)
+>>> ap.logical_and([True, False], [True, True])
 array([ True, False])
 ```
 
@@ -127,11 +115,8 @@ Apply boolean OR logic across corresponding elements of two arrays.
 
 **Examples**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
->>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
->>> ap.logical_or(x1, x2)
+>>> ap.logical_or(True, False)
 array(True)
 ```
 
@@ -154,13 +139,10 @@ Invert the boolean value of each array element.
 
 **Examples**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
->>> ap.logical_not(x)
+>>> ap.logical_not(True)
 array(False)
->>> x = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
->>> ap.logical_not(x)
+>>> ap.logical_not([True, False])
 array([False,  True])
 ```
 
@@ -184,11 +166,8 @@ Apply exclusive OR logic across corresponding elements of two arrays.
 
 **Examples**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
->>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
->>> ap.logical_xor(x1, x2)
+>>> ap.logical_xor(True, False)
 array(True)
 ```
 
@@ -215,11 +194,8 @@ Determine whether elements of x1 are greater than those of x2.
 
 **Examples**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array([4, 2], dtype=np.int32))
->>> x2 = ap.ndarray.from_numpy(np.array([2, 2], dtype=np.int32))
->>> ap.greater(x1, x2)
+>>> ap.greater([4, 2], [2, 2])
 array([ True, False])
 ```
 
@@ -271,11 +247,8 @@ Determine whether elements of x1 are less than those of x2.
 
 **Examples**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
->>> x2 = ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32))
->>> ap.less(x1, x2)
+>>> ap.less([1, 2, 3], [2, 2, 2])
 array([ True, False, False])
 ```
 
@@ -327,11 +300,8 @@ Compare two arrays for equality element by element.
 
 **Examples**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
->>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
->>> ap.equal(x1, x2)
+>>> ap.equal([1, 2, 3], [1, 4, 3])
 array([ True, False,  True])
 ```
 
@@ -356,11 +326,8 @@ Compare two arrays for inequality element by element.
 
 **Examples**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
->>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
->>> ap.not_equal(x1, x2)
+>>> ap.not_equal([1, 2, 3], [1, 4, 3])
 array([False,  True, False])
 ```
 
@@ -385,10 +352,9 @@ Identify which array elements are regular numbers (not infinity or NaN).
 
 **Examples**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.ndarray.from_numpy(np.array([1, np.inf, np.nan], dtype=np.float32))
->>> ap.isfinite(x)
+>>> import numpy as np
+>>> ap.isfinite([1, np.inf, np.nan])
 array([ True, False, False])
 ```
 

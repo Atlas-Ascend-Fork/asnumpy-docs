@@ -51,7 +51,7 @@ m2_npu = ap.ndarray.from_numpy(m2)
 # Compute on NPU
 product = ap.multiply(m1_npu, m2_npu)
 result = ap.sum(product)
-print(result)
+print(result.to_numpy())
 ```
 
 </td>
@@ -83,7 +83,7 @@ npu_total = ap.sum(npu_prod)
 # 4. Transfer results back to CPU
 print("Sum:   ", npu_sum.to_numpy())    # [11. 22. 33. 44.]
 print("Prod:  ", npu_prod.to_numpy())   # [ 10.  40.  90. 160.]
-print("Total: ", npu_total)  # 300.0
+print("Total: ", npu_total.to_numpy())  # 300.0
 
 # 5. Verify against NumPy
 assert np.allclose(npu_sum.to_numpy(), np.add(np_a, np_b))
@@ -93,11 +93,14 @@ print("Verification passed.")
 
 ## Checking the Device
 
+To check available NPU devices, use the system command:
+
+```bash
+npu-smi info
+```
+
 ```python
 import asnumpy as ap
-
-# Query available NPU devices
-print(ap.get_device_count())  # e.g. 8
 
 # Switch to a specific NPU (default is 0)
 ap.set_device(1)

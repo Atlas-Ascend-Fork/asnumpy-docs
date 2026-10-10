@@ -58,7 +58,6 @@ AsNumpy has a concept of *current device* — the default NPU where array alloca
 
 ```python
 import asnumpy as ap
-import numpy as np
 
 # Default device is 0
 ap.set_device(0)

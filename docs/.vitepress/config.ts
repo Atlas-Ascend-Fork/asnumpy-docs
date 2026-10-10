@@ -91,7 +91,7 @@ export default defineConfig({
   description: siteDescription,
   lang: 'en-US',
   lastUpdated: true,
-  cleanUrls: false,
+  cleanUrls: true,
   head: [
     ['link', { rel: 'icon', type: 'image/png', href: '/images/asnumpy_logo.png' }],
     ['meta', { name: 'theme-color', content: '#667eea' }],

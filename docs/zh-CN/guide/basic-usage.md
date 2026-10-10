@@ -2,12 +2,12 @@
 
 本指南涵盖 AsNumpy 的核心概念：
 
-- [`ndarray` 对象](#ndarray-对象)
-- [当前设备](#当前设备)
-- [数据传输](#数据传输)
-- [数组创建](#数组创建)
-- [数学运算](#数学运算)
-- [内存管理](#内存管理)
+- [`ndarray` 对象](#the-ndarray-object)
+- [当前设备](#current-device)
+- [数据传输](#data-transfer)
+- [数组创建](#array-creation)
+- [数学运算](#mathematical-operations)
+- [内存管理](#memory-management)
 
 ## `ndarray` 对象
 
@@ -58,7 +58,6 @@ AsNumpy 有一个*当前设备*的概念 — 这是数组分配和操作发生�
 
 ```python
 import asnumpy as ap
-import numpy as np
 
 # 默认设备是 0
 ap.set_device(0)

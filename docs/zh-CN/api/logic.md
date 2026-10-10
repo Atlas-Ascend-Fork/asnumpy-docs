@@ -4,9 +4,6 @@
 当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
 :::
 
-主机端值和 NumPy 数组不会自动传到 NPU。
-数组操作数需先使用 `ap.ndarray.from_numpy()` 转换。
-
 ## 真值测试
 
 ### asnumpy.all
@@ -20,7 +17,7 @@ asnumpy.all(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **参数**
 - `x` (ArrayLike): 要检查的输入数组。
 - `axis` (AxisLike, 可选): 执行逻辑与归约的轴。
-- `keepdims` (bool, 可选): 显式提供 `axis` 时为True可保留缩减的轴。当前实现的 `axis=None` 使用全量归约重载，忽略 `keepdims` 并返回0-D ndarray。
+- `keepdims` (bool, 可选): 如果为 True，在结果中保留缩减的轴。
 
 **返回值**
 - `ndarray`: 指示所有元素是否都为 True 的布尔数组或标量。
@@ -28,8 +25,6 @@ asnumpy.all(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **参见**
 - [`numpy.all`](https://numpy.org/doc/stable/reference/generated/numpy.all.html)
 - [`asnumpy.any`](#asnumpy-any)
-
-全量归约需要保留所有轴时，可显式传入非负轴序列，例如 `ap.all(a, axis=list(range(a.ndim)), keepdims=True)`，选择带axis的归约重载。当前版本直接调用 `ap.all(a, keepdims=True)` 不会保留轴。
 
 **示例**
 ```python
@@ -52,7 +47,7 @@ asnumpy.any(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **参数**
 - `x` (ArrayLike): 要检查的输入数组。
 - `axis` (AxisLike, 可选): 执行逻辑或归约的轴。
-- `keepdims` (bool, 可选): 显式提供 `axis` 时为True可保留缩减的轴。当前实现的 `axis=None` 使用全量归约重载，忽略 `keepdims` 并返回0-D ndarray。
+- `keepdims` (bool, 可选): 如果为 True，在结果中保留缩减的轴。
 
 **返回值**
 - `ndarray`: 指示是否有任何元素为 True 的布尔数组或标量。
@@ -60,8 +55,6 @@ asnumpy.any(x: ArrayLike, axis: AxisLike = None, keepdims: bool = False) -> ndar
 **参见**
 - [`numpy.any`](https://numpy.org/doc/stable/reference/generated/numpy.any.html)
 - [`asnumpy.all`](#asnumpy-all)
-
-全量归约需要保留所有轴时，可显式传入非负轴序列，例如 `ap.any(a, axis=list(range(a.ndim)), keepdims=True)`，选择带axis的归约重载。当前版本直接调用 `ap.any(a, keepdims=True)` 不会保留轴。
 
 **示例**
 ```python
@@ -95,15 +88,10 @@ asnumpy.logical_and(x1: ArrayLike, x2: ArrayLike) -> ndarray
 
 **示例**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
->>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
->>> ap.logical_and(x1, x2)
+>>> ap.logical_and(True, False)
 array(False)
->>> x1 = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
->>> x2 = ap.ndarray.from_numpy(np.array([True, True], dtype=np.bool_))
->>> ap.logical_and(x1, x2)
+>>> ap.logical_and([True, False], [True, True])
 array([ True, False])
 ```
 
@@ -127,11 +115,8 @@ asnumpy.logical_or(x1: ArrayLike, x2: ArrayLike) -> ndarray
 
 **示例**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
->>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
->>> ap.logical_or(x1, x2)
+>>> ap.logical_or(True, False)
 array(True)
 ```
 
@@ -154,13 +139,10 @@ asnumpy.logical_not(x: ArrayLike) -> ndarray
 
 **示例**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
->>> ap.logical_not(x)
+>>> ap.logical_not(True)
 array(False)
->>> x = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
->>> ap.logical_not(x)
+>>> ap.logical_not([True, False])
 array([False,  True])
 ```
 
@@ -184,11 +166,8 @@ asnumpy.logical_xor(x1: ArrayLike, x2: ArrayLike) -> ndarray
 
 **示例**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
->>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
->>> ap.logical_xor(x1, x2)
+>>> ap.logical_xor(True, False)
 array(True)
 ```
 
@@ -215,11 +194,8 @@ asnumpy.greater(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 
 **示例**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array([4, 2], dtype=np.int32))
->>> x2 = ap.ndarray.from_numpy(np.array([2, 2], dtype=np.int32))
->>> ap.greater(x1, x2)
+>>> ap.greater([4, 2], [2, 2])
 array([ True, False])
 ```
 
@@ -271,11 +247,8 @@ asnumpy.less(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **示例**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
->>> x2 = ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32))
->>> ap.less(x1, x2)
+>>> ap.less([1, 2, 3], [2, 2, 2])
 array([ True, False, False])
 ```
 
@@ -327,11 +300,8 @@ asnumpy.equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **示例**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
->>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
->>> ap.equal(x1, x2)
+>>> ap.equal([1, 2, 3], [1, 4, 3])
 array([ True, False,  True])
 ```
 
@@ -356,11 +326,8 @@ asnumpy.not_equal(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndar
 
 **示例**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
->>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
->>> ap.not_equal(x1, x2)
+>>> ap.not_equal([1, 2, 3], [1, 4, 3])
 array([False,  True, False])
 ```
 
@@ -385,10 +352,9 @@ asnumpy.isfinite(x: ArrayLike) -> ndarray
 
 **示例**
 ```python
->>> import numpy as np
 >>> import asnumpy as ap
->>> x = ap.ndarray.from_numpy(np.array([1, np.inf, np.nan], dtype=np.float32))
->>> ap.isfinite(x)
+>>> import numpy as np
+>>> ap.isfinite([1, np.inf, np.nan])
 array([ True, False, False])
 ```
 

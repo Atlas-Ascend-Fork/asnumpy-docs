@@ -4,10 +4,6 @@
 当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
 :::
 
-::: tip
-公开 `asnumpy.ndarray` 的显示形式为 `ndarray(shape=..., dtype=...)`。下面的示例调用 `.to_numpy()` 显示数组数值；该操作会将数据从设备复制到主机。示例显式指定dtype，并在输出中保留对应的NumPy dtype标注；`empty` 和 `empty_like` 中未初始化的数值仍仅作示意。
-:::
-
 ## asnumpy.zeros
 
 ```python
@@ -35,11 +31,11 @@ asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.zeros(3, dtype=ap.float32).to_numpy()
-array([0., 0., 0.], dtype=float32)
->>> ap.zeros((2, 2), dtype=ap.int32).to_numpy()
+>>> ap.zeros(3)
+array([0., 0., 0.])
+>>> ap.zeros((2, 2), dtype=int)
 array([[0, 0],
-       [0, 0]], dtype=int32)
+       [0, 0]])
 ```
 
 ## asnumpy.zeros_like
@@ -54,7 +50,7 @@ asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `other` (ArrayLike): 提供输出数组形状的参考对象。
-- `dtype` (DTypeLike, 可选): 返回数组的数据类型。当前前端将该参数转发给 native 函数；native 根据 `other.shape` 和传入 dtype 构造结果，没有选择 `other.dtype` 的逻辑。若需保留输入类型，应像示例一样显式传入 `dtype=other.dtype`，不要依赖省略参数时的 NumPy 式 dtype 继承。
+- `dtype` (DTypeLike, 可选): 返回数组的数据类型。未显式指定时通常按输入推断；在当前 asnumpy 测试用例中，`*_like` 系列通常显式传入 `dtype` 以确保行为与 NumPy 对齐。
 
 **返回值**
 - `ndarray`: 填充零且与 `other` 形状相同的数组。
@@ -68,9 +64,9 @@ asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> ap.zeros_like(x, dtype=x.dtype).to_numpy()
+>>> ap.zeros_like(x, dtype=x.dtype)
 array([[0, 0],
-       [0, 0]], dtype=int32)
+       [0, 0]])
 ```
 
 ## asnumpy.full
@@ -104,12 +100,12 @@ asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike = None) -> nd
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.full((2, 2), 7, dtype=ap.int32).to_numpy()
+>>> ap.full((2, 2), 7, dtype=ap.int32)
 array([[7, 7],
-       [7, 7]], dtype=int32)
->>> ap.full((2, 3), 3.5, dtype=ap.float32).to_numpy()
+       [7, 7]])
+>>> ap.full((2, 3), 3.5, dtype=ap.float32)
 array([[3.5, 3.5, 3.5],
-       [3.5, 3.5, 3.5]], dtype=float32)
+       [3.5, 3.5, 3.5]])
 ```
 
 ## asnumpy.full_like
@@ -141,8 +137,8 @@ asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) 
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([1, 2, 3, 4], dtype=np.int32))
->>> ap.full_like(x, 9, dtype=x.dtype).to_numpy()
-array([9, 9, 9, 9], dtype=int32)
+>>> ap.full_like(x, 9, dtype=x.dtype)
+array([9, 9, 9, 9])
 ```
 
 ## asnumpy.empty
@@ -168,9 +164,9 @@ asnumpy.empty(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.empty((2, 2), dtype=ap.float32).to_numpy()
+>>> ap.empty((2, 2))
 array([[... , ...],
-       [... , ...]], dtype=float32)
+       [... , ...]])
 ```
 
 ::: tip
@@ -200,9 +196,9 @@ asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike = None) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> a = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> ap.empty_like(a, dtype=a.dtype).to_numpy()
+>>> ap.empty_like(a, dtype=a.dtype)
 array([[... , ...],
-       [... , ...]], dtype=int32)
+       [... , ...]])
 ```
 
 ::: tip
@@ -237,10 +233,10 @@ asnumpy.eye(n: int, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.eye(3, dtype=ap.int32).to_numpy()
+>>> ap.eye(3, dtype=ap.int32)
 array([[1, 0, 0],
        [0, 1, 0],
-       [0, 0, 1]], dtype=int32)
+       [0, 0, 1]])
 ```
 
 ## asnumpy.ones
@@ -268,8 +264,8 @@ asnumpy.ones(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.ones(4, dtype=ap.float32).to_numpy()
-array([1., 1., 1., 1.], dtype=float32)
+>>> ap.ones(4, dtype=ap.float32)
+array([1., 1., 1., 1.])
 ```
 
 ## asnumpy.ones_like
@@ -299,9 +295,9 @@ asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([[0, 1, 2], [3, 4, 5]], dtype=np.int32))
->>> ap.ones_like(x, dtype=x.dtype).to_numpy()
+>>> ap.ones_like(x, dtype=x.dtype)
 array([[1, 1, 1],
-       [1, 1, 1]], dtype=int32)
+       [1, 1, 1]])
 ```
 
 ## asnumpy.identity
@@ -326,10 +322,10 @@ asnumpy.identity(n: int, dtype: DTypeLike = None) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.identity(3, dtype=ap.int32).to_numpy()
+>>> ap.identity(3, dtype=ap.int32)
 array([[1, 0, 0],
        [0, 1, 0],
-       [0, 0, 1]], dtype=int32)
+       [0, 0, 1]])
 ```
 <!--
 ## asnumpy.linspace

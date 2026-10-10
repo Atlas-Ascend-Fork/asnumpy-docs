@@ -1,6 +1,6 @@
 # AsNumpy Developer Guide
 
-## Project Overview
+## 1. Project Overview
 
 AsNumpy is a numerical computing library based on Huawei Ascend NPU, providing a NumPy-compatible API that offloads computation tasks to the NPU. The project adopts a layered architecture:
 
@@ -40,7 +40,7 @@ asnumpy/
 
 ---
 
-## Development Workflow
+## 2. Development Workflow
 
 Developing new features typically follows these steps:
 
@@ -62,9 +62,9 @@ Developing new features typically follows these steps:
 
 ---
 
-## Branch Management
+## 3. Branch Management
 
-### Overview
+### 3.1 Overview
 
 Asnumpy uses a simplified branching model based on a single main branch with release branches for stabilization:
 
@@ -78,7 +78,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
                                                 PR to master
 ```
 
-### Branch Types
+### 3.2 Branch Types
 
 | Branch | Purpose | Lifetime |
 |--------|---------|----------|
@@ -88,7 +88,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
 | `release/vX.Y.Z` | Stabilize and test a release. | Per release |
 | `hotfix/<name>` | Backport a fix from a release branch to master. | Short-lived |
 
-### Workflow
+### 3.3 Workflow
 
 #### Feature Development
 
@@ -116,7 +116,7 @@ master ─── PR_A ─── PR_B ─── PR_C ─── PR_D ─── PR_
    git tag v0.3.0
    ```
 4. If additional fixes are needed after tagging, apply them on the release branch and tag a new patch version (e.g., `v0.3.1`).
-5. Cherry-pick those fixes back to `master` (see [Hotfix Process](#hotfix-process)).
+5. Cherry-pick those fixes back to `master` (see [Hotfix Process](#333-hotfix-process)).
 6. Delete the release branch when the release series is no longer maintained:
    ```bash
    git branch -d release/v0.3.0
@@ -142,7 +142,7 @@ When a bug is fixed on a release branch, the fix must be brought back to `master
 > **Why use a separate hotfix branch instead of cherry-picking directly to master?**
 > A dedicated branch allows the fix to go through PR review and CI checks, ensuring the same quality standards as any other contribution.
 
-### Merge Strategy
+### 3.4 Merge Strategy
 
 **Always use merge commits. Never squash.**
 
@@ -154,7 +154,7 @@ git merge --no-ff feature/my-feature
 
 **Rationale:** Squash merges create a new commit that discards the original commit history and authorship. This breaks contribution statistics on the repository homepage and makes it harder to trace changes back to their original authors. Merge commits preserve the full history and ensure every contributor is properly credited.
 
-### Branch Naming Conventions
+### 3.5 Branch Naming Conventions
 
 | Pattern | Example | Description |
 |---------|---------|-------------|
@@ -165,7 +165,7 @@ git merge --no-ff feature/my-feature
 
 Use lowercase kebab-case for branch names. Keep names concise but descriptive.
 
-### CI/CD Pipeline
+### 3.6 CI/CD Pipeline
 
 CI/CD pipelines are triggered by events, not by branch types. Configure the following rules:
 
@@ -177,7 +177,7 @@ CI/CD pipelines are triggered by events, not by branch types. Configure the foll
 
 No additional CI configuration is needed for `feature/`, `fix/`, or `hotfix/` branches. As long as the PR targets `master`, CI will run regardless of the source branch name.
 
-### Contributor Workflow
+### 3.7 Contributor Workflow
 
 #### Team Members (with push access)
 
@@ -221,7 +221,7 @@ git push fork fix/signbit-error
 - **All code changes go through PR.** No direct pushes to `master`.
 - **All PRs go through CI and code review.** Regardless of whether the contributor is a team member or an external contributor.
 
-### Commit Hygiene and Review Norms
+### 3.8 Commit Hygiene and Review Norms
 
 #### Commit Quality
 
@@ -272,11 +272,11 @@ git push --force  # Update the remote branch after rebase
 
 ---
 
-## Backend Development (C++)
+## 4. Backend Development (C++)
 
 Backend development primarily involves implementing NPU operator invocation logic at the C++ level. This section uses developing the `sinc` function as an example.
 
-### Add Function Declaration
+### 4.1 Add Function Declaration
 
 Add the function declaration in the corresponding header file. `sinc` belongs to the special functions in the math module, with the declaration located at:
 
@@ -297,7 +297,7 @@ Add the function declaration in the corresponding header file. `sinc` belongs to
 NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype = std::nullopt);
 ```
 
-### Implement Function Body
+### 4.2 Implement Function Body
 
 Implement the function logic in the corresponding source file:
 
@@ -373,7 +373,7 @@ NPUArray Sinc(const NPUArray& x, std::optional<py::dtype> dtype) {
 }
 ```
 
-### Key Implementation Points
+### 4.3 Key Implementation Points
 
 #### Error Handling
 
@@ -404,9 +404,9 @@ A typical NPU operator execution flow includes:
 
 ---
 
-## Binding Layer (Pybind11)
+## 5. Binding Layer (Pybind11)
 
-### Add Function Binding
+### 5.1 Add Function Binding
 
 Add function binding in the corresponding binding file:
 
@@ -431,11 +431,11 @@ namespace asnumpy {
 
 ---
 
-## Frontend Development (Python)
+## 6. Frontend Development (Python)
 
 Frontend development primarily involves exposing C++ functions to the Python layer and ensuring APIs are compatible with NumPy.
 
-### Add Python Wrapper Layer
+### 6.1 Add Python Wrapper Layer
 
 Import C++ functions in the corresponding Python module and add Python wrapper layer:
 
@@ -458,7 +458,7 @@ def sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray:
     return ndarray(_sinc(x, _convert_dtype(dtype)))
 ```
 
-### Export to Main Namespace
+### 6.2 Export to Main Namespace
 
 Add functions in the main package's `__init__.py`:
 
@@ -480,11 +480,11 @@ __all__ = [
 
 ---
 
-## Writing Tests
+## 7. Writing Tests
 
 AsNumpy uses pytest and a custom testing framework to write tests.
 
-### Test File Organization
+### 7.1 Test File Organization
 
 Test files are organized by module in the `tests/asnumpy_tests/` directory:
 
@@ -497,7 +497,7 @@ tests/
     └── ...
 ```
 
-### Writing Test Cases
+### 7.2 Writing Test Cases
 
 **File location**: `tests/asnumpy_tests/math_tests/test_other_special_functions.py`
 
@@ -532,7 +532,7 @@ def test_sinc_zero(xp, dtype):
     return xp.sinc(a)
 ```
 
-### Decorator Reference
+### 7.3 Decorator Reference
 
 AsNumpy provides rich test decorators for parameterized testing and result comparison.
 
@@ -546,13 +546,10 @@ AsNumpy provides rich test decorators for parameterized testing and result compa
 - `for_unsigned_dtypes()` - Unsigned integers (uint8-16)
 - `for_complex_dtypes()` - Complex types (complex64, complex128)
 
-Reuse the imports and `_create_array` helper from the test case above. The outer dtype decorator supplies `dtype`; the inner comparison decorator supplies `xp` and compares both results. The dtype decorator alone does not supply `xp`.
-
 ```python
 @testing.for_float_dtypes(no_float16=True)
-@testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
 def test_func(xp, dtype):
-    a = _create_array(xp, [1.0, 2.0, 3.0], dtype)
+    a = xp.array([1.0, 2.0, 3.0], dtype=dtype)
     return xp.sinc(a)
 ```
 
@@ -561,18 +558,10 @@ def test_func(xp, dtype):
 - `for_orders(orders)` - Specify a list of memory orders
 - `for_cf_orders()` - C and F orders
 
-This example reuses `numpy` and `testing` imported above and tests C/F host inputs. AsNumpy `zeros` has no `order` argument. Convert the host array to contiguous C order before `from_numpy`; this does not request Fortran-order device storage. The outer dtype decorator makes the pytest entry point parameter-free.
-
 ```python
-import asnumpy as ap
-
-@testing.for_dtypes([numpy.float32, numpy.float64])
 @testing.for_orders(['C', 'F'])
-def test_func(dtype, order):
-    host = numpy.array([[1, 2, 3], [4, 5, 6]], dtype=dtype, order=order)
-    # Normalize the host input before transferring it to the device.
-    actual = ap.ndarray.from_numpy(numpy.ascontiguousarray(host))
-    testing.assert_array_equal(actual.to_numpy(), host)
+def test_func(xp, order):
+    return xp.zeros((3, 3), order=order)
 ```
 
 #### NumPy-AsNumpy Comparison Decorators
@@ -581,10 +570,9 @@ def test_func(dtype, order):
 - `numpy_asnumpy_allclose(rtol=1e-7, atol=0)` - Compare floating-point arrays for closeness (set relative/absolute tolerance)
 
 ```python
-@testing.for_dtypes([numpy.float32, numpy.float64])
 @testing.numpy_asnumpy_allclose(rtol=1e-5, atol=1e-8)
 def test_func(xp, dtype):
-    a = _create_array(xp, [1.0, 2.0, 3.0], dtype)
+    a = xp.array([1.0, 2.0, 3.0], dtype=dtype)
     return xp.sinc(a)
 ```
 
@@ -604,9 +592,9 @@ def test_func(n):
 
 ---
 
-## Build and Run
+## 8. Build and Run
 
-### Build Project
+### 8.1 Build Project
 
 Install and build the project in development mode:
 
@@ -614,7 +602,7 @@ Install and build the project in development mode:
 pip install -e .
 ```
 
-### Run Tests
+### 8.2 Run Tests
 
 #### Run All Tests
 
