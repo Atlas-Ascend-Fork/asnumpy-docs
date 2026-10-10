@@ -1,11 +1,10 @@
 <script setup>
+import { onMounted } from 'vue'
 import { useRouter } from 'vitepress'
 
 const router = useRouter()
 
-if (navigator.language.startsWith('zh')) {
-  router.go('/zh-CN/')
-} else {
-  router.go('/en/')
-}
+onMounted(() => {
+  router.go(navigator.language.startsWith('zh') ? '/zh-CN/' : '/en/')
+})
 </script>
