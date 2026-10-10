@@ -93,6 +93,12 @@ print("验证通过。")
 
 ## 设备管理
 
+要查看可用的 NPU 设备，请使用系统命令：
+
+```bash
+npu-smi info
+```
+
 ```python
 import asnumpy as ap
 

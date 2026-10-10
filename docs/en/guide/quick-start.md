@@ -93,6 +93,12 @@ print("Verification passed.")
 
 ## Checking the Device
 
+To check available NPU devices, use the system command:
+
+```bash
+npu-smi info
+```
+
 ```python
 import asnumpy as ap
 
