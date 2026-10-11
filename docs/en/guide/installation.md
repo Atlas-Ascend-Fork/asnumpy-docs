@@ -17,7 +17,7 @@ This guide covers how to install AsNumpy on your system.
 | Requirement | Version |
 |-------------|---------|
 | **GCC** | >= 11.2 |
-| **CMake** | >= 3.26 |
+| **CMake** | >= 3.22 |
 | **ninja-build** | >= 1.12 (recommended) |
 | **Python** | >= 3.10 |
 | **CANN** | >= 8.2.RC1.alpha003 |
@@ -54,7 +54,7 @@ source ~/.bashrc
 gcc --version  # Should be >= 11.2
 
 # Check CMake version
-cmake --version  # Should be >= 3.26
+cmake --version  # Should be >= 3.22
 
 # Check Python version
 python --version  # Should be >= 3.10
@@ -164,7 +164,7 @@ Source-install commands below run from the cloned AsNumpy implementation reposit
 **Symptom:** Build fails with CMake or GCC errors
 
 **Solution:**
-1. Check CMake version: `cmake --version` (need >= 3.26)
+1. Check CMake version: `cmake --version` (need >= 3.22)
 2. Check GCC version: `gcc --version` (need >= 11.2)
 3. Verify environment variable: `echo $ASCEND_TOOLKIT_HOME`
 4. Retry the source installation:

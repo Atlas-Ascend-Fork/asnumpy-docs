@@ -28,8 +28,8 @@ This document contains the full performance benchmark comparing AsNumpy (NPU) ag
 </tr>
 <tr>
 <td><b>Library version</b></td>
-<td>AsNumpy 0.2.0</td>
-<td>NumPy 1.26+</td>
+<td>AsNumpy 0.4.0</td>
+<td>NumPy 2.x (>= 2.0)</td>
 </tr>
 <tr>
 <td><b>Data type</b></td>
@@ -63,6 +63,8 @@ This document contains the full performance benchmark comparing AsNumpy (NPU) ag
 | (3000, 3000) | 9,000,000 | 0.1857 | 6.6303 | **35.70×** |
 
 **Key observation:** For small tensors (500×500, 250K elements), NPU launch overhead is comparable to CPU compute time, making them nearly on par. As tensor size grows, NPU's massive parallelism takes over — achieving **35.70× speedup** at 3000×3000 (9M elements). NPU execution time remains nearly constant across all tested shapes, demonstrating excellent scalability.
+
+> **Note:** The figures above were collected on AsNumpy v0.2.0 and have not been re-measured on v0.4.0.
 
 ## Reproducing the Results
 

@@ -9,14 +9,16 @@ AsNumpy 建立在三层结构上，清晰地分离关注点：
 ```
 +------------------------------------------+
 |     Python 前端 (src/asnumpy/*.py)        |
-|  - __init__.py   122+ 导出符号            |
-|  - array.py      数组创建 (10 个函数)     |
-|  - math.py       数学运算 (80+ 个函数)    |
+|  - __init__.py   149 个导出符号           |
+|  - array.py      数组创建 (11 个函数)     |
+|  - math.py       数学运算 (86 个函数)     |
 |  - linalg/       线性代数                 |
 |  - random/       随机采样                 |
 |  - logic.py      逻辑函数 (16 个函数)     |
+|  - sorting.py    排序 (1 个函数)          |
 |  - nn.py         神经网络 (softmax)       |
 |  - statistics.py 统计函数 (mean)          |
+|  - io.py         I/O (4 个函数)           |
 +------------------------------------------+
                     |
          pybind11 绑定层 (bindings/python/*.cpp)

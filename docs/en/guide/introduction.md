@@ -69,19 +69,21 @@ AsNumpy is ideal for:
 
 | Attribute | Value |
 |-----------|-------|
-| **Version** | 0.2.0 |
+| **Version** | 0.4.0 |
 | **License** | Apache 2.0 |
 | **Python** | 3.10+ |
-| **CANN** | 8.2.RC1+ |
+| **CANN** | 8.2.RC1.alpha003+ |
 | **Platform** | Ascend 910B |
 
-## Roadmap
+## Version History
 
-| Release | Quarter | Key Deliverables |
+The table below lists released versions and their main deliverables.
+
+| Release | Date | Main Deliverables |
 |---------|---------|-----------------|
-| **v0.3.0** | 26Q1 | Documentation site (VitePress + GitCode Pages), CI/CD pipeline with hardware whitelist, code quality overhaul (spdlog, clang-format), PyPI release |
-| **v0.4.0** | 26Q2 | Mathematical functions 100% API coverage, Ascend 950 validation, triton-ascend operator integration (10 ops), memory pool (experimental) |
-| **v0.5.0** | 26Q2 | Linear algebra full coverage, triton-ascend operator library expanded to 20 ops, multi-NPU distributed computing research |
+| **v0.3.0** | 2026-05-29 | Repository reorganized into src-layout; C++ code split into `csrc/`, `bindings/`, and `include/`; setuptools-scm versioning and towncrier CHANGELOG introduced |
+| **v0.3.1** | 2026-08-27 | NumPy 2.x baseline established (depends on `numpy>=2.0`); NumPy-like dtype promotion for element-wise operators; NumPy ufunc interop completed; dtype table updated and CI pipeline added |
+| **v0.4.0** | 2026-09-24 | `nanmin` added; angle/radian operators moved to aclnnMuls (fixing float16/float32 magnitude errors and adding native float64 support); `hypot`/`mean` numeric errors fixed; four host-side memory leaks (including `clip`) and the NPU stream leaks in `radians`/`around`/`round_` fixed; `linspace` preserves an explicitly requested int64 dtype |
 
 ## Acknowledgements
 
