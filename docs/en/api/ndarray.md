@@ -9,7 +9,7 @@ This API section currently keeps a curated subset of representative APIs. Additi
 ### asnumpy.ndarray
 
 ```python
-asnumpy.ndarray(shape: Sequence[int], dtype: np.dtype) -> None
+asnumpy.ndarray(shape: Sequence[int], dtype: np.dtype) -> ndarray
 ```
 
 Represent a multi-dimensional array on the device.
