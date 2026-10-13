@@ -9,7 +9,7 @@ This API section currently keeps a curated subset of representative APIs. Additi
 ### asnumpy.mean
 
 ```python
-asnumpy.mean(a: ArrayLike, axis: AxisLike = None, keepdims: bool = False, dtype: DTypeLike = None) -> Union[ndarray, float]
+asnumpy.mean(a: ArrayLike, axis: Optional[int] = None, keepdims: bool = False, dtype: DTypeLike = None) -> Union[ndarray, float]
 ```
 
 Calculate the average value of array elements.
@@ -18,7 +18,7 @@ This function determines the central tendency of values within an array. When no
 
 **Arguments**
 - `a` (ArrayLike): Input data for averaging.
-- `axis` (AxisLike, int or tuple of ints, optional): Dimension(s) over which to perform averaging. Omitting this argument averages all elements.
+- `axis` (int or None, optional): The single dimension over which to perform averaging. Omitting this argument averages all elements. The current native axis overload accepts one integer, including a negative axis; tuples and lists of axes are not supported. For a Host multi-axis reduction, explicitly transfer the input with `.to_numpy()` and use `numpy.mean`.
 - `keepdims` (bool, optional): When an axis is specified, preserves the reduced dimension with length one in the output shape. Defaults to False. In the current implementation, axis=None returns a scalar regardless of keepdims.
 - `dtype` (DTypeLike, optional): Numerical precision for the calculation. When omitted, the current implementation uses the input dtype, including for integer inputs. It does not automatically promote integers to float64. Use floating-point input or specify a floating-point dtype (for example, np.float32) when a fractional mean is required.
 
