@@ -186,7 +186,12 @@ array([[ 4,  5],
 asnumpy.vdot(a: ArrayLike, b: ArrayLike) -> ndarray
 ```
 
-展平输入，对第一个参数应用复共轭，然后计算它们的标量积。
+展平输入并计算标量积。当前实现根据输入 dtype 选择调用路径：
+
+- 任一输入为 `float64` 时，Python wrapper 调用 Host `numpy.vdot`，该函数语义包括对第一个参数取共轭，然后将结果转换为 AsNumpy ndarray。
+- 其他输入进入原生实现：展平两份输入后调用 `aclnnDot`，没有额外的取共轭步骤。不能据此认为原生路径实现了 NumPy `vdot` 的复共轭内积合同。
+
+下方测试说明覆盖实数 `float32` 和 `float64` 输入，不代表已验证原生复数输入支持。需要在 Host 计算复数内积时，请对 NPU 输入显式调用 `.to_numpy()` 后使用 `numpy.vdot`。
 
 **参数**
 - `a` (ArrayLike): 第一个输入数组。
