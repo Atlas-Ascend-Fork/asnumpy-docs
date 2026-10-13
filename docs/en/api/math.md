@@ -1976,7 +1976,7 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 
 **Arguments**
 - `a` (ArrayLike): Input array.
-- `axis` (int, optional): Axis along which the cumulative product is computed. By default, the input is flattened.
+- `axis` (int, required for the current implementation): Axis along which the cumulative operation is computed. Although the Python signature defaults to `None`, the wrapper forwards that value to an integer-only native binding; omitting `axis` or passing `None` does not flatten the input and is not supported. Pass an explicit integer axis. For a flattened cumulative operation on the Host, use the corresponding NumPy function on `a.to_numpy()`.
 - `dtype` (DTypeLike, optional): Type of the returned array and of the accumulator.
 
 **Returns**
@@ -2010,7 +2010,7 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 
 **Arguments**
 - `a` (ArrayLike): Input array.
-- `axis` (int, optional): Axis along which the cumulative sum is computed. By default, the input is flattened.
+- `axis` (int, required for the current implementation): Axis along which the cumulative operation is computed. Although the Python signature defaults to `None`, the wrapper forwards that value to an integer-only native binding; omitting `axis` or passing `None` does not flatten the input and is not supported. Pass an explicit integer axis. For a flattened cumulative operation on the Host, use the corresponding NumPy function on `a.to_numpy()`.
 - `dtype` (DTypeLike, optional): Type of the returned array and of the accumulator.
 
 **Returns**
@@ -2044,7 +2044,7 @@ Current test coverage indicates `float64` is a known failing scenario.
 
 **Arguments**
 - `a` (ArrayLike): Input array.
-- `axis` (int, optional): Axis along which the cumulative product is computed. By default, the input is flattened.
+- `axis` (int, required for the current implementation): Axis along which the cumulative operation is computed. Although the Python signature defaults to `None`, the wrapper forwards that value to an integer-only native binding; omitting `axis` or passing `None` does not flatten the input and is not supported. Pass an explicit integer axis. For a flattened cumulative operation on the Host, use the corresponding NumPy function on `a.to_numpy()`.
 - `dtype` (DTypeLike, optional): Type of the returned array and of the accumulator.
 
 **Returns**
@@ -2059,7 +2059,7 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
+>>> ap.nancumprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
 array([1., 1.])
 ```
 
@@ -2077,7 +2077,7 @@ Current test coverage indicates `float64` is a known failing scenario.
 
 **Arguments**
 - `a` (ArrayLike): Input array.
-- `axis` (int, optional): Axis along which the cumulative sum is computed. By default, the input is flattened.
+- `axis` (int, required for the current implementation): Axis along which the cumulative operation is computed. Although the Python signature defaults to `None`, the wrapper forwards that value to an integer-only native binding; omitting `axis` or passing `None` does not flatten the input and is not supported. Pass an explicit integer axis. For a flattened cumulative operation on the Host, use the corresponding NumPy function on `a.to_numpy()`.
 - `dtype` (DTypeLike, optional): Type of the returned array and of the accumulator.
 
 **Returns**
@@ -2092,7 +2092,7 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumsum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
+>>> ap.nancumsum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
 array([1., 1.])
 ```
 
