@@ -188,7 +188,12 @@ array([[ 4,  5],
 asnumpy.vdot(a: ArrayLike, b: ArrayLike) -> ndarray
 ```
 
-Flatten inputs, apply complex conjugation to the first argument, then compute their scalar product.
+Flatten inputs and compute their scalar product. The implementation selects its path from the input dtypes:
+
+- If either input is `float64`, the Python wrapper calls Host `numpy.vdot`, whose semantics include conjugating the first argument, and converts the result to an AsNumpy ndarray.
+- Otherwise, the native implementation flattens both inputs and calls `aclnnDot`; it does not add a conjugation step. Do not assume this path implements NumPy's complex-conjugating `vdot` contract.
+
+The tests described below cover real `float32` and `float64` inputs. They do not establish native complex-input support. For a complex inner product on the Host, explicitly transfer NPU inputs with `.to_numpy()` and use `numpy.vdot`.
 
 **Arguments**
 - `a` (ArrayLike): The first input array.
