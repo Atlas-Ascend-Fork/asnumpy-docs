@@ -1981,7 +1981,7 @@ asnumpy.cumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None
 
 **参数**
 - `a` (ArrayLike): 输入数组。
-- `axis` (int, 可选): 计算累积乘积的轴。默认输入被展平。
+- `axis` (int，当前实现必须显式指定): 计算累积操作的轴。虽然 Python 签名默认值为 `None`，wrapper 仍将它传入只接受整数轴的原生绑定；省略 `axis` 或传入 `None` 不会展平输入，当前不支持。请显式传入整数轴。需要在 Host 对展平输入做累积操作时，可对 `a.to_numpy()` 调用对应 NumPy 函数。
 - `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
@@ -2015,7 +2015,7 @@ asnumpy.cumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None)
 
 **参数**
 - `a` (ArrayLike): 输入数组。
-- `axis` (int, 可选): 计算累积和的轴。默认输入被展平。
+- `axis` (int，当前实现必须显式指定): 计算累积操作的轴。虽然 Python 签名默认值为 `None`，wrapper 仍将它传入只接受整数轴的原生绑定；省略 `axis` 或传入 `None` 不会展平输入，当前不支持。请显式传入整数轴。需要在 Host 对展平输入做累积操作时，可对 `a.to_numpy()` 调用对应 NumPy 函数。
 - `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
@@ -2050,7 +2050,7 @@ asnumpy.nancumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = N
 
 **参数**
 - `a` (ArrayLike): 输入数组。
-- `axis` (int, 可选): 计算累积乘积的轴。默认输入被展平。
+- `axis` (int，当前实现必须显式指定): 计算累积操作的轴。虽然 Python 签名默认值为 `None`，wrapper 仍将它传入只接受整数轴的原生绑定；省略 `axis` 或传入 `None` 不会展平输入，当前不支持。请显式传入整数轴。需要在 Host 对展平输入做累积操作时，可对 `a.to_numpy()` 调用对应 NumPy 函数。
 - `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
@@ -2065,7 +2065,7 @@ asnumpy.nancumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = N
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
+>>> ap.nancumprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
 array([1., 1.])
 ```
 
@@ -2083,7 +2083,7 @@ asnumpy.nancumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = No
 
 **参数**
 - `a` (ArrayLike): 输入数组。
-- `axis` (int, 可选): 计算累积和的轴。默认输入被展平。
+- `axis` (int，当前实现必须显式指定): 计算累积操作的轴。虽然 Python 签名默认值为 `None`，wrapper 仍将它传入只接受整数轴的原生绑定；省略 `axis` 或传入 `None` 不会展平输入，当前不支持。请显式传入整数轴。需要在 Host 对展平输入做累积操作时，可对 `a.to_numpy()` 调用对应 NumPy 函数。
 - `dtype` (DTypeLike, 可选): 返回数组和累加器的数据类型。
 
 **返回值**
@@ -2099,7 +2099,7 @@ asnumpy.nancumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = No
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumsum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
+>>> ap.nancumsum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
 array([1., 1.])
 ```
 
