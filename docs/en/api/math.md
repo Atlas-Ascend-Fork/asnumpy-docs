@@ -18,7 +18,7 @@ Calculate the sine of each element.
 
 This function computes the sine for every element in the input array `x`. Input values are assumed to be in radians.
 
-Current test coverage indicates int32 is a known failing scenario (missing auto-cast).
+The current implementation promotes int32 input to float64 before evaluating sine. The corresponding int32 regression is no longer marked as an expected failure; numerical behavior should be validated against your installed CANN and AsNumpy versions.
 
 **Arguments**
 - `x` (ArrayLike): Input array containing angles in radians.
@@ -49,7 +49,7 @@ Calculate the cosine of each element.
 
 This function computes the cosine for every element in the input array `x`. Input values are assumed to be in radians.
 
-Current test coverage indicates bool is a known failing scenario (missing auto-cast).
+The current implementation promotes bool input to float32 before evaluating cosine. The bool regression uses a float32 NumPy reference to avoid float16 rounding differences; numerical behavior should be validated against your installed CANN and AsNumpy versions.
 
 **Arguments**
 - `x` (ArrayLike): Input array containing angles in radians.
