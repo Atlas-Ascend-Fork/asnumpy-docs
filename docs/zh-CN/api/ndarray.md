@@ -9,7 +9,7 @@
 ### asnumpy.ndarray
 
 ```python
-asnumpy.ndarray(shape: Sequence[int], dtype: np.dtype) -> None
+asnumpy.ndarray(shape: Sequence[int], dtype: np.dtype) -> ndarray
 ```
 
 表示设备上的多维数组。
