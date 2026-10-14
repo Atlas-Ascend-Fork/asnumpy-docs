@@ -9,17 +9,20 @@ This module provides utility functions for asnumpy.
 ## asnumpy.broadcast_shape
 
 ```python
-asnumpy.broadcast_shape(shape_a: Sequence[int], shape_b: Sequence[int]) -> tuple
+asnumpy.broadcast_shape(shape_a: ndarray, shape_b: ndarray) -> list[int]
 ```
 
-Compute the broadcasted shape resulting from two input shapes.
+Compute the broadcasted shape of two AsNumpy arrays.
+
+The current interface accepts arrays, not shape tuples. For a shape-only
+calculation on the host, use `numpy.broadcast_shapes(shape_a, shape_b)`.
 
 **Arguments**
-- `shape_a` (Sequence[int]): First input shape.
-- `shape_b` (Sequence[int]): Second input shape.
+- `shape_a` (ndarray): First input array.
+- `shape_b` (ndarray): Second input array.
 
 **Returns**
-- `tuple`: The broadcasted shape.
+- `list[int]`: The broadcasted dimensions.
 
 **Raises**
 - `ValueError`: If the shapes cannot be broadcast together.
@@ -27,8 +30,13 @@ Compute the broadcasted shape resulting from two input shapes.
 **Example**
 ```python
 >>> import asnumpy as anp
->>> anp.broadcast_shape((3, 1), (1, 4))
-(3, 4)
->>> anp.broadcast_shape((5, 1, 3), (1, 4, 3))
-(5, 4, 3)
+>>> import numpy as np
+>>> a = anp.ndarray.from_numpy(np.zeros((3, 1), dtype=np.float32))
+>>> b = anp.ndarray.from_numpy(np.zeros((1, 4), dtype=np.float32))
+>>> anp.broadcast_shape(a, b)
+[3, 4]
+>>> a = anp.ndarray.from_numpy(np.zeros((5, 1, 3), dtype=np.float32))
+>>> b = anp.ndarray.from_numpy(np.zeros((1, 4, 3), dtype=np.float32))
+>>> anp.broadcast_shape(a, b)
+[5, 4, 3]
 ```
