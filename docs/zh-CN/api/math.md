@@ -18,7 +18,7 @@ asnumpy.sin(x: ArrayLike) -> ndarray
 
 此函数计算输入数组 `x` 中每个元素的正弦值。输入值假设以弧度为单位。
 
-当前测试覆盖表明 `int32` 为已知不通过场景（缺少 auto-cast）。
+当前实现先将int32输入提升为float64，再计算正弦；相应int32回归已不再标记为预期失败。数值行为应结合所安装的CANN和AsNumpy版本验证。
 
 **参数**
 - `x` (ArrayLike): 包含弧度角度的输入数组。
@@ -49,7 +49,7 @@ asnumpy.cos(x: ArrayLike) -> ndarray
 
 此函数计算输入数组 `x` 中每个元素的余弦值。输入值假设以弧度为单位。
 
-当前测试覆盖表明 `bool` 为已知不通过场景（缺少 auto-cast）。
+当前实现先将bool输入提升为float32，再计算余弦；bool回归使用float32的NumPy参考值，以避免float16舍入差异。数值行为应结合所安装的CANN和AsNumpy版本验证。
 
 **参数**
 - `x` (ArrayLike): 包含弧度角度的输入数组。
