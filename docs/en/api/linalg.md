@@ -69,9 +69,12 @@ Execute tensor operations using subscript notation to specify contraction patter
 - [`numpy.einsum`](https://numpy.org/doc/stable/reference/generated/numpy.einsum.html)
 
 **Examples**
+AsNumpy does not currently provide `ap.arange`; create ranges with NumPy and convert them with `ap.ndarray.from_numpy`.
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> a = ap.arange(9).reshape(3, 3)
+>>> # Create the range with NumPy, then convert it to an AsNumpy array.
+>>> a = ap.ndarray.from_numpy(np.arange(9).reshape(3, 3))
 >>> ap.einsum('ii', a)  # Trace
 12
 >>> ap.einsum('ii->i', a)  # Diagonal
