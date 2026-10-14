@@ -69,9 +69,11 @@ asnumpy.einsum(subscripts: str, *operands: ArrayLike) -> ndarray
 - [`numpy.einsum`](https://numpy.org/doc/stable/reference/generated/numpy.einsum.html)
 
 **示例**
+AsNumpy 当前未提供 `ap.arange`；请用 NumPy 创建数值范围，再通过 `ap.ndarray.from_numpy` 转换。
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
+>>> # 用 NumPy 创建数值范围，再转换为 AsNumpy 数组。
 >>> a = ap.ndarray.from_numpy(np.arange(9).reshape(3, 3))
 >>> ap.einsum('ii', a)  # 迹
 12
