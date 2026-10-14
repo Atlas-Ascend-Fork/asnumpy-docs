@@ -9,7 +9,7 @@
 ### asnumpy.mean
 
 ```python
-asnumpy.mean(a: ArrayLike, axis: AxisLike = None, keepdims: bool = False, dtype: DTypeLike = None) -> Union[ndarray, float]
+asnumpy.mean(a: ArrayLike, axis: Optional[int] = None, keepdims: bool = False, dtype: DTypeLike = None) -> Union[ndarray, float]
 ```
 
 计算数组元素的平均值。
@@ -18,7 +18,7 @@ asnumpy.mean(a: ArrayLike, axis: AxisLike = None, keepdims: bool = False, dtype:
 
 **参数**
 - `a` (ArrayLike): 用于计算平均值的输入数据。
-- `axis` (AxisLike, int 或 int 元组, 可选): 执行平均计算的维度。省略此参数则对所有元素求平均。
+- `axis` (int 或 None, 可选): 执行平均计算的单个维度。省略此参数则对所有元素求平均。当前原生轴重载只接受一个整数（可以为负轴），不支持轴元组或列表。需要在 Host 上按多个轴求平均时，请显式调用 `.to_numpy()` 后使用 `numpy.mean`。
 - `keepdims` (bool, 可选): 指定 axis 时，在输出形状中保留长度为1的缩减维度。默认为 False。当前实现中，axis=None 时无论 keepdims 取何值都返回标量。
 - `dtype` (DTypeLike, 可选): 计算的数值精度。省略时，当前实现使用输入 dtype，整数输入也不例外，不会自动提升为 float64。需要保留小数均值时，请使用浮点输入，或显式指定浮点 dtype（例如 np.float32）。
 
