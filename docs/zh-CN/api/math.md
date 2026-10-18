@@ -1,9 +1,5 @@
 # 数学函数
 
-::: info
-当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
-:::
-
 本模块提供数学函数，包括三角函数、双曲函数、指数函数、对数函数以及其他数学运算。
 
 ## 三角函数
@@ -2476,7 +2472,6 @@ asnumpy.amin(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 np.float64(1.0)
 ```
 
-<!--
 ## 浮点数例程
 
 ### asnumpy.signbit
@@ -2503,7 +2498,7 @@ asnumpy.signbit(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.signbit(ap.ndarray.from_numpy(np.array([-2.5, 3.5])))
+>>> ap.signbit(ap.ndarray.from_numpy(np.array([-2.5, 3.5], dtype=np.float32))).to_numpy()
 array([ True, False])
 ```
 
@@ -2532,8 +2527,8 @@ asnumpy.copysign(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.copysign(ap.ndarray.from_numpy(np.array([1.5])), ap.ndarray.from_numpy(np.array([-1])))
-array([-1.5])
+>>> ap.copysign(ap.ndarray.from_numpy(np.array([1.5], dtype=np.float32)), ap.ndarray.from_numpy(np.array([-1.0], dtype=np.float32))).to_numpy()
+array([-1.5], dtype=float32)
 ```
 
 ### asnumpy.ldexp
@@ -2560,8 +2555,8 @@ asnumpy.ldexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.ldexp(ap.ndarray.from_numpy(np.array([3])), ap.ndarray.from_numpy(np.array([2])))
-array([12.])
+>>> ap.ldexp(ap.ndarray.from_numpy(np.array([3.0], dtype=np.float32)), ap.ndarray.from_numpy(np.array([2], dtype=np.int32))).to_numpy()
+array([12.], dtype=float32)
 ```
 
 ## 复数处理
@@ -2574,7 +2569,7 @@ asnumpy.real(x: ArrayLike) -> ndarray
 
 返回复数参数的实部。
 
-此函数提取 `x` 中元素的实部。
+此函数提取 `x` 中元素的实部。当前原生实现固定输出 `float32`，因此 `complex128` 输入会损失精度。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -2589,8 +2584,8 @@ asnumpy.real(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.real(ap.ndarray.from_numpy(np.array([1+5j])))
-array([1.])
+>>> ap.real(ap.ndarray.from_numpy(np.array([1+5j], dtype=np.complex64))).to_numpy()
+array([1.], dtype=float32)
 ```
 
 ## 有理数例程
@@ -2603,7 +2598,7 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 计算输入的最大公约数。
 
-此函数逐元素计算 `x1` 和 `x2` 绝对值的最大公约数（GCD）。
+此函数逐元素计算最大公约数（GCD）。当前仅支持 `int32`/`int64` 输入；`int8`/`int16` 与浮点输入不受支持（已记录为已知失败用例），负数输入的处理当前与 NumPy 不一致。
 
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
@@ -2611,7 +2606,7 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 - `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
-- `ndarray`: 输入绝对值的最大公约数。
+- `ndarray`: 输入的最大公约数。
 
 **另请参阅**
 - [`numpy.gcd`](https://numpy.org/doc/stable/reference/generated/numpy.gcd.html)
@@ -2621,8 +2616,8 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.gcd(ap.ndarray.from_numpy(np.array([10])), ap.ndarray.from_numpy(np.array([25])))
-array([5])
+>>> ap.gcd(ap.ndarray.from_numpy(np.array([10], dtype=np.int32)), ap.ndarray.from_numpy(np.array([25], dtype=np.int32))).to_numpy()
+array([5], dtype=int32)
 ```
 
 ### asnumpy.lcm
@@ -2633,7 +2628,7 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 计算输入的最小公倍数。
 
-此函数逐元素计算 `x1` 和 `x2` 绝对值的最小公倍数（LCM）。
+此函数逐元素计算最小公倍数（LCM）。当前仅支持 `int32`/`int64` 输入；`int8`/`int16` 与浮点输入不受支持（已记录为已知失败用例）。
 
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
@@ -2641,7 +2636,7 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 - `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
-- `ndarray`: 输入绝对值的最小公倍数。
+- `ndarray`: 输入的最小公倍数。
 
 **另请参阅**
 - [`numpy.lcm`](https://numpy.org/doc/stable/reference/generated/numpy.lcm.html)
@@ -2651,7 +2646,6 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.lcm(ap.ndarray.from_numpy(np.array([4])), ap.ndarray.from_numpy(np.array([6])))
-array([12])
+>>> ap.lcm(ap.ndarray.from_numpy(np.array([4], dtype=np.int32)), ap.ndarray.from_numpy(np.array([6], dtype=np.int32))).to_numpy()
+array([12], dtype=int32)
 ```
--->

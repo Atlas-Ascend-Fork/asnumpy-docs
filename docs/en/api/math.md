@@ -1,9 +1,5 @@
 # Mathematical Functions
 
-::: info
-This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
-:::
-
 This module provides mathematical functions including trigonometric, hyperbolic, exponential, logarithmic, and other mathematical operations.
 
 ## Trigonometric Functions
@@ -2470,7 +2466,6 @@ The int64 global reduction is marked xfail for the `amax`/`amin` entries (it wor
 np.float64(1.0)
 ```
 
-<!--
 ## Floating Point Routines
 
 ### asnumpy.signbit
@@ -2497,7 +2492,7 @@ This function returns True where the sign bit is set (indicating a negative numb
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.signbit(ap.ndarray.from_numpy(np.array([-2.5, 3.5])))
+>>> ap.signbit(ap.ndarray.from_numpy(np.array([-2.5, 3.5], dtype=np.float32))).to_numpy()
 array([ True, False])
 ```
 
@@ -2526,8 +2521,8 @@ This function returns a value with the magnitude of `x1` and the sign of `x2`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.copysign(ap.ndarray.from_numpy(np.array([1.5])), ap.ndarray.from_numpy(np.array([-1])))
-array([-1.5])
+>>> ap.copysign(ap.ndarray.from_numpy(np.array([1.5], dtype=np.float32)), ap.ndarray.from_numpy(np.array([-1.0], dtype=np.float32))).to_numpy()
+array([-1.5], dtype=float32)
 ```
 
 ### asnumpy.ldexp
@@ -2554,8 +2549,8 @@ This function computes the product of `x1` and 2 raised to the power of `x2`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.ldexp(ap.ndarray.from_numpy(np.array([3])), ap.ndarray.from_numpy(np.array([2])))
-array([12.])
+>>> ap.ldexp(ap.ndarray.from_numpy(np.array([3.0], dtype=np.float32)), ap.ndarray.from_numpy(np.array([2], dtype=np.int32))).to_numpy()
+array([12.], dtype=float32)
 ```
 
 ## Handling Complex Numbers
@@ -2568,7 +2563,7 @@ asnumpy.real(x: ArrayLike) -> ndarray
 
 Return the real part of the complex argument.
 
-This function extracts the real component of the elements in `x`.
+This function extracts the real component of the elements in `x`. The current native implementation always produces `float32` output, so `complex128` input loses precision.
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -2583,8 +2578,8 @@ This function extracts the real component of the elements in `x`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.real(ap.ndarray.from_numpy(np.array([1+5j])))
-array([1.])
+>>> ap.real(ap.ndarray.from_numpy(np.array([1+5j], dtype=np.complex64))).to_numpy()
+array([1.], dtype=float32)
 ```
 
 ## Rational Routines
@@ -2597,7 +2592,7 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 Calculate the greatest common divisor of the inputs.
 
-This function computes the greatest common divisor (GCD) of the absolute values of `x1` and `x2` element-wise.
+This function computes the greatest common divisor (GCD) element-wise. Only `int32`/`int64` inputs are supported; `int8`/`int16` and floating-point inputs are not (tracked as known failing cases), and negative-input handling currently differs from NumPy.
 
 **Arguments**
 - `x1` (ArrayLike): First input array.
@@ -2605,7 +2600,7 @@ This function computes the greatest common divisor (GCD) of the absolute values 
 - `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
-- `ndarray`: The greatest common divisor of the absolute values of the inputs.
+- `ndarray`: The greatest common divisor of the inputs.
 
 **See Also**
 - [`numpy.gcd`](https://numpy.org/doc/stable/reference/generated/numpy.gcd.html)
@@ -2615,8 +2610,8 @@ This function computes the greatest common divisor (GCD) of the absolute values 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.gcd(ap.ndarray.from_numpy(np.array([10])), ap.ndarray.from_numpy(np.array([25])))
-array([5])
+>>> ap.gcd(ap.ndarray.from_numpy(np.array([10], dtype=np.int32)), ap.ndarray.from_numpy(np.array([25], dtype=np.int32))).to_numpy()
+array([5], dtype=int32)
 ```
 
 ### asnumpy.lcm
@@ -2627,7 +2622,7 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 Calculate the least common multiple of the inputs.
 
-This function computes the least common multiple (LCM) of the absolute values of `x1` and `x2` element-wise.
+This function computes the least common multiple (LCM) element-wise. Only `int32`/`int64` inputs are supported; `int8`/`int16` and floating-point inputs are not (tracked as known failing cases).
 
 **Arguments**
 - `x1` (ArrayLike): First input array.
@@ -2635,7 +2630,7 @@ This function computes the least common multiple (LCM) of the absolute values of
 - `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
-- `ndarray`: The least common multiple of the absolute values of the inputs.
+- `ndarray`: The least common multiple of the inputs.
 
 **See Also**
 - [`numpy.lcm`](https://numpy.org/doc/stable/reference/generated/numpy.lcm.html)
@@ -2645,7 +2640,6 @@ This function computes the least common multiple (LCM) of the absolute values of
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.lcm(ap.ndarray.from_numpy(np.array([4])), ap.ndarray.from_numpy(np.array([6])))
-array([12])
+>>> ap.lcm(ap.ndarray.from_numpy(np.array([4], dtype=np.int32)), ap.ndarray.from_numpy(np.array([6], dtype=np.int32))).to_numpy()
+array([12], dtype=int32)
 ```
--->
