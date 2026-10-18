@@ -1641,7 +1641,6 @@ asnumpy.sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 array([1.        , 0.63661977])
 ```
 
-<!--
 ## 舍入
 
 ### asnumpy.around
@@ -1672,7 +1671,7 @@ asnumpy.around(x: ArrayLike, decimals: int = 0, dtype: DTypeLike = None) -> ndar
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.around(ap.ndarray.from_numpy(np.array([0.55, 1.55])), decimals=1)
+>>> ap.around(ap.ndarray.from_numpy(np.array([0.55, 1.55], dtype=np.float64)), decimals=1).to_numpy()
 array([0.6, 1.6])
 ```
 
@@ -1704,7 +1703,7 @@ asnumpy.round_(x: ArrayLike, decimals: int = 0, dtype: DTypeLike = None) -> ndar
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.round_(ap.ndarray.from_numpy(np.array([0.55, 1.55])), decimals=1)
+>>> ap.round_(ap.ndarray.from_numpy(np.array([0.55, 1.55], dtype=np.float64)), decimals=1).to_numpy()
 array([0.6, 1.6])
 ```
 
@@ -1735,7 +1734,7 @@ asnumpy.rint(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rint(ap.ndarray.from_numpy(np.array([-1.2, 1.2])))
+>>> ap.rint(ap.ndarray.from_numpy(np.array([-1.2, 1.2], dtype=np.float64))).to_numpy()
 array([-1.,  1.])
 ```
 
@@ -1766,7 +1765,7 @@ asnumpy.fix(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fix(ap.ndarray.from_numpy(np.array([2.9, -2.9])))
+>>> ap.fix(ap.ndarray.from_numpy(np.array([2.9, -2.9], dtype=np.float64))).to_numpy()
 array([ 2., -2.])
 ```
 
@@ -1779,6 +1778,8 @@ asnumpy.floor(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 计算每个元素的下取整。
 
 此函数返回小于或等于 `x` 中每个元素的最大整数。
+
+当前原生内核不支持 `float16` 与复数输入（已记录为已知失败用例）。
 
 **参数**
 - `x` (ArrayLike): 输入数据。
@@ -1796,7 +1797,7 @@ asnumpy.floor(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.floor(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.floor(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-2.,  1.])
 ```
 
@@ -1826,7 +1827,7 @@ asnumpy.ceil(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.ceil(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.ceil(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-1.,  2.])
 ```
 
@@ -1856,10 +1857,11 @@ asnumpy.trunc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.trunc(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.trunc(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-1.,  1.])
 ```
 
+<!--
 ## 求和、乘积、差分
 
 ### asnumpy.prod

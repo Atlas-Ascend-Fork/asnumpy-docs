@@ -1641,7 +1641,6 @@ This function computes the normalized sinc function, `sin(pi * x) / (pi * x)`, f
 array([1.        , 0.63661977])
 ```
 
-<!--
 ## Rounding
 
 ### asnumpy.around
@@ -1672,7 +1671,7 @@ This function rounds each element in `x` to the given number of decimals.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.around(ap.ndarray.from_numpy(np.array([0.55, 1.55])), decimals=1)
+>>> ap.around(ap.ndarray.from_numpy(np.array([0.55, 1.55], dtype=np.float64)), decimals=1).to_numpy()
 array([0.6, 1.6])
 ```
 
@@ -1704,7 +1703,7 @@ This function rounds each element in `x` to the given number of decimals. It is 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.round_(ap.ndarray.from_numpy(np.array([0.55, 1.55])), decimals=1)
+>>> ap.round_(ap.ndarray.from_numpy(np.array([0.55, 1.55], dtype=np.float64)), decimals=1).to_numpy()
 array([0.6, 1.6])
 ```
 
@@ -1735,7 +1734,7 @@ This function rounds each element in the input array `x` to the closest integer 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rint(ap.ndarray.from_numpy(np.array([-1.2, 1.2])))
+>>> ap.rint(ap.ndarray.from_numpy(np.array([-1.2, 1.2], dtype=np.float64))).to_numpy()
 array([-1.,  1.])
 ```
 
@@ -1766,7 +1765,7 @@ This function rounds each floating-point element to the nearest integer closer t
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fix(ap.ndarray.from_numpy(np.array([2.9, -2.9])))
+>>> ap.fix(ap.ndarray.from_numpy(np.array([2.9, -2.9], dtype=np.float64))).to_numpy()
 array([ 2., -2.])
 ```
 
@@ -1779,6 +1778,8 @@ asnumpy.floor(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Calculate the floor of each element.
 
 This function returns the largest integer less than or equal to each element in `x`.
+
+`float16` and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `x` (ArrayLike): Input data.
@@ -1796,7 +1797,7 @@ This function returns the largest integer less than or equal to each element in 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.floor(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.floor(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-2.,  1.])
 ```
 
@@ -1826,7 +1827,7 @@ This function returns the smallest integer greater than or equal to each element
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.ceil(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.ceil(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-1.,  2.])
 ```
 
@@ -1856,10 +1857,11 @@ This function returns the integer portion of each element in `x`, effectively di
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.trunc(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.trunc(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-1.,  1.])
 ```
 
+<!--
 ## Sums, Products, Differences
 
 ### asnumpy.prod
