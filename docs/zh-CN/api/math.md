@@ -379,7 +379,6 @@ asnumpy.rad2deg(x: ArrayLike) -> ndarray
 array([  0.,  90., 180.], dtype=float32)
 ```
 
-<!--
 ## 双曲函数
 
 ### asnumpy.sinh
@@ -408,7 +407,7 @@ asnumpy.sinh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sinh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.sinh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([0.        , 1.17520119])
 ```
 
@@ -438,7 +437,7 @@ asnumpy.cosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cosh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.cosh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([1.        , 1.54308063])
 ```
 
@@ -468,7 +467,7 @@ asnumpy.tanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tanh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.tanh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([0.        , 0.76159416])
 ```
 
@@ -497,7 +496,7 @@ asnumpy.arcsinh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arcsinh(ap.ndarray.from_numpy(np.array([0., 1.17520119])))
+>>> ap.arcsinh(ap.ndarray.from_numpy(np.array([0., 1.17520119], dtype=np.float64))).to_numpy()
 array([0., 1.])
 ```
 
@@ -510,6 +509,8 @@ asnumpy.arccosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 计算每个元素的反双曲余弦值。
 
 此函数计算输入数组 `x` 中每个元素的反双曲余弦值。
+
+小于 1 的输入会产生 `NaN`，与 NumPy 一致（已有测试覆盖）。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -526,7 +527,7 @@ asnumpy.arccosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arccosh(ap.ndarray.from_numpy(np.array([1., 1.54308063])))
+>>> ap.arccosh(ap.ndarray.from_numpy(np.array([1., 1.54308063], dtype=np.float64))).to_numpy()
 array([0., 1.])
 ```
 
@@ -539,6 +540,8 @@ asnumpy.arctanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 计算每个元素的反双曲正切值。
 
 此函数计算输入数组 `x` 中每个元素的反双曲正切值。
+
+|x| = 1 的输入返回 `inf`，|x| > 1 返回 `NaN`，与 NumPy 一致（已有测试覆盖）。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -555,10 +558,11 @@ asnumpy.arctanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arctanh(ap.ndarray.from_numpy(np.array([0., 0.76159416])))
-array([0., 1.])
+>>> ap.arctanh(ap.ndarray.from_numpy(np.array([0., 0.76159416], dtype=np.float64))).to_numpy()
+array([0.        , 1.00000001])
 ```
 
+<!--
 ## 算术运算
 
 ### asnumpy.add

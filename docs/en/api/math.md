@@ -379,7 +379,6 @@ This function converts each element in the input array `x` from radians to degre
 array([  0.,  90., 180.], dtype=float32)
 ```
 
-<!--
 ## Hyperbolic Functions
 
 ### asnumpy.sinh
@@ -408,7 +407,7 @@ This function computes the hyperbolic sine for every element in the input array 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sinh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.sinh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([0.        , 1.17520119])
 ```
 
@@ -438,7 +437,7 @@ This function computes the hyperbolic cosine for every element in the input arra
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cosh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.cosh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([1.        , 1.54308063])
 ```
 
@@ -468,7 +467,7 @@ This function computes the hyperbolic tangent for every element in the input arr
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tanh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.tanh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([0.        , 0.76159416])
 ```
 
@@ -497,7 +496,7 @@ This function computes the inverse hyperbolic sine for every element in the inpu
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arcsinh(ap.ndarray.from_numpy(np.array([0., 1.17520119])))
+>>> ap.arcsinh(ap.ndarray.from_numpy(np.array([0., 1.17520119], dtype=np.float64))).to_numpy()
 array([0., 1.])
 ```
 
@@ -510,6 +509,8 @@ asnumpy.arccosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Calculate the inverse hyperbolic cosine of each element.
 
 This function computes the inverse hyperbolic cosine for every element in the input array `x`.
+
+Input values below 1 produce `NaN`, matching NumPy (covered by the tests).
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -526,7 +527,7 @@ This function computes the inverse hyperbolic cosine for every element in the in
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arccosh(ap.ndarray.from_numpy(np.array([1., 1.54308063])))
+>>> ap.arccosh(ap.ndarray.from_numpy(np.array([1., 1.54308063], dtype=np.float64))).to_numpy()
 array([0., 1.])
 ```
 
@@ -539,6 +540,8 @@ asnumpy.arctanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Calculate the inverse hyperbolic tangent of each element.
 
 This function computes the inverse hyperbolic tangent for every element in the input array `x`.
+
+Inputs with |x| = 1 return `inf`, while |x| > 1 returns `NaN`, matching NumPy (covered by the tests).
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -555,10 +558,11 @@ This function computes the inverse hyperbolic tangent for every element in the i
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arctanh(ap.ndarray.from_numpy(np.array([0., 0.76159416])))
-array([0., 1.])
+>>> ap.arctanh(ap.ndarray.from_numpy(np.array([0., 0.76159416], dtype=np.float64))).to_numpy()
+array([0.        , 1.00000001])
 ```
 
+<!--
 ## Arithmetic Operations
 
 ### asnumpy.add
