@@ -1061,7 +1061,6 @@ array([3., 3.], dtype=float32)
 array([1., 2.], dtype=float32)
 ```
 
-<!--
 ## 指数和对数
 
 ### asnumpy.exp
@@ -1088,7 +1087,7 @@ asnumpy.exp(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.exp(ap.ndarray.from_numpy(np.array([1., 2.])))
+>>> ap.exp(ap.ndarray.from_numpy(np.array([1., 2.], dtype=np.float64))).to_numpy()
 array([2.71828183, 7.3890561 ])
 ```
 
@@ -1116,7 +1115,7 @@ asnumpy.exp2(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.exp2(ap.ndarray.from_numpy(np.array([3])))
+>>> ap.exp2(ap.ndarray.from_numpy(np.array([3], dtype=np.int32))).to_numpy()
 array([8.])
 ```
 
@@ -1144,8 +1143,8 @@ asnumpy.expm1(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.expm1(ap.ndarray.from_numpy(np.array([1e-10])))
-array([1.0000000e-10])
+>>> ap.expm1(ap.ndarray.from_numpy(np.array([1e-10], dtype=np.float64))).to_numpy()
+array([1.e-10])
 ```
 
 ### asnumpy.log
@@ -1157,6 +1156,8 @@ asnumpy.log(x: ArrayLike) -> ndarray
 计算每个元素的自然对数。
 
 此函数计算输入数组 `x` 中每个元素的以 `e` 为底的对数。
+
+输入为 0 时返回 `-inf`，输入为负数时返回 `NaN`，与 NumPy 一致（已有测试覆盖）。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -1174,7 +1175,7 @@ asnumpy.log(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log(ap.ndarray.from_numpy(np.array([np.e])))
+>>> ap.log(ap.ndarray.from_numpy(np.array([np.e], dtype=np.float64))).to_numpy()
 array([1.])
 ```
 
@@ -1203,7 +1204,7 @@ asnumpy.log2(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log2(ap.ndarray.from_numpy(np.array([8.])))
+>>> ap.log2(ap.ndarray.from_numpy(np.array([8.], dtype=np.float64))).to_numpy()
 array([3.])
 ```
 
@@ -1232,7 +1233,7 @@ asnumpy.log10(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log10(ap.ndarray.from_numpy(np.array([100.])))
+>>> ap.log10(ap.ndarray.from_numpy(np.array([100.], dtype=np.float64))).to_numpy()
 array([2.])
 ```
 
@@ -1260,7 +1261,7 @@ asnumpy.log1p(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log1p(ap.ndarray.from_numpy(np.array([1e-99])))
+>>> ap.log1p(ap.ndarray.from_numpy(np.array([1e-99], dtype=np.float64))).to_numpy()
 array([1.e-99])
 ```
 
@@ -1289,7 +1290,7 @@ asnumpy.logaddexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp(ap.ndarray.from_numpy(np.array([0])), ap.ndarray.from_numpy(np.array([0])))
+>>> ap.logaddexp(ap.ndarray.from_numpy(np.array([0], dtype=np.int32)), ap.ndarray.from_numpy(np.array([0], dtype=np.int32))).to_numpy()
 array([0.69314718])
 ```
 
@@ -1318,10 +1319,11 @@ asnumpy.logaddexp2(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp2(ap.ndarray.from_numpy(np.array([1])), ap.ndarray.from_numpy(np.array([1])))
+>>> ap.logaddexp2(ap.ndarray.from_numpy(np.array([1], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1], dtype=np.int32))).to_numpy()
 array([2.])
 ```
 
+<!--
 ## 杂项函数
 
 ### asnumpy.absolute

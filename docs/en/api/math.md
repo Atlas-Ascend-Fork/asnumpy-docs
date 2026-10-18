@@ -1061,7 +1061,6 @@ array([3., 3.], dtype=float32)
 array([1., 2.], dtype=float32)
 ```
 
-<!--
 ## Exponents and Logarithms
 
 ### asnumpy.exp
@@ -1088,7 +1087,7 @@ This function computes `e` raised to the power of each element in `x`, where `e`
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.exp(ap.ndarray.from_numpy(np.array([1., 2.])))
+>>> ap.exp(ap.ndarray.from_numpy(np.array([1., 2.], dtype=np.float64))).to_numpy()
 array([2.71828183, 7.3890561 ])
 ```
 
@@ -1116,7 +1115,7 @@ This function computes the base-2 exponential for every element in the input arr
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.exp2(ap.ndarray.from_numpy(np.array([3])))
+>>> ap.exp2(ap.ndarray.from_numpy(np.array([3], dtype=np.int32))).to_numpy()
 array([8.])
 ```
 
@@ -1144,8 +1143,8 @@ This function computes the exponential of each element minus one. It is designed
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.expm1(ap.ndarray.from_numpy(np.array([1e-10])))
-array([1.0000000e-10])
+>>> ap.expm1(ap.ndarray.from_numpy(np.array([1e-10], dtype=np.float64))).to_numpy()
+array([1.e-10])
 ```
 
 ### asnumpy.log
@@ -1157,6 +1156,8 @@ asnumpy.log(x: ArrayLike) -> ndarray
 Calculate the natural logarithm of each element.
 
 This function computes the logarithm to the base `e` for every element in the input array `x`.
+
+Input 0 returns `-inf` and negative input returns `NaN`, matching NumPy (covered by the tests).
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -1174,7 +1175,7 @@ This function computes the logarithm to the base `e` for every element in the in
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log(ap.ndarray.from_numpy(np.array([np.e])))
+>>> ap.log(ap.ndarray.from_numpy(np.array([np.e], dtype=np.float64))).to_numpy()
 array([1.])
 ```
 
@@ -1203,7 +1204,7 @@ This function computes the binary logarithm (base 2) for every element in the in
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log2(ap.ndarray.from_numpy(np.array([8.])))
+>>> ap.log2(ap.ndarray.from_numpy(np.array([8.], dtype=np.float64))).to_numpy()
 array([3.])
 ```
 
@@ -1232,7 +1233,7 @@ This function computes the common logarithm (base 10) for every element in the i
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log10(ap.ndarray.from_numpy(np.array([100.])))
+>>> ap.log10(ap.ndarray.from_numpy(np.array([100.], dtype=np.float64))).to_numpy()
 array([2.])
 ```
 
@@ -1260,7 +1261,7 @@ This function computes `log(1 + x)` element-wise. It is designed to provide bett
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log1p(ap.ndarray.from_numpy(np.array([1e-99])))
+>>> ap.log1p(ap.ndarray.from_numpy(np.array([1e-99], dtype=np.float64))).to_numpy()
 array([1.e-99])
 ```
 
@@ -1289,7 +1290,7 @@ This function computes `log(exp(x1) + exp(x2))`. It is numerically stable and us
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp(ap.ndarray.from_numpy(np.array([0])), ap.ndarray.from_numpy(np.array([0])))
+>>> ap.logaddexp(ap.ndarray.from_numpy(np.array([0], dtype=np.int32)), ap.ndarray.from_numpy(np.array([0], dtype=np.int32))).to_numpy()
 array([0.69314718])
 ```
 
@@ -1318,10 +1319,11 @@ This function computes `log2(2**x1 + 2**x2)`. It is a base-2 analog of `logaddex
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp2(ap.ndarray.from_numpy(np.array([1])), ap.ndarray.from_numpy(np.array([1])))
+>>> ap.logaddexp2(ap.ndarray.from_numpy(np.array([1], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1], dtype=np.int32))).to_numpy()
 array([2.])
 ```
 
+<!--
 ## Miscellaneous Functions
 
 ### asnumpy.absolute
