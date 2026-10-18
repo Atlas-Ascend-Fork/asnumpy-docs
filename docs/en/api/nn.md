@@ -1,9 +1,5 @@
 # Neural Network Functions
 
-::: info
-This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
-:::
-
 ## Activation Functions
 
 ### asnumpy.softmax
@@ -34,8 +30,8 @@ Current test coverage indicates verified support for `float32` and `float64`. Em
 >>> import asnumpy as ap
 >>> import numpy as np
 >>> x = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float32))
->>> ap.softmax(x)
-array([0.09003057, 0.24472847, 0.66524096])
+>>> ap.softmax(x).to_numpy()
+array([0.09003057, 0.24472846, 0.66524094], dtype=float32)
 >>> ap.sum(ap.softmax(x))
-1.0
+np.float32(1.0)
 ```

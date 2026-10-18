@@ -1,10 +1,6 @@
 # Random Sampling Functions
 
-::: info
-This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
-:::
-
-This module provides random number generation capabilities for various probability distributions. All samples are generated on the accelerator device.
+This module provides random number generation capabilities for various probability distributions. All samples are generated on the accelerator device. Every function requires the `size` argument (unlike NumPy, omitting it is not supported), and the sample dtype is fixed by the distribution: `float64` for `normal`, `uniform`, `standard_normal`, and `standard_cauchy`; `int32` for `binomial`; `float32` for the remaining distributions.
 
 ## Continuous Distributions
 
@@ -32,7 +28,7 @@ Produces random numbers where each value within [`low`, `high`) has equal probab
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.uniform(low=1.0, high=5.0, size=4)
+>>> ap.random.uniform(low=1.0, high=5.0, size=4).to_numpy()
 array([2.34, 4.12, 1.56, 3.89])  # random
 ```
 
@@ -60,7 +56,7 @@ Produces samples centered at `loc` with spread controlled by `scale`, following 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.normal(loc=5.0, scale=2.0, size=3)
+>>> ap.random.normal(loc=5.0, scale=2.0, size=3).to_numpy()
 array([4.21, 6.83, 3.45])  # random
 ```
 
@@ -86,11 +82,11 @@ A convenience function that produces samples from the canonical bell curve cente
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.standard_normal(size=(2, 3))
+>>> ap.random.standard_normal(size=(2, 3)).to_numpy()
 array([[ 0.42, -1.15,  0.78],
        [-0.33,  1.02, -0.67]])  # random
 ```
-<!--
+
 ### asnumpy.random.exponential
 
 ```python
@@ -114,8 +110,8 @@ Produces samples suitable for modeling time between independent events. The `sca
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.exponential(scale=3.0, size=4)
-array([2.15, 0.78, 5.42, 1.33])  # random
+>>> ap.random.exponential(scale=3.0, size=4).to_numpy()
+array([2.15, 0.78, 5.42, 1.33], dtype=float32)  # random
 ```
 
 ### asnumpy.random.lognormal
@@ -142,8 +138,8 @@ Creates samples where the natural logarithm of values follows a normal distribut
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.lognormal(mean=0.5, sigma=0.8, size=3)
-array([2.14, 0.92, 3.56])  # random
+>>> ap.random.lognormal(mean=0.5, sigma=0.8, size=3).to_numpy()
+array([2.14, 0.92, 3.56], dtype=float32)  # random
 ```
 
 ### asnumpy.random.laplace
@@ -170,8 +166,8 @@ Produces samples from a distribution with two exponential tails meeting at a sha
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.laplace(loc=2.0, scale=1.5, size=3)
-array([1.82, 3.45, 0.67])  # random
+>>> ap.random.laplace(loc=2.0, scale=1.5, size=3).to_numpy()
+array([1.82, 3.45, 0.67], dtype=float32)  # random
 ```
 
 ### asnumpy.random.logistic
@@ -198,8 +194,8 @@ Creates samples from a distribution resembling the normal curve but with heavier
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.logistic(loc=0.0, scale=2.0, size=3)
-array([1.23, -2.45, 0.89])  # random
+>>> ap.random.logistic(loc=0.0, scale=2.0, size=3).to_numpy()
+array([1.23, -2.45, 0.89], dtype=float32)  # random
 ```
 
 ### asnumpy.random.gumbel
@@ -226,8 +222,8 @@ Produces samples from an extreme value distribution. Frequently used to model th
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.gumbel(loc=1.0, scale=2.0, size=3)
-array([2.34, -0.56, 1.89])  # random
+>>> ap.random.gumbel(loc=1.0, scale=2.0, size=3).to_numpy()
+array([2.34, -0.56, 1.89], dtype=float32)  # random
 ```
 
 ### asnumpy.random.standard_cauchy
@@ -252,7 +248,7 @@ Produces samples from a distribution with a peak at zero but undefined mean and 
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.standard_cauchy(size=4)
+>>> ap.random.standard_cauchy(size=4).to_numpy()
 array([ 0.45, -2.31,  0.12,  5.67])  # random
 ```
 
@@ -279,9 +275,9 @@ Creates samples from a distribution commonly used in signal processing and commu
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.rayleigh(scale=1.5, size=(2, 2))
+>>> ap.random.rayleigh(scale=1.5, size=(2, 2)).to_numpy()
 array([[1.23, 2.45],
-       [0.89, 1.67]])  # random
+       [0.89, 1.67]], dtype=float32)  # random
 ```
 
 ### asnumpy.random.pareto
@@ -307,8 +303,8 @@ Produces samples following a power-law pattern, useful for modeling wealth distr
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.pareto(a=2.5, size=4)
-array([0.34, 1.23, 0.56, 0.89])  # random
+>>> ap.random.pareto(a=2.5, size=4).to_numpy()
+array([0.34, 1.23, 0.56, 0.89], dtype=float32)  # random
 ```
 
 ### asnumpy.random.weibull
@@ -334,8 +330,8 @@ Creates samples from a versatile distribution widely applied in reliability engi
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.weibull(a=1.5, size=4)
-array([0.78, 1.23, 0.45, 2.11])  # random
+>>> ap.random.weibull(a=1.5, size=4).to_numpy()
+array([0.78, 1.23, 0.45, 2.11], dtype=float32)  # random
 ```
 
 ## Discrete Distributions
@@ -356,7 +352,7 @@ Produces samples counting successes across multiple independent trials, each wit
 - `size` (ShapeLike, int or sequence of ints): Dimensions of the output array.
 
 **Returns**
-- `ndarray`: Array populated with integer counts from 0 to n.
+- `ndarray`: Array populated with `int32` integer counts from 0 to n.
 
 **See Also**
 - [`numpy.random.binomial`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.binomial.html): NumPy equivalent.
@@ -364,8 +360,8 @@ Produces samples counting successes across multiple independent trials, each wit
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.binomial(n=20, p=0.4, size=5)
-array([7, 9, 6, 8, 5])  # random
+>>> ap.random.binomial(n=20, p=0.4, size=5).to_numpy()
+array([7, 9, 6, 8, 5], dtype=int32)  # random
 ```
 
 ### asnumpy.random.geometric
@@ -383,7 +379,7 @@ Produces samples representing the trial number at which the first success occurs
 - `size` (ShapeLike, int or sequence of ints): Dimensions of the output array.
 
 **Returns**
-- `ndarray`: Array populated with positive integers (minimum value is 1).
+- `ndarray`: Array of positive, integer-valued samples (minimum 1), stored as `float32`.
 
 **See Also**
 - [`numpy.random.geometric`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.geometric.html): NumPy equivalent.
@@ -391,7 +387,6 @@ Produces samples representing the trial number at which the first success occurs
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.random.geometric(p=0.25, size=5)
-array([3, 1, 7, 2, 4])  # random
+>>> ap.random.geometric(p=0.25, size=5).to_numpy()
+array([3., 1., 7., 2., 4.], dtype=float32)  # random
 ```
--->
