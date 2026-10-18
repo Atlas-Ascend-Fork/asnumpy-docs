@@ -2166,7 +2166,6 @@ This function computes the vector cross product of `a` and `b`. It operates on v
 array([-3,  6, -3], dtype=int32)
 ```
 
-<!--
 ## Extrema Finding
 
 ### asnumpy.maximum
@@ -2197,8 +2196,8 @@ This function compares `x1` and `x2` and returns the larger value for each eleme
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.maximum(ap.ndarray.from_numpy(np.array([2, 3])), ap.ndarray.from_numpy(np.array([1, 5])))
-array([2, 5])
+>>> ap.maximum(ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1, 5], dtype=np.int32))).to_numpy()
+array([2, 5], dtype=int32)
 ```
 
 ### asnumpy.minimum
@@ -2229,8 +2228,8 @@ This function compares `x1` and `x2` and returns the smaller value for each elem
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.minimum(ap.ndarray.from_numpy(np.array([2, 3])), ap.ndarray.from_numpy(np.array([1, 5])))
-array([1, 3])
+>>> ap.minimum(ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1, 5], dtype=np.int32))).to_numpy()
+array([1, 3], dtype=int32)
 ```
 
 ### asnumpy.fmax
@@ -2261,7 +2260,7 @@ This function compares `x1` and `x2` and returns the larger value. If a NaN is e
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmax(ap.ndarray.from_numpy(np.array([np.nan, 2])), ap.ndarray.from_numpy(np.array([1, np.nan])))
+>>> ap.fmax(ap.ndarray.from_numpy(np.array([np.nan, 2], dtype=np.float64)), ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float64))).to_numpy()
 array([1., 2.])
 ```
 
@@ -2293,7 +2292,7 @@ This function compares `x1` and `x2` and returns the smaller value. If a NaN is 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmin(ap.ndarray.from_numpy(np.array([np.nan, 2])), ap.ndarray.from_numpy(np.array([1, np.nan])))
+>>> ap.fmin(ap.ndarray.from_numpy(np.array([np.nan, 2], dtype=np.float64)), ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float64))).to_numpy()
 array([1., 2.])
 ```
 
@@ -2307,9 +2306,11 @@ Calculate the maximum value of the array.
 
 This function finds the largest value in the array `a`. If an `axis` is provided, the maximum is computed along that axis.
 
+The float32 global reduction (`axis=None`) is excluded from the tests because the returned dtype differs from NumPy's.
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2325,9 +2326,9 @@ This function finds the largest value in the array `a`. If an `axis` is provided
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int64))
 >>> ap.max(a)
-3
+np.int64(3)
 ```
 
 ### asnumpy.amax
@@ -2340,9 +2341,11 @@ Calculate the maximum value of the array.
 
 This function finds the largest value in the array `a`. It is an alias for `max`.
 
+The int64 global reduction is marked xfail for the `amax`/`amin` entries (it works through `max`/`min`); the float32 global reduction differs in dtype from NumPy.
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2358,9 +2361,9 @@ This function finds the largest value in the array `a`. It is an alias for `max`
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float64))
 >>> ap.amax(a)
-3
+np.float64(3.0)
 ```
 
 ### asnumpy.nanmax
@@ -2373,9 +2376,11 @@ Calculate the maximum value of the array, ignoring NaNs.
 
 This function finds the largest value in the array `a`, skipping any NaN values. If an `axis` is provided, the maximum is computed along that axis.
 
+`float64` input is not supported (tracked as xfail), and an all-NaN slice returns `-inf` instead of `NaN` (also tracked as xfail).
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2390,9 +2395,9 @@ This function finds the largest value in the array `a`, skipping any NaN values.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, np.nan]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan, 3.0], dtype=np.float32))
 >>> ap.nanmax(a)
-1.0
+np.float32(3.0)
 ```
 
 ### asnumpy.min
@@ -2405,9 +2410,11 @@ Calculate the minimum value of the array.
 
 This function finds the smallest value in the array `a`. If an `axis` is provided, the minimum is computed along that axis.
 
+The float32 global reduction (`axis=None`) is excluded from the tests because the returned dtype differs from NumPy's.
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2423,9 +2430,9 @@ This function finds the smallest value in the array `a`. If an `axis` is provide
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int64))
 >>> ap.min(a)
-1
+np.int64(1)
 ```
 
 ### asnumpy.amin
@@ -2438,9 +2445,11 @@ Calculate the minimum value of the array.
 
 This function finds the smallest value in the array `a`. It is an alias for `min`.
 
+The int64 global reduction is marked xfail for the `amax`/`amin` entries (it works through `max`/`min`).
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2456,11 +2465,12 @@ This function finds the smallest value in the array `a`. It is an alias for `min
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float64))
 >>> ap.amin(a)
-1
+np.float64(1.0)
 ```
 
+<!--
 ## Floating Point Routines
 
 ### asnumpy.signbit

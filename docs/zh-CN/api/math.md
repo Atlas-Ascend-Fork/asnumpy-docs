@@ -2172,7 +2172,6 @@ asnumpy.cross(a: ArrayLike, b: ArrayLike, axis: AxisOptional = None) -> ndarray
 array([-3,  6, -3], dtype=int32)
 ```
 
-<!--
 ## 极值查找
 
 ### asnumpy.maximum
@@ -2203,8 +2202,8 @@ asnumpy.maximum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.maximum(ap.ndarray.from_numpy(np.array([2, 3])), ap.ndarray.from_numpy(np.array([1, 5])))
-array([2, 5])
+>>> ap.maximum(ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1, 5], dtype=np.int32))).to_numpy()
+array([2, 5], dtype=int32)
 ```
 
 ### asnumpy.minimum
@@ -2235,8 +2234,8 @@ asnumpy.minimum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.minimum(ap.ndarray.from_numpy(np.array([2, 3])), ap.ndarray.from_numpy(np.array([1, 5])))
-array([1, 3])
+>>> ap.minimum(ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1, 5], dtype=np.int32))).to_numpy()
+array([1, 3], dtype=int32)
 ```
 
 ### asnumpy.fmax
@@ -2267,7 +2266,7 @@ asnumpy.fmax(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmax(ap.ndarray.from_numpy(np.array([np.nan, 2])), ap.ndarray.from_numpy(np.array([1, np.nan])))
+>>> ap.fmax(ap.ndarray.from_numpy(np.array([np.nan, 2], dtype=np.float64)), ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float64))).to_numpy()
 array([1., 2.])
 ```
 
@@ -2299,7 +2298,7 @@ asnumpy.fmin(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmin(ap.ndarray.from_numpy(np.array([np.nan, 2])), ap.ndarray.from_numpy(np.array([1, np.nan])))
+>>> ap.fmin(ap.ndarray.from_numpy(np.array([np.nan, 2], dtype=np.float64)), ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float64))).to_numpy()
 array([1., 2.])
 ```
 
@@ -2313,9 +2312,11 @@ asnumpy.max(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 
 此函数查找数组 `a` 中的最大值。如果提供了 `axis`，则沿该轴计算最大值。
 
+测试未覆盖 float32 的全局归约（`axis=None`），因为其返回 dtype 与 NumPy 不一致。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2331,9 +2332,9 @@ asnumpy.max(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int64))
 >>> ap.max(a)
-3
+np.int64(3)
 ```
 
 ### asnumpy.amax
@@ -2346,9 +2347,11 @@ asnumpy.amax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 
 此函数查找数组 `a` 中的最大值。它是 `max` 的别名。
 
+`amax`/`amin` 入口的 int64 全局归约在测试中标记为 xfail（通过 `max`/`min` 入口可用）；float32 全局归约的 dtype 与 NumPy 不一致。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2364,9 +2367,9 @@ asnumpy.amax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float64))
 >>> ap.amax(a)
-3
+np.float64(3.0)
 ```
 
 ### asnumpy.nanmax
@@ -2379,9 +2382,11 @@ asnumpy.nanmax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) 
 
 此函数查找数组 `a` 中的最大值，跳过任何 NaN 值。如果提供了 `axis`，则沿该轴计算最大值。
 
+当前不支持 `float64` 输入（已标记 xfail）；全为 NaN 的切片返回 `-inf` 而非 `NaN`（同为 xfail）。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2396,9 +2401,9 @@ asnumpy.nanmax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, np.nan]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan, 3.0], dtype=np.float32))
 >>> ap.nanmax(a)
-1.0
+np.float32(3.0)
 ```
 
 ### asnumpy.min
@@ -2411,9 +2416,11 @@ asnumpy.min(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 
 此函数查找数组 `a` 中的最小值。如果提供了 `axis`，则沿该轴计算最小值。
 
+测试未覆盖 float32 的全局归约（`axis=None`），因为其返回 dtype 与 NumPy 不一致。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2429,9 +2436,9 @@ asnumpy.min(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int64))
 >>> ap.min(a)
-1
+np.int64(1)
 ```
 
 ### asnumpy.amin
@@ -2444,9 +2451,11 @@ asnumpy.amin(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 
 此函数查找数组 `a` 中的最小值。它是 `min` 的别名。
 
+`amax`/`amin` 入口的 int64 全局归约在测试中标记为 xfail（通过 `max`/`min` 入口可用）。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2462,11 +2471,12 @@ asnumpy.amin(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float64))
 >>> ap.amin(a)
-1
+np.float64(1.0)
 ```
 
+<!--
 ## 浮点数例程
 
 ### asnumpy.signbit
