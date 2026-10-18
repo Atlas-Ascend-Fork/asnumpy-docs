@@ -1,9 +1,5 @@
 # Linear Algebra
 
-::: info
-This page currently documents a curated subset of representative APIs that have unit-test coverage. Additional APIs in this module are temporarily hidden while the frontend and documentation system are being reworked, and they will be restored after the frontend stabilizes.This document is for reference only.
-:::
-
 ## Matrix and Vector Products
 
 ### asnumpy.dot
@@ -27,7 +23,7 @@ The NumPy reference below describes NumPy's general semantics. Those additional 
 - `ndarray`: The dot product of `a` and `b`.
 
 ::: tip
-Current tests cover 1-D, 2-D, non-square matrices, empty-array inputs, and `float32`/`float64` precision cases. Note that empty-array inputs are marked `xfail` in the test suite, which means they are tracked as known failing cases rather than stable support.
+Current tests cover 1-D, 2-D, non-square matrices, empty-array inputs, and `float32`/`float64` precision cases.
 :::
 
 **See Also**
@@ -38,18 +34,17 @@ Current tests cover 1-D, 2-D, non-square matrices, empty-array inputs, and `floa
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> vec1 = ap.ndarray.from_numpy(np.array([1, 2], dtype=np.int32))
->>> vec2 = ap.ndarray.from_numpy(np.array([3, 4], dtype=np.int32))
->>> ap.dot(vec1, vec2)
-11
->>> mat1 = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> mat2 = ap.ndarray.from_numpy(np.array([[5, 6], [7, 8]], dtype=np.int32))
->>> ap.dot(mat1, mat2)
-array([[19, 22],
-       [43, 50]])
+>>> vec1 = ap.ndarray.from_numpy(np.array([1., 2.], dtype=np.float32))
+>>> vec2 = ap.ndarray.from_numpy(np.array([3., 4.], dtype=np.float32))
+>>> ap.dot(vec1, vec2).to_numpy()
+array(11., dtype=float32)
+>>> mat1 = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
+>>> mat2 = ap.ndarray.from_numpy(np.array([[5., 6.], [7., 8.]], dtype=np.float32))
+>>> ap.dot(mat1, mat2).to_numpy()
+array([[19., 22.],
+       [43., 50.]], dtype=float32)
 ```
 
-<!--
 ### asnumpy.einsum
 
 ```python
@@ -58,6 +53,8 @@ asnumpy.einsum(subscripts: str, *operands: ArrayLike) -> ndarray
 
 Execute tensor operations using subscript notation to specify contraction patterns.
 
+The current implementation runs the native Einstein-summation operator on the device; the NumPy reference below describes its general semantics.
+
 **Arguments**
 - `subscripts` (str): A string specifying the subscripts for summation.
 - `*operands` (ArrayLike): The arrays to operate on.
@@ -65,19 +62,24 @@ Execute tensor operations using subscript notation to specify contraction patter
 **Returns**
 - `ndarray`: The result of the Einstein summation.
 
+::: tip
+Current tests cover the subscript patterns `"a,b->ab"` (outer product; `float32`, `int32`, and `int64`) and `"abcd,abced->abce"` (batched contraction; `float32`); empty-input cases are covered by passing tests. Other subscript combinations are not covered by the current tests.
+:::
+
 **See Also**
 - [`numpy.einsum`](https://numpy.org/doc/stable/reference/generated/numpy.einsum.html)
 
 **Examples**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> a = ap.arange(9).reshape(3, 3)
->>> ap.einsum('ii', a)  # Trace
-12
->>> ap.einsum('ii->i', a)  # Diagonal
-array([0, 4, 8])
+>>> a = ap.ndarray.from_numpy(np.array([1., 2., 3.], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([4., 5.], dtype=np.float32))
+>>> ap.einsum("a,b->ab", a, b).to_numpy()
+array([[ 4.,  5.],
+       [ 8., 10.],
+       [12., 15.]], dtype=float32)
 ```
--->
 
 ### asnumpy.inner
 
@@ -87,7 +89,7 @@ asnumpy.inner(a: ArrayLike, b: ArrayLike) -> ndarray
 
 Calculate the inner product over the last dimension of the inputs.
 
-For 1-D inputs, this function returns the standard vector inner product; for higher-dimensional inputs, it sums over the last axis, matching `numpy.inner` behavior.
+For 1-D inputs, this function returns the standard vector inner product; for higher-dimensional inputs, it sums over the last axis. The current implementation copies the inputs to the host, computes via NumPy, and transfers the result back to the device, matching `numpy.inner` behavior.
 
 **Arguments**
 - `a` (ArrayLike): The first input array.
@@ -97,7 +99,7 @@ For 1-D inputs, this function returns the standard vector inner product; for hig
 - `ndarray`: The inner product of the arrays.
 
 ::: tip
-Current tests cover 1-D, 2-D, `float32`/`float64` precision, and empty-array inputs. Note that empty-array inputs are marked `xfail` in the test suite, which means they are tracked as known failing cases rather than stable support.
+Current tests cover 1-D, 2-D, empty-array inputs, and `float32`/`float64` precision cases.
 :::
 
 **See Also**
@@ -107,10 +109,10 @@ Current tests cover 1-D, 2-D, `float32`/`float64` precision, and empty-array inp
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> vec1 = ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32))
->>> vec2 = ap.ndarray.from_numpy(np.array([4, 5], dtype=np.int32))
->>> ap.inner(vec1, vec2)
-23
+>>> vec1 = ap.ndarray.from_numpy(np.array([2., 3.], dtype=np.float32))
+>>> vec2 = ap.ndarray.from_numpy(np.array([4., 5.], dtype=np.float32))
+>>> ap.inner(vec1, vec2).to_numpy()
+array(23., dtype=float32)
 ```
 
 ### asnumpy.matmul
@@ -121,6 +123,8 @@ asnumpy.matmul(x1: ArrayLike, x2: ArrayLike) -> ndarray
 
 Perform matrix multiplication following standard linear algebra broadcasting rules.
 
+The current implementation copies the inputs to the host, computes via NumPy, and transfers the result back to the device.
+
 **Arguments**
 - `x1` (ArrayLike): The first input array.
 - `x2` (ArrayLike): The second input array.
@@ -129,7 +133,7 @@ Perform matrix multiplication following standard linear algebra broadcasting rul
 - `ndarray`: The matrix product of the inputs.
 
 ::: tip
-Current tests cover 2-D, non-square matrices, batch broadcasting, `float32`/`float64` precision, and empty-array inputs. Note that empty-array inputs are marked `xfail` in the test suite, which means they are tracked as known failing cases rather than stable support.
+Current tests cover 2-D, non-square matrices, batch broadcasting, empty-array inputs, and `float32`/`float64` precision cases.
 :::
 
 **See Also**
@@ -139,11 +143,11 @@ Current tests cover 2-D, non-square matrices, batch broadcasting, `float32`/`flo
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> mat1 = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> mat2 = ap.ndarray.from_numpy(np.array([[5, 6], [7, 8]], dtype=np.int32))
->>> ap.matmul(mat1, mat2)
-array([[19, 22],
-       [43, 50]])
+>>> mat1 = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
+>>> mat2 = ap.ndarray.from_numpy(np.array([[5., 6.], [7., 8.]], dtype=np.float32))
+>>> ap.matmul(mat1, mat2).to_numpy()
+array([[19., 22.],
+       [43., 50.]], dtype=float32)
 ```
 
 ### asnumpy.outer
@@ -154,7 +158,7 @@ asnumpy.outer(a: ArrayLike, b: ArrayLike) -> ndarray
 
 Generate an outer-product matrix from two inputs.
 
-The inputs are first flattened to one dimension, and the result matrix is then constructed from pairwise products of their values.
+The inputs are first flattened to one dimension, and the result matrix is then constructed from pairwise products of their values. The current implementation copies the inputs to the host, computes via NumPy, and transfers the result back to the device.
 
 **Arguments**
 - `a` (ArrayLike): The first input array.
@@ -164,7 +168,7 @@ The inputs are first flattened to one dimension, and the result matrix is then c
 - `ndarray`: The outer product matrix.
 
 ::: tip
-Current tests cover 1-D inputs, automatic flattening of 2-D inputs, `float32`/`float64` precision, and empty-array inputs. Note that empty-array inputs are marked `xfail` in the test suite, which means they are tracked as known failing cases rather than stable support.
+Current tests cover 1-D inputs, automatic flattening of 2-D inputs, empty-array inputs, and `float32`/`float64` precision cases.
 :::
 
 **See Also**
@@ -174,12 +178,12 @@ Current tests cover 1-D inputs, automatic flattening of 2-D inputs, `float32`/`f
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> vec1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
->>> vec2 = ap.ndarray.from_numpy(np.array([4, 5], dtype=np.int32))
->>> ap.outer(vec1, vec2)
-array([[ 4,  5],
-       [ 8, 10],
-       [12, 15]])
+>>> vec1 = ap.ndarray.from_numpy(np.array([1., 2., 3.], dtype=np.float32))
+>>> vec2 = ap.ndarray.from_numpy(np.array([4., 5.], dtype=np.float32))
+>>> ap.outer(vec1, vec2).to_numpy()
+array([[ 4.,  5.],
+       [ 8., 10.],
+       [12., 15.]], dtype=float32)
 ```
 
 ### asnumpy.vdot
@@ -203,7 +207,7 @@ The tests described below cover real `float32` and `float64` inputs. They do not
 - `ndarray`: The dot product of the vectors.
 
 ::: tip
-Current tests cover 1-D inputs, automatic flattening of 2-D inputs, `float32`/`float64` precision, and empty-array inputs. Note that empty-array inputs are marked `xfail` in the test suite, which means they are tracked as known failing cases rather than stable support.
+Current tests cover 1-D inputs, automatic flattening of 2-D inputs, empty-array inputs, and `float32`/`float64` precision cases.
 :::
 
 **See Also**
@@ -248,6 +252,8 @@ asnumpy.linalg.norm(
 
 Measure the magnitude or size of a vector or matrix according to a specified order.
 
+The current implementation mainly computes the result on the host via NumPy.
+
 **Arguments**
 - `a` (ArrayLike): Input vector or matrix.
 - `ord` (int, float, or str, optional): Order of the norm.
@@ -258,7 +264,7 @@ Measure the magnitude or size of a vector or matrix according to a specified ord
 - `ndarray`: Norm values.
 
 ::: tip
-Current tests cover vector norms, matrix Frobenius norms, rectangular matrices, `axis`, `keepdims`, batched inputs, `float32`/`float64` precision, and empty-array inputs. Note that empty-array inputs are marked `xfail` in the test suite, which means they are tracked as known failing cases rather than stable support.
+Current tests cover vector norms (L1/L2/inf), matrix Frobenius norms, rectangular matrices, `axis`, `keepdims`, batched inputs, empty-array inputs, and `float32`/`float64` precision cases.
 :::
 
 **See Also**
@@ -269,8 +275,8 @@ Current tests cover vector norms, matrix Frobenius norms, rectangular matrices, 
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> v = ap.ndarray.from_numpy(np.array([3., 4.], dtype=np.float32))
->>> ap.linalg.norm(v)
-5.0
+>>> ap.linalg.norm(v).to_numpy()
+array(5., dtype=float32)
 ```
 
 ### asnumpy.linalg.det
@@ -299,8 +305,8 @@ Current tests cover 2x2, 3x3, singular matrices, batched matrices, `float32`/`fl
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> mtx = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
->>> ap.linalg.det(mtx)
--2.0
+>>> ap.linalg.det(mtx).to_numpy()
+array(-2., dtype=float32)
 ```
 
 ### asnumpy.linalg.slogdet
@@ -341,7 +347,7 @@ Find the matrix that yields the identity when multiplied by the original matrix.
 - `ndarray`: Inverse of the input matrix.
 
 ::: tip
-Current tests cover 2x2, 3x3, 4x4, batched matrices, `float32`/`float64` precision, and boundary cases including singular matrices, non-square matrices, and empty matrices. Note that singular, non-square, and empty-matrix inputs are marked `xfail` in the test suite, which means they are tracked as known failing cases rather than stable support.
+Current tests cover 2x2, 3x3, 4x4, batched matrices, `float32`/`float64` precision, and empty-matrix inputs; singular and non-square inputs raise an exception, a behavior asserted by the tests.
 :::
 
 **See Also**
@@ -352,9 +358,9 @@ Current tests cover 2x2, 3x3, 4x4, batched matrices, `float32`/`float64` precisi
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> M = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
->>> ap.linalg.inv(M)
+>>> ap.linalg.inv(M).to_numpy()
 array([[-2. ,  1. ],
-       [ 1.5, -0.5]])
+       [ 1.5, -0.5]], dtype=float32)
 ```
 
 ### asnumpy.linalg.matrix_power
@@ -365,6 +371,8 @@ asnumpy.linalg.matrix_power(a: ArrayLike, n: int) -> ndarray
 
 Raise a matrix to a specified integer exponent through repeated multiplication.
 
+The current implementation copies the input to the host, computes via `numpy.linalg.matrix_power`, and transfers the result back to the device; a negative power of a singular matrix raises an exception.
+
 **Arguments**
 - `a` (ArrayLike): Input square matrix.
 - `n` (int): Integer exponent applied to the matrix.
@@ -373,7 +381,7 @@ Raise a matrix to a specified integer exponent through repeated multiplication.
 - `ndarray`: Resulting matrix after applying the specified power operation.
 
 ::: tip
-Current tests cover positive powers, zero power, negative powers, `float32`/`float64` precision, and boundary cases including singular matrices with negative powers and empty matrices. Note that singular matrices with negative powers and empty matrices are marked `xfail` in the test suite, which means they are tracked as known failing cases rather than stable support.
+Current tests cover positive powers, zero power, negative powers, `float32`/`float64` precision, and empty-matrix inputs; a negative power of a singular matrix raises an exception, a behavior asserted by the tests.
 :::
 
 **See Also**
@@ -383,8 +391,8 @@ Current tests cover positive powers, zero power, negative powers, `float32`/`flo
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> m = ap.ndarray.from_numpy(np.array([[1, 2], [0, 1]], dtype=np.int32))
->>> ap.linalg.matrix_power(m, 2)
-array([[1, 4],
-       [0, 1]])
+>>> m = ap.ndarray.from_numpy(np.array([[1., 2.], [0., 1.]], dtype=np.float32))
+>>> ap.linalg.matrix_power(m, 2).to_numpy()
+array([[1., 4.],
+       [0., 1.]], dtype=float32)
 ```
