@@ -1861,7 +1861,6 @@ asnumpy.trunc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 array([-1.,  1.])
 ```
 
-<!--
 ## 求和、乘积、差分
 
 ### asnumpy.prod
@@ -1874,7 +1873,7 @@ asnumpy.prod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dt
 
 此函数将输入数组 `a` 中的元素相乘。 如果提供了 `axis`，沿该轴进行乘法运算。
 
-当前测试覆盖要求显式指定 `axis` 参数。
+测试覆盖了 `axis` 归约，并用 float64 覆盖了无 axis 的全局乘积。整数输入保持原 dtype（不同于 NumPy 的提升），且当前原生内核不支持 `float16`、宽无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -1894,9 +1893,9 @@ asnumpy.prod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dt
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]]))
->>> ap.prod(a, axis=0)
-array([3., 8.])
+>>> a = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
+>>> ap.prod(a, axis=0).to_numpy()
+array([3., 8.], dtype=float32)
 ```
 
 ### asnumpy.sum
@@ -1909,7 +1908,7 @@ asnumpy.sum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dty
 
 此函数将输入数组 `a` 中的元素相加。如果提供了 `axis` 则沿该轴进行求和运算。
 
-当前测试覆盖要求显式指定 `axis` 参数。
+当前测试覆盖要求显式指定 `axis` 参数。 整数输入保持原 dtype（不同于 NumPy 的提升）；当前原生内核不支持 `float16`、16 位及更宽的无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -1930,9 +1929,9 @@ asnumpy.sum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dty
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([[0.5, 1.5], [2., 3.]]))
->>> ap.sum(a, axis=0)
-array([2.5, 4.5])
+>>> a = ap.ndarray.from_numpy(np.array([[0.5, 1.5], [2., 3.]], dtype=np.float32))
+>>> ap.sum(a, axis=0).to_numpy()
+array([2.5, 4.5], dtype=float32)
 ```
 
 ### asnumpy.nanprod
@@ -1945,7 +1944,7 @@ asnumpy.nanprod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False,
 
 此函数将输入数组 `a` 中的元素相乘，如果提供了 `axis` 则沿该轴进行乘法运算， 任何 NaN 值都不会阻止结果传播。
 
-当前测试覆盖表明 `float64` 为已知不通过场景。
+当前原生内核不支持 `float16`、`float64`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -1963,8 +1962,9 @@ asnumpy.nanprod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False,
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nanprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
-1.0
+>>> a = ap.ndarray.from_numpy(np.array([[1.0, np.nan], [3.0, 4.0]], dtype=np.float32))
+>>> ap.nanprod(a, axis=0).to_numpy()
+array([3., 4.], dtype=float32)
 ```
 
 ### asnumpy.nansum
@@ -1977,7 +1977,7 @@ asnumpy.nansum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, 
 
 此函数将输入数组 `a` 中的元素相加，如果提供了 `axis` 则沿该轴进行求和运算。任何 NaN 值都会被视为 0 进行计算。
 
-当前测试覆盖表明 `float64` 为已知不通过场景。
+当前原生内核不支持 `float16`、`float64`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -1998,8 +1998,9 @@ asnumpy.nansum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nansum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
-1.0
+>>> a = ap.ndarray.from_numpy(np.array([[1.0, np.nan], [3.0, 4.0]], dtype=np.float32))
+>>> ap.nansum(a, axis=0).to_numpy()
+array([4., 4.], dtype=float32)
 ```
 
 ### asnumpy.cumprod
@@ -2012,7 +2013,7 @@ asnumpy.cumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None
 
 此函数计算沿指定轴的元素的运行乘积。
 
-当前测试覆盖要求显式指定 `axis` 参数。
+当前测试覆盖要求显式指定 `axis` 参数。 整数输入保持原 dtype（不同于 NumPy 的提升），且当前原生内核不支持 `float16`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -2031,9 +2032,9 @@ asnumpy.cumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> ap.cumprod(a, axis=0)
-array([1, 2, 6])
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> ap.cumprod(a, axis=0).to_numpy()
+array([1, 2, 6], dtype=int32)
 ```
 
 ### asnumpy.cumsum
@@ -2046,7 +2047,7 @@ asnumpy.cumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None)
 
 此函数计算沿指定轴的元素的运行总和。
 
-当前测试覆盖要求显式指定 `axis` 参数。
+当前测试覆盖要求显式指定 `axis` 参数。 整数输入保持原 dtype（不同于 NumPy 的提升），且当前原生内核不支持 `float16`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -2066,9 +2067,9 @@ asnumpy.cumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None)
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> ap.cumsum(a, axis=0)
-array([1, 3, 6])
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> ap.cumsum(a, axis=0).to_numpy()
+array([1, 3, 6], dtype=int32)
 ```
 
 ### asnumpy.nancumprod
@@ -2081,7 +2082,7 @@ asnumpy.nancumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = N
 
 此函数计算沿指定轴的元素的运行乘积，任何 NaN 值都会被视为 1 进行计算。
 
-当前测试覆盖表明 `float64` 为已知不通过场景。
+当前原生内核不支持 `float64`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -2100,8 +2101,9 @@ asnumpy.nancumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = N
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
-array([1., 1.])
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan], dtype=np.float32))
+>>> ap.nancumprod(a, axis=0).to_numpy()
+array([1., 1.], dtype=float32)
 ```
 
 ### asnumpy.nancumsum
@@ -2114,7 +2116,7 @@ asnumpy.nancumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = No
 
 此函数计算沿指定轴的元素的运行总和，任何 NaN 值都会被视为 0 进行计算。
 
-当前测试覆盖表明 `float64` 为已知不通过场景。
+当前原生内核不支持 `float64`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -2134,8 +2136,9 @@ asnumpy.nancumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = No
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumsum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
-array([1., 1.])
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan], dtype=np.float32))
+>>> ap.nancumsum(a, axis=0).to_numpy()
+array([1., 1.], dtype=float32)
 ```
 
 ### asnumpy.cross
@@ -2151,7 +2154,7 @@ asnumpy.cross(a: ArrayLike, b: ArrayLike, axis: AxisOptional = None) -> ndarray
 **参数**
 - `a` (ArrayLike): 第一个向量的分量。
 - `b` (ArrayLike): 第二个向量的分量。
-- `axis` (int, 可选): 定义向量的轴。默认为最后一个轴。
+- `axis` (int，当前实现必须显式指定): 定义向量的轴。原生绑定要求显式整数轴；最后一轴请传 `-1`。
 
 **返回值**
 - `ndarray`: 向量叉积。
@@ -2163,12 +2166,13 @@ asnumpy.cross(a: ArrayLike, b: ArrayLike, axis: AxisOptional = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> x = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> y = ap.ndarray.from_numpy(np.array([4, 5, 6]))
->>> ap.cross(x, y)
-array([-3,  6, -3])
+>>> x = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> y = ap.ndarray.from_numpy(np.array([4, 5, 6], dtype=np.int32))
+>>> ap.cross(x, y, axis=-1).to_numpy()
+array([-3,  6, -3], dtype=int32)
 ```
 
+<!--
 ## 极值查找
 
 ### asnumpy.maximum

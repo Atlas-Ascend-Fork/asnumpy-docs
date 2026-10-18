@@ -1861,7 +1861,6 @@ This function returns the integer portion of each element in `x`, effectively di
 array([-1.,  1.])
 ```
 
-<!--
 ## Sums, Products, Differences
 
 ### asnumpy.prod
@@ -1874,7 +1873,7 @@ Calculate the product of elements.
 
 This function multiplies elements in the input array `a`. If an `axis` is provided, the multiplication is performed along that axis.
 
-Current test coverage requires explicitly specifying the `axis` parameter.
+Tests cover the `axis` reduction, and a no-axis global product is also exercised with float64 input. Integer input keeps the input dtype instead of NumPy's promotion, and `float16`, wide unsigned integers and complex inputs are not supported (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -1893,9 +1892,9 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]]))
->>> ap.prod(a, axis=0)
-array([3., 8.])
+>>> a = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
+>>> ap.prod(a, axis=0).to_numpy()
+array([3., 8.], dtype=float32)
 ```
 
 ### asnumpy.sum
@@ -1908,7 +1907,7 @@ Calculate the sum of elements.
 
 This function adds up elements in the input array `a`. If an `axis` is provided, the summation is performed along that axis.
 
-Current test coverage requires explicitly specifying the `axis` parameter.
+Current test coverage requires explicitly specifying the `axis` parameter. Integer input keeps the input dtype instead of NumPy's promotion; `float16`, unsigned integers wider than 8 bits and complex inputs are not supported (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -1927,9 +1926,9 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([[0.5, 1.5], [2., 3.]]))
->>> ap.sum(a, axis=0)
-array([2.5, 4.5])
+>>> a = ap.ndarray.from_numpy(np.array([[0.5, 1.5], [2., 3.]], dtype=np.float32))
+>>> ap.sum(a, axis=0).to_numpy()
+array([2.5, 4.5], dtype=float32)
 ```
 
 ### asnumpy.nanprod
@@ -1942,7 +1941,7 @@ Calculate the product of elements, replacing NaNs with one.
 
 This function multiplies elements in the input array `a`, treating any NaN values as 1. This ensures that NaNs do not propagate into the result.
 
-Current test coverage indicates `float64` is a known failing scenario.
+`float16`, `float64`, unsigned integers and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -1961,8 +1960,9 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nanprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
-1.0
+>>> a = ap.ndarray.from_numpy(np.array([[1.0, np.nan], [3.0, 4.0]], dtype=np.float32))
+>>> ap.nanprod(a, axis=0).to_numpy()
+array([3., 4.], dtype=float32)
 ```
 
 ### asnumpy.nansum
@@ -1975,7 +1975,7 @@ Calculate the sum of elements, replacing NaNs with zero.
 
 This function adds up elements in the input array `a`, treating any NaN values as 0. This ensures that NaNs do not propagate into the result.
 
-Current test coverage indicates `float64` is a known failing scenario.
+`float16`, `float64`, unsigned integers and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -1994,8 +1994,9 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nansum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
-1.0
+>>> a = ap.ndarray.from_numpy(np.array([[1.0, np.nan], [3.0, 4.0]], dtype=np.float32))
+>>> ap.nansum(a, axis=0).to_numpy()
+array([4., 4.], dtype=float32)
 ```
 
 ### asnumpy.cumprod
@@ -2008,7 +2009,7 @@ Calculate the cumulative product of elements.
 
 This function computes the running product of elements along the specified axis.
 
-Current test coverage requires explicitly specifying the `axis` parameter.
+Current test coverage requires explicitly specifying the `axis` parameter. Integer input keeps the input dtype instead of NumPy's promotion, and `float16`, unsigned integers and complex inputs are not supported (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -2027,9 +2028,9 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> ap.cumprod(a, axis=0)
-array([1, 2, 6])
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> ap.cumprod(a, axis=0).to_numpy()
+array([1, 2, 6], dtype=int32)
 ```
 
 ### asnumpy.cumsum
@@ -2042,7 +2043,7 @@ Calculate the cumulative sum of elements.
 
 This function computes the running total of elements along the specified axis.
 
-Current test coverage requires explicitly specifying the `axis` parameter.
+Current test coverage requires explicitly specifying the `axis` parameter. Integer input keeps the input dtype instead of NumPy's promotion, and `float16`, unsigned integers and complex inputs are not supported (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -2061,9 +2062,9 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> ap.cumsum(a, axis=0)
-array([1, 3, 6])
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> ap.cumsum(a, axis=0).to_numpy()
+array([1, 3, 6], dtype=int32)
 ```
 
 ### asnumpy.nancumprod
@@ -2076,7 +2077,7 @@ Calculate the cumulative product of elements, treating NaNs as one.
 
 This function computes the running product of elements along the specified axis. Any NaN values encountered are treated as 1.
 
-Current test coverage indicates `float64` is a known failing scenario.
+`float64`, unsigned integers and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -2095,8 +2096,9 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
-array([1., 1.])
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan], dtype=np.float32))
+>>> ap.nancumprod(a, axis=0).to_numpy()
+array([1., 1.], dtype=float32)
 ```
 
 ### asnumpy.nancumsum
@@ -2109,7 +2111,7 @@ Calculate the cumulative sum of elements, treating NaNs as zero.
 
 This function computes the running total of elements along the specified axis. Any NaN values encountered are treated as 0.
 
-Current test coverage indicates `float64` is a known failing scenario.
+`float64`, unsigned integers and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -2128,8 +2130,9 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumsum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
-array([1., 1.])
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan], dtype=np.float32))
+>>> ap.nancumsum(a, axis=0).to_numpy()
+array([1., 1.], dtype=float32)
 ```
 
 ### asnumpy.cross
@@ -2145,7 +2148,7 @@ This function computes the vector cross product of `a` and `b`. It operates on v
 **Arguments**
 - `a` (ArrayLike): Components of the first vector(s).
 - `b` (ArrayLike): Components of the second vector(s).
-- `axis` (int, optional): Axis that defines the vector(s). By default, the last axis.
+- `axis` (int, required for the current implementation): Axis that defines the vector(s). The native binding requires an explicit integer axis; pass `-1` for the last axis.
 
 **Returns**
 - `ndarray`: Vector cross product(s).
@@ -2157,12 +2160,13 @@ This function computes the vector cross product of `a` and `b`. It operates on v
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> x = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> y = ap.ndarray.from_numpy(np.array([4, 5, 6]))
->>> ap.cross(x, y)
-array([-3,  6, -3])
+>>> x = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> y = ap.ndarray.from_numpy(np.array([4, 5, 6], dtype=np.int32))
+>>> ap.cross(x, y, axis=-1).to_numpy()
+array([-3,  6, -3], dtype=int32)
 ```
 
+<!--
 ## Extrema Finding
 
 ### asnumpy.maximum
