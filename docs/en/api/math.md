@@ -562,23 +562,23 @@ Inputs with |x| = 1 return `inf`, while |x| > 1 returns `NaN`, matching NumPy (c
 array([0.        , 1.00000001])
 ```
 
-<!--
 ## Arithmetic Operations
 
 ### asnumpy.add
 
 ```python
-asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.add(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```
 
 Calculate the sum of two inputs element-wise.
 
 This function adds `x1` and `x2` element by element.
 
+As a ufunc, the float32/float64 kernels do not accept a `dtype` argument (passing one raises `TypeError`); other input dtypes fall back to the native implementation, which does accept `dtype`.
+
 **Arguments**
 - `x1` (ArrayLike): First input array or scalar.
 - `x2` (ArrayLike): Second input array or scalar.
-- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The sum of `x1` and `x2`.
@@ -591,8 +591,8 @@ This function adds `x1` and `x2` element by element.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.add(ap.ndarray.from_numpy(np.array([10, 20])), ap.ndarray.from_numpy(np.array([5, 5])))
-array([15, 25])
+>>> ap.add(ap.ndarray.from_numpy(np.array([10, 20], dtype=np.int32)), ap.ndarray.from_numpy(np.array([5, 5], dtype=np.int32))).to_numpy()
+array([15, 25], dtype=int32)
 ```
 
 ### asnumpy.subtract
@@ -621,8 +621,8 @@ This function subtracts `x2` from `x1` element by element.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.subtract(ap.ndarray.from_numpy(np.array([10, 5])), ap.ndarray.from_numpy(np.array([2, 2])))
-array([8, 3])
+>>> ap.subtract(ap.ndarray.from_numpy(np.array([10, 5], dtype=np.float32)), ap.ndarray.from_numpy(np.array([2, 2], dtype=np.float32))).to_numpy()
+array([8., 3.], dtype=float32)
 ```
 
 ### asnumpy.multiply
@@ -651,8 +651,8 @@ This function multiplies `x1` and `x2` element by element.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.multiply(ap.ndarray.from_numpy(np.array([2.0, 4.0])), ap.ndarray.from_numpy(np.array([3.0, 0.5])))
-array([6., 2.])
+>>> ap.multiply(ap.ndarray.from_numpy(np.array([2.0, 4.0], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3.0, 0.5], dtype=np.float32))).to_numpy()
+array([6., 2.], dtype=float32)
 ```
 
 ### asnumpy.divide
@@ -683,8 +683,8 @@ This function divides `x1` by `x2` element by element, performing true division.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.divide(ap.ndarray.from_numpy(np.array([6, 12])), ap.ndarray.from_numpy(np.array([3, 4])))
-array([2., 3.])
+>>> ap.divide(ap.ndarray.from_numpy(np.array([6, 12], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.float32))).to_numpy()
+array([2., 3.], dtype=float32)
 ```
 
 ### asnumpy.true_divide
@@ -714,7 +714,7 @@ This function divides `x1` by `x2` element by element. It is an alias for `divid
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.true_divide(ap.ndarray.from_numpy(np.array([6, 12])), ap.ndarray.from_numpy(np.array([3, 4])))
+>>> ap.true_divide(ap.ndarray.from_numpy(np.array([6, 12], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.int32))).to_numpy()
 array([2., 3.])
 ```
 
@@ -746,8 +746,8 @@ This function divides `x1` by `x2` and rounds the quotient down to the nearest i
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.floor_divide(ap.ndarray.from_numpy(np.array([10, 10])), ap.ndarray.from_numpy(np.array([3, 4])))
-array([3, 2])
+>>> ap.floor_divide(ap.ndarray.from_numpy(np.array([10, 10], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.float32))).to_numpy()
+array([3., 2.], dtype=float32)
 ```
 
 ### asnumpy.power
@@ -777,8 +777,8 @@ This function raises elements of `x1` to the power of elements of `x2`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.power(ap.ndarray.from_numpy(np.array([2, 5])), ap.ndarray.from_numpy(np.array([3, 2])))
-array([ 8, 25])
+>>> ap.power(ap.ndarray.from_numpy(np.array([2, 5], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 2], dtype=np.int32))).to_numpy()
+array([ 8, 25], dtype=int32)
 ```
 
 ### asnumpy.float_power
@@ -789,7 +789,7 @@ asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 
 Calculate the power of bases raised to exponents, promoting to float.
 
-This function raises elements of `x1` to the power of elements of `x2`. It ensures at least float64 precision for the calculation.
+This function raises elements of `x1` to the power of elements of `x2`, casting the inputs to floating point first. Unlike NumPy, a float32 input returns a float32 result when `dtype` is omitted; pass `dtype=float64` to get a float64 result (the no-dtype difference is tracked as a known failing case).
 
 **Arguments**
 - `x1` (ArrayLike): The bases.
@@ -807,23 +807,26 @@ This function raises elements of `x1` to the power of elements of `x2`. It ensur
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.float_power(ap.ndarray.from_numpy(np.array([2, 5])), ap.ndarray.from_numpy(np.array([3, 2])))
+>>> a = ap.ndarray.from_numpy(np.array([2, 5], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([3, 2], dtype=np.float32))
+>>> ap.float_power(a, b, dtype=ap.float64).to_numpy()
 array([ 8., 25.])
 ```
 
 ### asnumpy.negative
 
 ```python
-asnumpy.negative(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.negative(x: ArrayLike) -> ndarray
 ```
 
 Calculate the numerical negative element-wise.
 
 This function negates each element in the input array, returning `-x`.
 
+As a ufunc, the float32/float64/int32 kernels do not accept a `dtype` argument (passing one raises `TypeError`); other input dtypes fall back to the native implementation, which does accept `dtype`.
+
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The negative of the input array.
@@ -836,8 +839,8 @@ This function negates each element in the input array, returning `-x`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.negative(ap.ndarray.from_numpy(np.array([10, -10])))
-array([-10,  10])
+>>> ap.negative(ap.ndarray.from_numpy(np.array([10, -10], dtype=np.int32))).to_numpy()
+array([-10,  10], dtype=int32)
 ```
 
 ### asnumpy.positive
@@ -865,8 +868,8 @@ This function returns `+x` for each element. It effectively returns a copy of th
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.positive(ap.ndarray.from_numpy(np.array([-5, 5])))
-array([-5,  5])
+>>> ap.positive(ap.ndarray.from_numpy(np.array([-5, 5], dtype=np.float32))).to_numpy()
+array([-5.,  5.], dtype=float32)
 ```
 
 ### asnumpy.reciprocal
@@ -878,6 +881,8 @@ asnumpy.reciprocal(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Calculate the reciprocal of each element.
 
 This function computes the multiplicative inverse, `1 / x`, for every element in the input array.
+
+Integer input is not supported by the current native kernel (tracked as a known failing case); use a floating-point array.
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -894,8 +899,8 @@ This function computes the multiplicative inverse, `1 / x`, for every element in
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.reciprocal(ap.ndarray.from_numpy(np.array([1., 2., 4.])))
-array([1.  , 0.5 , 0.25])
+>>> ap.reciprocal(ap.ndarray.from_numpy(np.array([1., 2., 4.], dtype=np.float32))).to_numpy()
+array([1.  , 0.5 , 0.25], dtype=float32)
 ```
 
 ### asnumpy.mod
@@ -925,8 +930,8 @@ This function computes the remainder of `x1` divided by `x2`. It behaves like th
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.mod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4])), ap.ndarray.from_numpy(np.array([3, -3, 3, -3])))
-array([ 2, -1,  1, -2])
+>>> ap.mod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, -3, 3, -3], dtype=np.int32))).to_numpy()
+array([ 2, -1,  1, -2], dtype=int32)
 ```
 
 ### asnumpy.remainder
@@ -956,8 +961,8 @@ This function computes the remainder of `x1` divided by `x2`. It is an alias for
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.remainder(ap.ndarray.from_numpy(np.array([5, -5])), ap.ndarray.from_numpy(np.array([3, 3])))
-array([2, 1])
+>>> ap.remainder(ap.ndarray.from_numpy(np.array([5, -5], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 3], dtype=np.int32))).to_numpy()
+array([2, 1], dtype=int32)
 ```
 
 ### asnumpy.fmod
@@ -987,8 +992,8 @@ This function computes the remainder of `x1` divided by `x2`. The result carries
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4])), ap.ndarray.from_numpy(np.array([3, -3, 3, -3])))
-array([-1, -1,  1,  1])
+>>> ap.fmod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, -3, 3, -3], dtype=np.float32))).to_numpy()
+array([-1., -1.,  1.,  1.], dtype=float32)
 ```
 
 ### asnumpy.modf
@@ -999,7 +1004,7 @@ asnumpy.modf(x: ArrayLike) -> tuple
 
 Separate the fractional and integral parts of elements.
 
-This function splits each element of `x` into its fractional and integral components. Both returned parts have the same sign as the input.
+This function splits each element of `x` into its fractional and integral components and returns them as `(fractional, integral)`. Negative inputs currently round toward negative infinity instead of toward zero, which differs from NumPy (tracked as a known failing case); `float16` and integer inputs are not supported.
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -1015,8 +1020,11 @@ This function splits each element of `x` into its fractional and integral compon
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.modf(ap.ndarray.from_numpy(np.array([1.5, -2.5])))
-(array([ 0.5, -0.5]), array([ 1., -2.]))
+>>> frac, integral = ap.modf(ap.ndarray.from_numpy(np.array([1.5, 2.5], dtype=np.float32)))
+>>> frac.to_numpy()
+array([0.5, 0.5], dtype=float32)
+>>> integral.to_numpy()
+array([1., 2.], dtype=float32)
 ```
 
 ### asnumpy.divmod
@@ -1046,10 +1054,14 @@ This function performs floor division and modulus simultaneously. It returns the
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.divmod(ap.ndarray.from_numpy(np.array([10, 11])), ap.ndarray.from_numpy(np.array([3, 3])))
-(array([3, 3]), array([1, 2]))
+>>> quotient, rem = ap.divmod(ap.ndarray.from_numpy(np.array([10, 11], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 3], dtype=np.float32)))
+>>> quotient.to_numpy()
+array([3., 3.], dtype=float32)
+>>> rem.to_numpy()
+array([1., 2.], dtype=float32)
 ```
 
+<!--
 ## Exponents and Logarithms
 
 ### asnumpy.exp

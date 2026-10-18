@@ -562,23 +562,23 @@ asnumpy.arctanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 array([0.        , 1.00000001])
 ```
 
-<!--
 ## 算术运算
 
 ### asnumpy.add
 
 ```python
-asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.add(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```
 
 逐元素计算两个输入的和。
 
 此函数将 `x1` 和 `x2` 逐元素相加。
 
+该函数以 ufunc 形式实现：float32/float64 内核不接受 `dtype` 参数（传入会抛出 `TypeError`）；其他输入 dtype 会回退到原生实现，该路径接受 `dtype`。
+
 **参数**
 - `x1` (ArrayLike): 第一个输入数组或标量。
 - `x2` (ArrayLike): 第二个输入数组或标量。
-- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 和 `x2` 的和。
@@ -591,8 +591,8 @@ asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.add(ap.ndarray.from_numpy(np.array([10, 20])), ap.ndarray.from_numpy(np.array([5, 5])))
-array([15, 25])
+>>> ap.add(ap.ndarray.from_numpy(np.array([10, 20], dtype=np.int32)), ap.ndarray.from_numpy(np.array([5, 5], dtype=np.int32))).to_numpy()
+array([15, 25], dtype=int32)
 ```
 
 ### asnumpy.subtract
@@ -621,8 +621,8 @@ asnumpy.subtract(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarr
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.subtract(ap.ndarray.from_numpy(np.array([10, 5])), ap.ndarray.from_numpy(np.array([2, 2])))
-array([8, 3])
+>>> ap.subtract(ap.ndarray.from_numpy(np.array([10, 5], dtype=np.float32)), ap.ndarray.from_numpy(np.array([2, 2], dtype=np.float32))).to_numpy()
+array([8., 3.], dtype=float32)
 ```
 
 ### asnumpy.multiply
@@ -651,8 +651,8 @@ asnumpy.multiply(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarr
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.multiply(ap.ndarray.from_numpy(np.array([2.0, 4.0])), ap.ndarray.from_numpy(np.array([3.0, 0.5])))
-array([6., 2.])
+>>> ap.multiply(ap.ndarray.from_numpy(np.array([2.0, 4.0], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3.0, 0.5], dtype=np.float32))).to_numpy()
+array([6., 2.], dtype=float32)
 ```
 
 ### asnumpy.divide
@@ -683,8 +683,8 @@ asnumpy.divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.divide(ap.ndarray.from_numpy(np.array([6, 12])), ap.ndarray.from_numpy(np.array([3, 4])))
-array([2., 3.])
+>>> ap.divide(ap.ndarray.from_numpy(np.array([6, 12], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.float32))).to_numpy()
+array([2., 3.], dtype=float32)
 ```
 
 ### asnumpy.true_divide
@@ -714,7 +714,7 @@ asnumpy.true_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.true_divide(ap.ndarray.from_numpy(np.array([6, 12])), ap.ndarray.from_numpy(np.array([3, 4])))
+>>> ap.true_divide(ap.ndarray.from_numpy(np.array([6, 12], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.int32))).to_numpy()
 array([2., 3.])
 ```
 
@@ -746,8 +746,8 @@ asnumpy.floor_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> n
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.floor_divide(ap.ndarray.from_numpy(np.array([10, 10])), ap.ndarray.from_numpy(np.array([3, 4])))
-array([3, 2])
+>>> ap.floor_divide(ap.ndarray.from_numpy(np.array([10, 10], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.float32))).to_numpy()
+array([3., 2.], dtype=float32)
 ```
 
 ### asnumpy.power
@@ -777,8 +777,8 @@ asnumpy.power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.power(ap.ndarray.from_numpy(np.array([2, 5])), ap.ndarray.from_numpy(np.array([3, 2])))
-array([ 8, 25])
+>>> ap.power(ap.ndarray.from_numpy(np.array([2, 5], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 2], dtype=np.int32))).to_numpy()
+array([ 8, 25], dtype=int32)
 ```
 
 ### asnumpy.float_power
@@ -789,7 +789,7 @@ asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 
 计算底数的指数幂，提升为浮点数。
 
-此函数将 `x1` 的元素提升到 `x2` 元素的幂。它确保计算时至少具有 float64 精度。
+此函数将 `x1` 的元素提升到 `x2` 元素的幂，并先将输入转换为浮点类型。与 NumPy 不同，省略 `dtype` 时 float32 输入会返回 float32 结果；如需 float64 结果请显式传入 `dtype=float64`（省略 dtype 的差异已记录为已知失败用例）。
 
 **参数**
 - `x1` (ArrayLike): 底数。
@@ -807,23 +807,26 @@ asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.float_power(ap.ndarray.from_numpy(np.array([2, 5])), ap.ndarray.from_numpy(np.array([3, 2])))
+>>> a = ap.ndarray.from_numpy(np.array([2, 5], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([3, 2], dtype=np.float32))
+>>> ap.float_power(a, b, dtype=ap.float64).to_numpy()
 array([ 8., 25.])
 ```
 
 ### asnumpy.negative
 
 ```python
-asnumpy.negative(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.negative(x: ArrayLike) -> ndarray
 ```
 
 逐元素计算数值负值。
 
 此函数对输入数组中的每个元素取负，返回 `-x`。
 
+该函数以 ufunc 形式实现：float32/float64/int32 内核不接受 `dtype` 参数（传入会抛出 `TypeError`）；其他输入 dtype 会回退到原生实现，该路径接受 `dtype`。
+
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 输入数组的负值。
@@ -836,8 +839,8 @@ asnumpy.negative(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.negative(ap.ndarray.from_numpy(np.array([10, -10])))
-array([-10,  10])
+>>> ap.negative(ap.ndarray.from_numpy(np.array([10, -10], dtype=np.int32))).to_numpy()
+array([-10,  10], dtype=int32)
 ```
 
 ### asnumpy.positive
@@ -865,8 +868,8 @@ asnumpy.positive(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.positive(ap.ndarray.from_numpy(np.array([-5, 5])))
-array([-5,  5])
+>>> ap.positive(ap.ndarray.from_numpy(np.array([-5, 5], dtype=np.float32))).to_numpy()
+array([-5.,  5.], dtype=float32)
 ```
 
 ### asnumpy.reciprocal
@@ -878,6 +881,8 @@ asnumpy.reciprocal(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 计算每个元素的倒数。
 
 此函数计算输入数组中每个元素的乘法逆元 `1 / x`。
+
+当前原生内核不支持整数输入（已记录为已知失败用例）；请使用浮点数组。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -894,8 +899,8 @@ asnumpy.reciprocal(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.reciprocal(ap.ndarray.from_numpy(np.array([1., 2., 4.])))
-array([1.  , 0.5 , 0.25])
+>>> ap.reciprocal(ap.ndarray.from_numpy(np.array([1., 2., 4.], dtype=np.float32))).to_numpy()
+array([1.  , 0.5 , 0.25], dtype=float32)
 ```
 
 ### asnumpy.mod
@@ -925,8 +930,8 @@ asnumpy.mod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.mod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4])), ap.ndarray.from_numpy(np.array([3, -3, 3, -3])))
-array([ 2, -1,  1, -2])
+>>> ap.mod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, -3, 3, -3], dtype=np.int32))).to_numpy()
+array([ 2, -1,  1, -2], dtype=int32)
 ```
 
 ### asnumpy.remainder
@@ -956,8 +961,8 @@ asnumpy.remainder(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndar
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.remainder(ap.ndarray.from_numpy(np.array([5, -5])), ap.ndarray.from_numpy(np.array([3, 3])))
-array([2, 1])
+>>> ap.remainder(ap.ndarray.from_numpy(np.array([5, -5], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 3], dtype=np.int32))).to_numpy()
+array([2, 1], dtype=int32)
 ```
 
 ### asnumpy.fmod
@@ -987,8 +992,8 @@ asnumpy.fmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4])), ap.ndarray.from_numpy(np.array([3, -3, 3, -3])))
-array([-1, -1,  1,  1])
+>>> ap.fmod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, -3, 3, -3], dtype=np.float32))).to_numpy()
+array([-1., -1.,  1.,  1.], dtype=float32)
 ```
 
 ### asnumpy.modf
@@ -999,7 +1004,7 @@ asnumpy.modf(x: ArrayLike) -> tuple
 
 分离元素的小数和整数部分。
 
-此函数将 `x` 的每个元素拆分为其小数和整数部分。返回的两部分都与输入具有相同的符号。
+此函数将 `x` 的每个元素拆分为小数和整数部分，并以 `(小数部分, 整数部分)` 返回。负数输入当前向负无穷取整而非向零取整，与 NumPy 不同（已记录为已知失败用例）；`float16` 与整数输入不受支持。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -1015,8 +1020,11 @@ asnumpy.modf(x: ArrayLike) -> tuple
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.modf(ap.ndarray.from_numpy(np.array([1.5, -2.5])))
-(array([ 0.5, -0.5]), array([ 1., -2.]))
+>>> frac, integral = ap.modf(ap.ndarray.from_numpy(np.array([1.5, 2.5], dtype=np.float32)))
+>>> frac.to_numpy()
+array([0.5, 0.5], dtype=float32)
+>>> integral.to_numpy()
+array([1., 2.], dtype=float32)
 ```
 
 ### asnumpy.divmod
@@ -1046,10 +1054,14 @@ asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.divmod(ap.ndarray.from_numpy(np.array([10, 11])), ap.ndarray.from_numpy(np.array([3, 3])))
-(array([3, 3]), array([1, 2]))
+>>> quotient, rem = ap.divmod(ap.ndarray.from_numpy(np.array([10, 11], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 3], dtype=np.float32)))
+>>> quotient.to_numpy()
+array([3., 3.], dtype=float32)
+>>> rem.to_numpy()
+array([1., 2.], dtype=float32)
 ```
 
+<!--
 ## 指数和对数
 
 ### asnumpy.exp
