@@ -1,9 +1,5 @@
 # 线性代数
 
-::: info
-当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
-:::
-
 ## 矩阵和向量乘积
 
 ### asnumpy.dot
@@ -27,7 +23,7 @@ asnumpy.dot(a: ArrayLike, b: ArrayLike) -> ndarray
 - `ndarray`: `a` 和 `b` 的点积结果。
 
 ::: tip
-当前测试覆盖了 1-D、2-D、非方阵、空数组输入与 `float32`/`float64` 精度场景。需要注意的是，空数组输入在测试文件中以 `xfail` 标记，表示该场景当前被记录为已知不通过，而不是稳定支持。
+当前测试覆盖了 1-D、2-D、非方阵、空数组输入与 `float32`/`float64` 精度场景。
 :::
 
 **参见**
@@ -38,17 +34,17 @@ asnumpy.dot(a: ArrayLike, b: ArrayLike) -> ndarray
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> vec1 = ap.ndarray.from_numpy(np.array([1, 2], dtype=np.int32))
->>> vec2 = ap.ndarray.from_numpy(np.array([3, 4], dtype=np.int32))
->>> ap.dot(vec1, vec2)
-11
->>> mat1 = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> mat2 = ap.ndarray.from_numpy(np.array([[5, 6], [7, 8]], dtype=np.int32))
->>> ap.dot(mat1, mat2)
-array([[19, 22],
-       [43, 50]])
+>>> vec1 = ap.ndarray.from_numpy(np.array([1., 2.], dtype=np.float32))
+>>> vec2 = ap.ndarray.from_numpy(np.array([3., 4.], dtype=np.float32))
+>>> ap.dot(vec1, vec2).to_numpy()
+array(11., dtype=float32)
+>>> mat1 = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
+>>> mat2 = ap.ndarray.from_numpy(np.array([[5., 6.], [7., 8.]], dtype=np.float32))
+>>> ap.dot(mat1, mat2).to_numpy()
+array([[19., 22.],
+       [43., 50.]], dtype=float32)
 ```
-<!--
+
 ### asnumpy.einsum
 
 ```python
@@ -57,6 +53,8 @@ asnumpy.einsum(subscripts: str, *operands: ArrayLike) -> ndarray
 
 使用下标表示法执行张量操作以指定收缩模式。
 
+当前实现在设备上执行 native 爱因斯坦求和算子；下方 NumPy 参考链接描述其一般语义。
+
 **参数**
 - `subscripts` (str): 指定求和下标的字符串。
 - `*operands` (ArrayLike): 要操作的数组。
@@ -64,19 +62,25 @@ asnumpy.einsum(subscripts: str, *operands: ArrayLike) -> ndarray
 **返回值**
 - `ndarray`: 爱因斯坦求和的结果。
 
+::: tip
+当前测试覆盖了下标模式 `"a,b->ab"`（外积，`float32`/`int32`/`int64`）与 `"abcd,abced->abce"`（批量缩并，`float32`）；空输入场景已由测试覆盖（通过）。其他下标组合未在当前测试覆盖内。
+:::
+
 **参见**
 - [`numpy.einsum`](https://numpy.org/doc/stable/reference/generated/numpy.einsum.html)
 
 **示例**
 ```python
+>>> import numpy as np
 >>> import asnumpy as ap
->>> a = ap.arange(9).reshape(3, 3)
->>> ap.einsum('ii', a)  # 迹
-12
->>> ap.einsum('ii->i', a)  # 对角线
-array([0, 4, 8])
+>>> a = ap.ndarray.from_numpy(np.array([1., 2., 3.], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([4., 5.], dtype=np.float32))
+>>> ap.einsum("a,b->ab", a, b).to_numpy()
+array([[ 4.,  5.],
+       [ 8., 10.],
+       [12., 15.]], dtype=float32)
 ```
--->
+
 ### asnumpy.inner
 
 ```python
@@ -85,7 +89,7 @@ asnumpy.inner(a: ArrayLike, b: ArrayLike) -> ndarray
 
 计算两个数组最后一维上的内积。
 
-对于一维输入，该函数返回标准向量内积；对于更高维输入，它会在最后一个轴上执行求和，行为与 `numpy.inner` 一致。
+对于一维输入，该函数返回标准向量内积；对于更高维输入，它会在最后一个轴上执行求和。当前实现将输入复制到 Host 侧并通过 NumPy 计算后把结果传回设备，行为与 `numpy.inner` 一致。
 
 **参数**
 - `a` (ArrayLike): 第一个输入数组。
@@ -95,7 +99,7 @@ asnumpy.inner(a: ArrayLike, b: ArrayLike) -> ndarray
 - `ndarray`: 数组的内积结果。
 
 ::: tip
-当前测试覆盖了 1-D、2-D、`float32`/`float64` 精度以及空数组输入场景。需要注意的是，空数组输入在测试文件中以 `xfail` 标记，表示该场景当前被记录为已知不通过，而不是稳定支持。
+当前测试覆盖了 1-D、2-D、空数组输入与 `float32`/`float64` 精度场景。
 :::
 
 **参见**
@@ -105,10 +109,10 @@ asnumpy.inner(a: ArrayLike, b: ArrayLike) -> ndarray
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> vec1 = ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32))
->>> vec2 = ap.ndarray.from_numpy(np.array([4, 5], dtype=np.int32))
->>> ap.inner(vec1, vec2)
-23
+>>> vec1 = ap.ndarray.from_numpy(np.array([2., 3.], dtype=np.float32))
+>>> vec2 = ap.ndarray.from_numpy(np.array([4., 5.], dtype=np.float32))
+>>> ap.inner(vec1, vec2).to_numpy()
+array(23., dtype=float32)
 ```
 
 ### asnumpy.matmul
@@ -119,6 +123,8 @@ asnumpy.matmul(x1: ArrayLike, x2: ArrayLike) -> ndarray
 
 按照标准线性代数广播规则执行矩阵乘法。
 
+当前实现将输入复制到 Host 侧并通过 NumPy 计算后把结果传回设备。
+
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
 - `x2` (ArrayLike): 第二个输入数组。
@@ -127,7 +133,7 @@ asnumpy.matmul(x1: ArrayLike, x2: ArrayLike) -> ndarray
 - `ndarray`: 输入的矩阵乘积。
 
 ::: tip
-当前测试覆盖了 2-D、非方阵、批量广播、`float32`/`float64` 精度以及空数组输入场景。需要注意的是，空数组输入在测试文件中以 `xfail` 标记，表示该场景当前被记录为已知不通过，而不是稳定支持。
+当前测试覆盖了 2-D、非方阵、批量广播、空数组输入与 `float32`/`float64` 精度场景。
 :::
 
 **参见**
@@ -137,11 +143,11 @@ asnumpy.matmul(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> mat1 = ap.ndarray.from_numpy(np.array([[1, 2], [3, 4]], dtype=np.int32))
->>> mat2 = ap.ndarray.from_numpy(np.array([[5, 6], [7, 8]], dtype=np.int32))
->>> ap.matmul(mat1, mat2)
-array([[19, 22],
-       [43, 50]])
+>>> mat1 = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
+>>> mat2 = ap.ndarray.from_numpy(np.array([[5., 6.], [7., 8.]], dtype=np.float32))
+>>> ap.matmul(mat1, mat2).to_numpy()
+array([[19., 22.],
+       [43., 50.]], dtype=float32)
 ```
 
 ### asnumpy.outer
@@ -152,7 +158,7 @@ asnumpy.outer(a: ArrayLike, b: ArrayLike) -> ndarray
 
 从两个输入生成外积矩阵。
 
-输入会先展平为一维，再构造结果矩阵，其中每个元素是对应输入值的乘积。
+输入会先展平为一维，再构造结果矩阵，其中每个元素是对应输入值的乘积。当前实现将输入复制到 Host 侧并通过 NumPy 计算后把结果传回设备。
 
 **参数**
 - `a` (ArrayLike): 第一个输入数组。
@@ -162,7 +168,7 @@ asnumpy.outer(a: ArrayLike, b: ArrayLike) -> ndarray
 - `ndarray`: 外积矩阵。
 
 ::: tip
-当前测试覆盖了一维输入、二维输入自动展平、`float32`/`float64` 精度以及空数组输入场景。需要注意的是，空数组输入在测试文件中以 `xfail` 标记，表示该场景当前被记录为已知不通过，而不是稳定支持。
+当前测试覆盖了一维输入、二维输入自动展平、空数组输入与 `float32`/`float64` 精度场景。
 :::
 
 **参见**
@@ -172,12 +178,12 @@ asnumpy.outer(a: ArrayLike, b: ArrayLike) -> ndarray
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> vec1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
->>> vec2 = ap.ndarray.from_numpy(np.array([4, 5], dtype=np.int32))
->>> ap.outer(vec1, vec2)
-array([[ 4,  5],
-       [ 8, 10],
-       [12, 15]])
+>>> vec1 = ap.ndarray.from_numpy(np.array([1., 2., 3.], dtype=np.float32))
+>>> vec2 = ap.ndarray.from_numpy(np.array([4., 5.], dtype=np.float32))
+>>> ap.outer(vec1, vec2).to_numpy()
+array([[ 4.,  5.],
+       [ 8., 10.],
+       [12., 15.]], dtype=float32)
 ```
 
 ### asnumpy.vdot
@@ -201,7 +207,7 @@ asnumpy.vdot(a: ArrayLike, b: ArrayLike) -> ndarray
 - `ndarray`: 向量的点积。
 
 ::: tip
-当前测试覆盖了一维、二维自动展平、`float32`/`float64` 精度以及空数组输入场景。需要注意的是，空数组输入在测试文件中以 `xfail` 标记，表示该场景当前被记录为已知不通过，而不是稳定支持。
+当前测试覆盖了一维、二维自动展平、空数组输入与 `float32`/`float64` 精度场景。
 :::
 
 **参见**
@@ -246,6 +252,8 @@ asnumpy.linalg.norm(
 
 根据指定阶数测量向量或矩阵的大小或尺寸。
 
+当前实现主要在 Host 侧通过 NumPy 计算结果。
+
 **参数**
 - `a` (ArrayLike): 输入向量或矩阵。
 - `ord` (int, float 或 str, 可选): 范数的阶数。
@@ -256,7 +264,7 @@ asnumpy.linalg.norm(
 - `ndarray`: 范数值。
 
 ::: tip
-当前测试覆盖了向量范数、矩阵 Frobenius 范数、非方阵、`axis`、`keepdims`、批量输入、`float32`/`float64` 精度以及空数组输入场景。需要注意的是，空数组输入在测试文件中以 `xfail` 标记，表示该场景当前被记录为已知不通过，而不是稳定支持。
+当前测试覆盖了向量范数（L1/L2/inf）、矩阵 Frobenius 范数、非方阵、`axis`、`keepdims`、批量输入、空数组输入与 `float32`/`float64` 精度场景。
 :::
 
 **参见**
@@ -267,8 +275,8 @@ asnumpy.linalg.norm(
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> v = ap.ndarray.from_numpy(np.array([3., 4.], dtype=np.float32))
->>> ap.linalg.norm(v)
-5.0
+>>> ap.linalg.norm(v).to_numpy()
+array(5., dtype=float32)
 ```
 
 ### asnumpy.linalg.det
@@ -297,8 +305,8 @@ asnumpy.linalg.det(a: ArrayLike) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> mtx = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
->>> ap.linalg.det(mtx)
--2.0
+>>> ap.linalg.det(mtx).to_numpy()
+array(-2., dtype=float32)
 ```
 
 ### asnumpy.linalg.slogdet
@@ -339,7 +347,7 @@ asnumpy.linalg.inv(a: ArrayLike) -> ndarray
 - `ndarray`: 输入矩阵的逆矩阵。
 
 ::: tip
-当前测试覆盖了 2x2、3x3、4x4、批量矩阵、`float32`/`float64` 精度，以及奇异矩阵、非方阵、空矩阵等边界场景。需要注意的是，奇异矩阵、非方阵输入、空矩阵输入在测试文件中均以 `xfail` 标记，表示这些场景当前被记录为已知不通过，而不是稳定支持。
+当前测试覆盖了 2x2、3x3、4x4、批量矩阵、`float32`/`float64` 精度以及空矩阵输入场景；奇异矩阵与非方阵输入会抛出异常，该行为已有测试断言。
 :::
 
 **参见**
@@ -350,9 +358,9 @@ asnumpy.linalg.inv(a: ArrayLike) -> ndarray
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> M = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
->>> ap.linalg.inv(M)
+>>> ap.linalg.inv(M).to_numpy()
 array([[-2. ,  1. ],
-       [ 1.5, -0.5]])
+       [ 1.5, -0.5]], dtype=float32)
 ```
 
 ### asnumpy.linalg.matrix_power
@@ -363,6 +371,8 @@ asnumpy.linalg.matrix_power(a: ArrayLike, n: int) -> ndarray
 
 通过重复乘法将矩阵提升到指定的整数幂。
 
+当前实现将输入复制到 Host 侧并通过 `numpy.linalg.matrix_power` 计算后把结果传回设备；负幂遇到奇异矩阵会抛出异常。
+
 **参数**
 - `a` (ArrayLike): 输入方阵。
 - `n` (int): 应用于矩阵的整数指数。
@@ -371,7 +381,7 @@ asnumpy.linalg.matrix_power(a: ArrayLike, n: int) -> ndarray
 - `ndarray`: 应用指定幂运算后的结果矩阵。
 
 ::: tip
-当前测试覆盖了正幂、零幂、负幂、`float32`/`float64` 精度，以及奇异矩阵负幂和空矩阵等边界场景。需要注意的是，奇异矩阵负幂和空矩阵在测试文件中以 `xfail` 标记，表示这些场景当前被记录为已知不通过，而不是稳定支持。
+当前测试覆盖了正幂、零幂、负幂、`float32`/`float64` 精度以及空矩阵输入场景；奇异矩阵的负幂会抛出异常，该行为已有测试断言。
 :::
 
 **参见**
@@ -381,8 +391,8 @@ asnumpy.linalg.matrix_power(a: ArrayLike, n: int) -> ndarray
 ```python
 >>> import numpy as np
 >>> import asnumpy as ap
->>> m = ap.ndarray.from_numpy(np.array([[1, 2], [0, 1]], dtype=np.int32))
->>> ap.linalg.matrix_power(m, 2)
-array([[1, 4],
-       [0, 1]])
+>>> m = ap.ndarray.from_numpy(np.array([[1., 2.], [0., 1.]], dtype=np.float32))
+>>> ap.linalg.matrix_power(m, 2).to_numpy()
+array([[1., 4.],
+       [0., 1.]], dtype=float32)
 ```

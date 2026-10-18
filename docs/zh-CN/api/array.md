@@ -1,9 +1,5 @@
 # 数组操作
 
-::: info
-当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
-:::
-
 ::: tip
 公开 `asnumpy.ndarray` 的显示形式为 `ndarray(shape=..., dtype=...)`。下面的示例调用 `.to_numpy()` 显示数组数值；该操作会将数据从设备复制到主机。示例显式指定dtype，并在输出中保留对应的NumPy dtype标注；`empty` 和 `empty_like` 中未初始化的数值仍仅作示意。
 :::
@@ -11,7 +7,7 @@
 ## asnumpy.zeros
 
 ```python
-asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike) -> ndarray
 ```
 
 创建一个用零值初始化的数组。
@@ -20,7 +16,7 @@ asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `shape` (ShapeLike, int 或 int 序列): 指定输出数组的维度。单个整数创建一维数组，序列定义多维形状。
-- `dtype` (DTypeLike, 可选): 返回数组的数据类型。如果未提供，则使用默认数值类型。
+- `dtype` (DTypeLike): 返回数组的数据类型。native 绑定未为该参数设置默认值，省略（即传入 None）会被拒绝，而不是回退到 NumPy 式默认类型。
 
 **返回值**
 - `ndarray`: 所有元素都设置为零且形状与给定 `shape` 参数匹配的数组。
@@ -29,7 +25,7 @@ asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 - [`numpy.zeros`](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html): NumPy 创建零数组的等效函数。
 
 ::: tip
-返回的数组由 asnumpy 分配，根据运行时配置可能驻留在加速器设备上。
+返回的数组由 asnumpy 在当前执行设备（NPU）上分配。
 :::
 
 **示例**
@@ -45,7 +41,7 @@ array([[0, 0],
 ## asnumpy.zeros_like
 
 ```python
-asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike) -> ndarray
 ```
 
 创建一个与输入维度匹配的零初始化数组。
@@ -54,7 +50,7 @@ asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `other` (ArrayLike): 提供输出数组形状的参考对象。
-- `dtype` (DTypeLike, 可选): 返回数组的数据类型。当前前端将该参数转发给 native 函数；native 根据 `other.shape` 和传入 dtype 构造结果，没有选择 `other.dtype` 的逻辑。若需保留输入类型，应像示例一样显式传入 `dtype=other.dtype`，不要依赖省略参数时的 NumPy 式 dtype 继承。
+- `dtype` (DTypeLike): 返回数组的数据类型。native 绑定未为该参数设置默认值，省略（即传入 None）会被拒绝；结果 dtype 始终取自传入的 `dtype`，不会继承 `other` 的 dtype。若需保留输入类型，应像示例一样显式传入 `dtype=other.dtype`。
 
 **返回值**
 - `ndarray`: 填充零且与 `other` 形状相同的数组。
@@ -76,7 +72,7 @@ array([[0, 0],
 ## asnumpy.full
 
 ```python
-asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike) -> ndarray
 ```
 
 创建一个填充特定值的数组。
@@ -86,7 +82,7 @@ asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike = None) -> nd
 **参数**
 - `shape` (ShapeLike, int 或 int 序列): 输出数组的形状。
 - `value` (ScalarLike): 填充数组的值。
-- `dtype` (DTypeLike, 可选): 数组的所需数据类型。
+- `dtype` (DTypeLike): 数组的所需数据类型。native 绑定未为该参数设置默认值，省略（即传入 None）会被拒绝，而不是回退到 NumPy 式默认类型。
 
 **返回值**
 - `asnumpy.ndarray`: 填充指定值的数组。
@@ -115,7 +111,7 @@ array([[3.5, 3.5, 3.5],
 ## asnumpy.full_like
 
 ```python
-asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike) -> ndarray
 ```
 
 创建一个填充标量值的新数组，从提供的数组继承形状。
@@ -123,7 +119,7 @@ asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) 
 **参数**
 - `other` (ArrayLike): 用于输出形状的数组。
 - `value` (ScalarLike): 填充数组的值。
-- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。在当前 asnumpy 测试用例中，`full_like` 通常显式传入该参数。
+- `dtype` (DTypeLike): 输出数组的所需数据类型。native 绑定未为该参数设置默认值，省略（即传入 None）会被拒绝；结果 dtype 始终取自传入的 `dtype`，不会继承 `other` 的 dtype。若需保留输入类型，请像示例一样显式传入 `dtype=x.dtype`。
 
 **返回值**
 - `asnumpy.ndarray`: 填充 `value` 且与 `other` 形状匹配的数组。
@@ -148,7 +144,7 @@ array([9, 9, 9, 9], dtype=int32)
 ## asnumpy.empty
 
 ```python
-asnumpy.empty(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.empty(shape: ShapeLike, dtype: DTypeLike) -> ndarray
 ```
 
 分配一个不初始化元素值的新数组。
@@ -157,7 +153,7 @@ asnumpy.empty(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `shape` (ShapeLike, int 或 int 序列): 输出数组的形状。
-- `dtype` (DTypeLike, 可选): 数组的所需数据类型。
+- `dtype` (DTypeLike): 数组的所需数据类型。native 绑定未为该参数设置默认值，省略（即传入 None）会被拒绝，而不是回退到 NumPy 式默认类型。
 
 **返回值**
 - `asnumpy.ndarray`: 具有未初始化值的数组，其内容未定义。
@@ -180,14 +176,14 @@ array([[... , ...],
 ## asnumpy.empty_like
 
 ```python
-asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike) -> ndarray
 ```
 
 分配一个与输入维度相同但未初始化的数组。
 
 **参数**
 - `prototype` (ArrayLike): 用于输出形状的数组。
-- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。在当前 asnumpy 测试用例中，`empty_like` 通常显式传入该参数。
+- `dtype` (DTypeLike): 输出数组的所需数据类型。native 绑定未为该参数设置默认值，因此每次调用都必须显式传入；省略（即传入 None）会被拒绝。若需保留输入类型，请像示例一样显式传入 `dtype=a.dtype`。
 
 **返回值**
 - `asnumpy.ndarray`: 具有未初始化值且与 `prototype` 形状相同的数组。
@@ -212,7 +208,7 @@ array([[... , ...],
 ## asnumpy.eye
 
 ```python
-asnumpy.eye(n: int, dtype: DTypeLike = None) -> ndarray
+asnumpy.eye(n: int, dtype: DTypeLike) -> ndarray
 ```
 
 生成一个对角线为 1、其他位置为 0 的 2-D 数组。
@@ -221,7 +217,7 @@ asnumpy.eye(n: int, dtype: DTypeLike = None) -> ndarray
 
 **参数**
 - `n` (int): 矩阵的行数（和列数）。
-- `dtype` (DTypeLike, 可选): 矩阵的所需数据类型。
+- `dtype` (DTypeLike): 矩阵的所需数据类型。native 绑定未为该参数设置默认值，省略（即传入 None）会被拒绝，而不是回退到 NumPy 式默认类型。
 
 **返回值**
 - `asnumpy.ndarray`: 形状为 `(n, n)` 的单位矩阵。
@@ -246,14 +242,14 @@ array([[1, 0, 0],
 ## asnumpy.ones
 
 ```python
-asnumpy.ones(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.ones(shape: ShapeLike, dtype: DTypeLike) -> ndarray
 ```
 
 创建一个填充 1 的数组。
 
 **参数**
 - `shape` (ShapeLike, int 或 int 序列): 输出数组的形状。
-- `dtype` (DTypeLike, 可选): 数组的所需数据类型。
+- `dtype` (DTypeLike): 数组的所需数据类型。native 绑定未为该参数设置默认值，省略（即传入 None）会被拒绝，而不是回退到 NumPy 式默认类型。
 
 **返回值**
 - `asnumpy.ndarray`: 具有指定形状和 dtype 的 1 数组。
@@ -275,14 +271,14 @@ array([1., 1., 1., 1.], dtype=float32)
 ## asnumpy.ones_like
 
 ```python
-asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike) -> ndarray
 ```
 
 创建一个与输入维度匹配的 1 填充数组。
 
 **参数**
 - `other` (ArrayLike): 用于输出形状的数组。
-- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。在当前 asnumpy 测试用例中，`ones_like` 通常显式传入该参数。
+- `dtype` (DTypeLike): 输出数组的所需数据类型。native 绑定未为该参数设置默认值，省略（即传入 None）会被拒绝；结果 dtype 始终取自传入的 `dtype`，不会继承 `other` 的 dtype。若需保留输入类型，请像示例一样显式传入 `dtype=x.dtype`。
 
 **返回值**
 - `asnumpy.ndarray`: 与 `other` 形状相同（以及可选的 dtype）的 1 数组。
@@ -307,14 +303,14 @@ array([[1, 1, 1],
 ## asnumpy.identity
 
 ```python
-asnumpy.identity(n: int, dtype: DTypeLike = None) -> ndarray
+asnumpy.identity(n: int, dtype: DTypeLike) -> ndarray
 ```
 
 生成给定大小的单位矩阵。
 
 **参数**
 - `n` (int): 行数和列数。
-- `dtype` (DTypeLike, 可选): 矩阵的所需数据类型。
+- `dtype` (DTypeLike): 矩阵的所需数据类型。native 绑定未为该参数设置默认值，省略（即传入 None）会被拒绝，而不是回退到 NumPy 式默认类型。
 
 **返回值**
 - `asnumpy.ndarray`: 形状为 `(n, n)` 的单位矩阵。
@@ -331,7 +327,7 @@ array([[1, 0, 0],
        [0, 1, 0],
        [0, 0, 1]], dtype=int32)
 ```
-<!--
+
 ## asnumpy.linspace
 
 ```python
@@ -345,14 +341,16 @@ asnumpy.linspace(
 
 生成在两个端点之间线性插值的值序列。
 
+与 `numpy.linspace` 的参数名不同：本函数的端点参数为 `end`，样本数参数为 `steps`（NumPy 对应 `stop` 与 `num`）。
+
 **参数**
 - `start` (ScalarLike, int 或 float): 序列的起始值。
 - `end` (ScalarLike, int 或 float): 序列的结束值。
-- `steps` (int, 可选): 要生成的样本数。默认为 50。
-- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
+- `steps` (int, 可选): 要生成的样本数，必须为正整数。默认为 50。
+- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。省略（即 None）时返回 float64 数组；显式传入的 dtype（包括 int64）会被保留。
 
 **返回值**
-- `asnumpy.ndarray`: start 和 end 之间均匀间隔样本的数组。
+- `asnumpy.ndarray`: 形状为 `(steps,)`、start 和 end 之间均匀间隔样本的数组。
 
 **参见**
 - [`numpy.linspace`](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html)
@@ -360,7 +358,8 @@ asnumpy.linspace(
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.linspace(0, 1, 5)
+>>> ap.linspace(0, 1, 5).to_numpy()
 array([0.  , 0.25, 0.5 , 0.75, 1.  ])
+>>> ap.linspace(0, 1, 5, dtype=ap.float32).to_numpy()
+array([0.  , 0.25, 0.5 , 0.75, 1.  ], dtype=float32)
 ```
--->
