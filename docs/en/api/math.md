@@ -1323,7 +1323,6 @@ This function computes `log2(2**x1 + 2**x2)`. It is a base-2 analog of `logaddex
 array([2.])
 ```
 
-<!--
 ## Miscellaneous Functions
 
 ### asnumpy.absolute
@@ -1334,7 +1333,9 @@ asnumpy.absolute(x: ArrayLike) -> ndarray
 
 Calculate the absolute value of each element.
 
-This function computes the absolute value for every element in the input array `x`. If the input is complex, the magnitude is returned.
+This function computes the absolute value for every element in the input array `x`.
+
+Complex input is not supported by the current native kernel (tracked as a known failing case).
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -1350,10 +1351,8 @@ This function computes the absolute value for every element in the input array `
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.absolute(ap.ndarray.from_numpy(np.array([-2.5, 2.5])))
-array([2.5, 2.5])
->>> ap.absolute(ap.ndarray.from_numpy(np.array([3+4j])))
-array([5.])
+>>> ap.absolute(ap.ndarray.from_numpy(np.array([-2.5, 2.5], dtype=np.float32))).to_numpy()
+array([2.5, 2.5], dtype=float32)
 ```
 
 ### asnumpy.fabs
@@ -1380,8 +1379,8 @@ This function computes the absolute value of each element in `x`. It is designed
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fabs(ap.ndarray.from_numpy(np.array([-2.5, 2.5])))
-array([2.5, 2.5])
+>>> ap.fabs(ap.ndarray.from_numpy(np.array([-2.5, 2.5], dtype=np.float32))).to_numpy()
+array([2.5, 2.5], dtype=float32)
 ```
 
 ### asnumpy.sign
@@ -1407,10 +1406,8 @@ This function returns an element-wise indication of the sign of a number: -1 for
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sign(ap.ndarray.from_numpy(np.array([-3., 2.])))
-array([-1.,  1.])
->>> ap.sign(0)
-0
+>>> ap.sign(ap.ndarray.from_numpy(np.array([-5, 0, 5], dtype=np.float32))).to_numpy()
+array([-1.,  0.,  1.], dtype=float32)
 ```
 
 ### asnumpy.heaviside
@@ -1437,8 +1434,10 @@ This function calculates the Heaviside step function for each element in `x1`. T
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.heaviside(ap.ndarray.from_numpy(np.array([-2.0, 0, 1.0])), 0.5)
-array([0. , 0.5, 1. ])
+>>> x1 = ap.ndarray.from_numpy(np.array([-1.5, 0, 1.5], dtype=np.float32))
+>>> x2 = ap.ndarray.from_numpy(np.array([0.5, 0.5, 0.5], dtype=np.float32))
+>>> ap.heaviside(x1, x2).to_numpy()
+array([0. , 0.5, 1. ], dtype=float32)
 ```
 
 ### asnumpy.sqrt
@@ -1465,7 +1464,7 @@ This function computes the square root for every element in the input array `x`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sqrt(ap.ndarray.from_numpy(np.array([1, 4, 16])))
+>>> ap.sqrt(ap.ndarray.from_numpy(np.array([1, 4, 16], dtype=np.int32))).to_numpy()
 array([1., 2., 4.])
 ```
 
@@ -1494,8 +1493,8 @@ This function computes the square of the input `x` element-wise.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.square(ap.ndarray.from_numpy(np.array([2, 3, 4])))
-array([ 4,  9, 16])
+>>> ap.square(ap.ndarray.from_numpy(np.array([2, 3, 4], dtype=np.int32))).to_numpy()
+array([ 4,  9, 16], dtype=int32)
 ```
 
 ### asnumpy.clip
@@ -1522,9 +1521,10 @@ This function limits the values in `a` to be within the interval [`a_min`, `a_ma
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> a = ap.arange(5)
->>> ap.clip(a, 1, 3)
-array([1, 1, 2, 3, 3])
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([1, 5, 10], dtype=np.float32))
+>>> ap.clip(a, 3, 8).to_numpy()
+array([3., 5., 8.], dtype=float32)
 ```
 
 ### asnumpy.nan_to_num
@@ -1536,6 +1536,8 @@ asnumpy.nan_to_num(x: ArrayLike, nan: float = 0.0, posinf: Optional[float] = Non
 Replace NaN and infinity with finite values.
 
 This function replaces NaN with zero (or a specified value) and infinity with large finite numbers (or specified values).
+
+The current native implementation always uses the float32 maximum/minimum as the default `posinf`/`neginf` replacements, regardless of the input dtype; pass explicit values when a different replacement is required.
 
 **Arguments**
 - `x` (ArrayLike): Input data.
@@ -1553,8 +1555,8 @@ This function replaces NaN with zero (or a specified value) and infinity with la
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nan_to_num(ap.ndarray.from_numpy(np.array([np.inf, -np.inf, np.nan])))
-array([ 1.79769313e+308, -1.79769313e+308,  0.00000000e+000])
+>>> ap.nan_to_num(ap.ndarray.from_numpy(np.array([np.inf, -np.inf, np.nan], dtype=np.float32))).to_numpy()
+array([ 3.4028235e+38, -3.4028235e+38,  0.0000000e+00], dtype=float32)
 ```
 
 ### asnumpy.relu
@@ -1567,6 +1569,8 @@ Calculate the Rectified Linear Unit (ReLU) activation.
 
 This function applies the ReLU operation element-wise, returning `x` if positive and 0 otherwise.
 
+`float32` and integer inputs are covered by the tests; `float64` is not supported by the current native kernel (tracked as a known failing case).
+
 **Arguments**
 - `x` (ArrayLike): Input array.
 - `dtype` (DTypeLike, optional): The desired data type for the output array.
@@ -1578,8 +1582,8 @@ This function applies the ReLU operation element-wise, returning `x` if positive
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.relu(ap.ndarray.from_numpy(np.array([-2, 0, 2])))
-array([0, 0, 2])
+>>> ap.relu(ap.ndarray.from_numpy(np.array([-2, 0, 2], dtype=np.int32))).to_numpy()
+array([0, 0, 2], dtype=int32)
 ```
 
 ### asnumpy.gelu
@@ -1592,6 +1596,8 @@ Calculate the Gaussian Error Linear Unit (GELU) activation.
 
 This function applies the GELU operation, which weights inputs by their probability under a Gaussian distribution.
 
+Only `float32` is supported by the current native kernel; `float64` and integer inputs are not (tracked as known failing cases).
+
 **Arguments**
 - `x` (ArrayLike): Input array.
 - `dtype` (DTypeLike, optional): The desired data type for the output array.
@@ -1603,8 +1609,8 @@ This function applies the GELU operation, which weights inputs by their probabil
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.gelu(ap.ndarray.from_numpy(np.array([-1.0, 0.0, 1.0])))
-array([-0.15865525,  0.        ,  0.84134475])
+>>> ap.gelu(ap.ndarray.from_numpy(np.array([-1.0, 0.0, 1.0], dtype=np.float32))).to_numpy()
+array([-0.15865526,  0.        ,  0.8413447 ], dtype=float32)
 ```
 
 ### asnumpy.sinc
@@ -1631,10 +1637,11 @@ This function computes the normalized sinc function, `sin(pi * x) / (pi * x)`, f
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sinc(ap.ndarray.from_numpy(np.array([0., 0.5])))
+>>> ap.sinc(ap.ndarray.from_numpy(np.array([0., 0.5], dtype=np.float64))).to_numpy()
 array([1.        , 0.63661977])
 ```
 
+<!--
 ## Rounding
 
 ### asnumpy.around

@@ -1323,7 +1323,6 @@ asnumpy.logaddexp2(x1: ArrayLike, x2: ArrayLike) -> ndarray
 array([2.])
 ```
 
-<!--
 ## 杂项函数
 
 ### asnumpy.absolute
@@ -1334,7 +1333,9 @@ asnumpy.absolute(x: ArrayLike) -> ndarray
 
 计算每个元素的绝对值。
 
-此函数计算输入数组 `x` 中每个元素的绝对值。如果输入是复数，则返回模。
+此函数计算输入数组 `x` 中每个元素的绝对值。
+
+当前原生内核不支持复数输入（已记录为已知失败用例）。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -1350,10 +1351,8 @@ asnumpy.absolute(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.absolute(ap.ndarray.from_numpy(np.array([-2.5, 2.5])))
-array([2.5, 2.5])
->>> ap.absolute(ap.ndarray.from_numpy(np.array([3+4j])))
-array([5.])
+>>> ap.absolute(ap.ndarray.from_numpy(np.array([-2.5, 2.5], dtype=np.float32))).to_numpy()
+array([2.5, 2.5], dtype=float32)
 ```
 
 ### asnumpy.fabs
@@ -1380,8 +1379,8 @@ asnumpy.fabs(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fabs(ap.ndarray.from_numpy(np.array([-2.5, 2.5])))
-array([2.5, 2.5])
+>>> ap.fabs(ap.ndarray.from_numpy(np.array([-2.5, 2.5], dtype=np.float32))).to_numpy()
+array([2.5, 2.5], dtype=float32)
 ```
 
 ### asnumpy.sign
@@ -1407,10 +1406,8 @@ asnumpy.sign(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sign(ap.ndarray.from_numpy(np.array([-3., 2.])))
-array([-1.,  1.])
->>> ap.sign(0)
-0
+>>> ap.sign(ap.ndarray.from_numpy(np.array([-5, 0, 5], dtype=np.float32))).to_numpy()
+array([-1.,  0.,  1.], dtype=float32)
 ```
 
 ### asnumpy.heaviside
@@ -1437,8 +1434,10 @@ asnumpy.heaviside(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.heaviside(ap.ndarray.from_numpy(np.array([-2.0, 0, 1.0])), 0.5)
-array([0. , 0.5, 1. ])
+>>> x1 = ap.ndarray.from_numpy(np.array([-1.5, 0, 1.5], dtype=np.float32))
+>>> x2 = ap.ndarray.from_numpy(np.array([0.5, 0.5, 0.5], dtype=np.float32))
+>>> ap.heaviside(x1, x2).to_numpy()
+array([0. , 0.5, 1. ], dtype=float32)
 ```
 
 ### asnumpy.sqrt
@@ -1465,7 +1464,7 @@ asnumpy.sqrt(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sqrt(ap.ndarray.from_numpy(np.array([1, 4, 16])))
+>>> ap.sqrt(ap.ndarray.from_numpy(np.array([1, 4, 16], dtype=np.int32))).to_numpy()
 array([1., 2., 4.])
 ```
 
@@ -1494,8 +1493,8 @@ asnumpy.square(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.square(ap.ndarray.from_numpy(np.array([2, 3, 4])))
-array([ 4,  9, 16])
+>>> ap.square(ap.ndarray.from_numpy(np.array([2, 3, 4], dtype=np.int32))).to_numpy()
+array([ 4,  9, 16], dtype=int32)
 ```
 
 ### asnumpy.clip
@@ -1522,9 +1521,10 @@ asnumpy.clip(a: ArrayLike, a_min: Union[ArrayLike, float], a_max: Union[ArrayLik
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.arange(5)
->>> ap.clip(a, 1, 3)
-array([1, 1, 2, 3, 3])
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([1, 5, 10], dtype=np.float32))
+>>> ap.clip(a, 3, 8).to_numpy()
+array([3., 5., 8.], dtype=float32)
 ```
 
 ### asnumpy.nan_to_num
@@ -1536,6 +1536,8 @@ asnumpy.nan_to_num(x: ArrayLike, nan: float = 0.0, posinf: Optional[float] = Non
 将 NaN 和无穷大替换为有限值。
 
 此函数将 NaN 替换为零（或指定值），将无穷大替换为大有限数（或指定值）。
+
+当前原生实现无论输入 dtype 如何，默认都用 float32 的最大值/最小值填充 `posinf`/`neginf`；需要其他替换值时请显式传入。
 
 **参数**
 - `x` (ArrayLike): 输入数据。
@@ -1553,8 +1555,8 @@ asnumpy.nan_to_num(x: ArrayLike, nan: float = 0.0, posinf: Optional[float] = Non
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nan_to_num(ap.ndarray.from_numpy(np.array([np.inf, -np.inf, np.nan])))
-array([ 1.79769313e+308, -1.79769313e+308,  0.00000000e+000])
+>>> ap.nan_to_num(ap.ndarray.from_numpy(np.array([np.inf, -np.inf, np.nan], dtype=np.float32))).to_numpy()
+array([ 3.4028235e+38, -3.4028235e+38,  0.0000000e+00], dtype=float32)
 ```
 
 ### asnumpy.relu
@@ -1567,6 +1569,8 @@ asnumpy.relu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 此函数逐元素应用 ReLU 操作，如果为正则返回 `x`，否则返回 0。
 
+测试覆盖 `float32` 与整数输入；当前原生内核不支持 `float64`（已记录为已知失败用例）。
+
 **参数**
 - `x` (ArrayLike): 输入数组。
 - `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
@@ -1578,8 +1582,8 @@ asnumpy.relu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.relu(ap.ndarray.from_numpy(np.array([-2, 0, 2])))
-array([0, 0, 2])
+>>> ap.relu(ap.ndarray.from_numpy(np.array([-2, 0, 2], dtype=np.int32))).to_numpy()
+array([0, 0, 2], dtype=int32)
 ```
 
 ### asnumpy.gelu
@@ -1592,6 +1596,8 @@ asnumpy.gelu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 此函数应用 GELU 操作，根据高斯分布下的概率对输入进行加权。
 
+当前原生内核仅支持 `float32`；`float64` 与整数输入不受支持（已记录为已知失败用例）。
+
 **参数**
 - `x` (ArrayLike): 输入数组。
 - `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
@@ -1603,8 +1609,8 @@ asnumpy.gelu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.gelu(ap.ndarray.from_numpy(np.array([-1.0, 0.0, 1.0])))
-array([-0.15865525,  0.        ,  0.84134475])
+>>> ap.gelu(ap.ndarray.from_numpy(np.array([-1.0, 0.0, 1.0], dtype=np.float32))).to_numpy()
+array([-0.15865526,  0.        ,  0.8413447 ], dtype=float32)
 ```
 
 ### asnumpy.sinc
@@ -1631,10 +1637,11 @@ asnumpy.sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sinc(ap.ndarray.from_numpy(np.array([0., 0.5])))
+>>> ap.sinc(ap.ndarray.from_numpy(np.array([0., 0.5], dtype=np.float64))).to_numpy()
 array([1.        , 0.63661977])
 ```
 
+<!--
 ## 舍入
 
 ### asnumpy.around
