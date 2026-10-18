@@ -1,9 +1,5 @@
 # I/O Operations
 
-::: info
-The current API documentation site only retains a representative set of APIs. Since the AsNumpy frontend and documentation system are still undergoing significant restructuring, the remaining interface documentation is temporarily hidden and will be gradually restored after the frontend stabilizes.This document is for reference only.
-:::
-
 ## asnumpy.save
 
 ```python
@@ -16,7 +12,7 @@ This function transfers the array data from the device (NPU) to the host (CPU) a
 
 **Arguments**
 - `file` (str or file-like): File path or file object to save the data.
-- `arr` (NPUArray or numpy.ndarray): Array to save. NPUArray objects are automatically converted to numpy arrays before saving.
+- `arr` (asnumpy.ndarray or numpy.ndarray): Array to save. `asnumpy.ndarray` objects are automatically converted to numpy arrays before saving.
 - `allow_pickle` (bool, default False): Whether to allow saving object arrays using pickle.
 
 **See Also**
@@ -25,7 +21,7 @@ This function transfers the array data from the device (NPU) to the host (CPU) a
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(10)
+>>> x = ap.ones(10, dtype=ap.float32)
 >>> ap.save('output.npy', x)
 ```
 
@@ -53,7 +49,7 @@ Keyword arguments are saved with their specified names.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(5)
+>>> x = ap.ones(5, dtype=ap.float32)
 >>> y = ap.ones(5, dtype=ap.float32)
 >>> ap.savez('data.npz', x, y)  # saved as arr_0, arr_1
 >>> ap.savez('data.npz', a=x, b=y)  # saved as a, b
@@ -82,12 +78,11 @@ Keyword arguments are saved with their specified names.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(100)
+>>> x = ap.ones(100, dtype=ap.float32)
 >>> y = ap.ones(100, dtype=ap.float32)
 >>> ap.savez_compressed('compressed.npz', a=x, b=y)
 ```
 
-<!--
 ## asnumpy.load
 
 ```python
@@ -96,7 +91,7 @@ asnumpy.load(file, mmap_mode=None, allow_pickle=False, **kwargs)
 
 Read array data from previously saved binary files.
 
-For `.npy` files, returns an NPUArray stored on the device.
+For `.npy` files, returns an array on the device (an instance of the core `ndarray` class).
 For `.npz` files, returns a lazy-loading container that works like a dictionary.
 
 **Arguments**
@@ -106,8 +101,8 @@ For `.npz` files, returns a lazy-loading container that works like a dictionary.
 - `**kwargs`: Additional keyword arguments passed to numpy.load.
 
 **Returns**
-- `NPUArray`: When loading a `.npy` file, returns an array on the device.
-- `_AsnpNpz`: When loading a `.npz` file, returns a dictionary-like container that lazily loads arrays to the device on access.
+- `asnumpy._core.ndarray`: When loading a `.npy` file, returns an array on the device. It is an instance of the bound core `ndarray` class, not of the public `asnumpy.ndarray` subclass; use `to_numpy()` to copy it to the host.
+- `_AsnpNpz`: When loading a `.npz` file, returns a dictionary-like container that lazily loads arrays to the device on access; each value it returns is also a core `ndarray`.
 
 **See Also**
 - [`numpy.load`](https://numpy.org/doc/stable/reference/generated/numpy.load.html)
@@ -120,7 +115,7 @@ Load a single array from .npy file:
 >>> import asnumpy as ap
 >>> x = ap.load('output.npy')
 >>> type(x)
-<class 'asnumpy.ndarray'>
+<class 'asnumpy._core.ndarray'>
 ```
 
 Load multiple arrays from .npz file:
@@ -130,6 +125,5 @@ Load multiple arrays from .npz file:
 ...     a = data['a']
 ...     b = data['b']
 >>> type(a)
-<class 'asnumpy.ndarray'>
+<class 'asnumpy._core.ndarray'>
 ```
--->
