@@ -18,7 +18,7 @@ asnumpy.sin(x: ArrayLike) -> ndarray
 
 此函数计算输入数组 `x` 中每个元素的正弦值。输入值假设以弧度为单位。
 
-当前实现先将int32输入提升为float64，再计算正弦；相应int32回归已不再标记为预期失败。数值行为应结合所安装的CANN和AsNumpy版本验证。
+当前实现先提升非浮点输入再计算：`bool`、`int8`、`int16`、`uint8`、`uint16` 提升为 `float32`，更宽的整数（如 `int32`）提升为 `float64`。int32 场景已由测试覆盖，不再标记为预期失败；数值行为应结合所安装的 CANN 和 AsNumpy 版本验证。
 
 **参数**
 - `x` (ArrayLike): 包含弧度角度的输入数组。
@@ -35,8 +35,8 @@ asnumpy.sin(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sin(ap.ndarray.from_numpy(np.array([0, np.pi/6, np.pi/2], dtype=np.float32)))
-array([0. , 0.5, 1. ])
+>>> ap.sin(ap.ndarray.from_numpy(np.array([0, np.pi/6, np.pi/2], dtype=np.float32))).to_numpy()
+array([0. , 0.5, 1. ], dtype=float32)
 ```
 
 ### asnumpy.cos
@@ -66,8 +66,8 @@ asnumpy.cos(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cos(ap.ndarray.from_numpy(np.array([0, np.pi], dtype=np.float32)))
-array([ 1., -1.])
+>>> ap.cos(ap.ndarray.from_numpy(np.array([0, np.pi], dtype=np.float32))).to_numpy()
+array([ 1., -1.], dtype=float32)
 ```
 
 ### asnumpy.tan
@@ -95,8 +95,8 @@ asnumpy.tan(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tan(ap.ndarray.from_numpy(np.array([-np.pi/4, 0, np.pi/4], dtype=np.float32)))
-array([-1.,  0.,  1.])
+>>> ap.tan(ap.ndarray.from_numpy(np.array([-np.pi/4, 0, np.pi/4], dtype=np.float32))).to_numpy()
+array([-1.,  0.,  1.], dtype=float32)
 ```
 
 ### asnumpy.arcsin
@@ -125,8 +125,8 @@ asnumpy.arcsin(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arcsin(ap.ndarray.from_numpy(np.array([0, 0.5, 1], dtype=np.float32)))
-array([0.        , 0.52359878, 1.57079633])
+>>> ap.arcsin(ap.ndarray.from_numpy(np.array([0, 0.5, 1], dtype=np.float32))).to_numpy()
+array([0.       , 0.5235988, 1.5707964], dtype=float32)
 ```
 
 ### asnumpy.arccos
@@ -139,10 +139,10 @@ asnumpy.arccos(x: ArrayLike) -> ndarray
 
 此函数计算 `x` 中每个元素的反余弦值（arccosine）。定义域为 [-1, 1]。返回值以弧度为单位，范围为 0 到 pi。
 
-当前测试覆盖表明越界输入（|x| > 1）可能抛出 RuntimeError。
+越界输入（|x| > 1）返回 `NaN`，与 NumPy 一致；可能触发运行时警告。
 
 **参数**
-- `x` (ArrayLike): 输入数组。元素必须在 [-1, 1] 范围内。
+- `x` (ArrayLike): 输入数组。超出 [-1, 1] 的元素会产生 `NaN`（见上文说明）。
 
 **返回值**
 - `ndarray`: `x` 中每个元素的反余弦值。
@@ -157,8 +157,8 @@ asnumpy.arccos(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arccos(ap.ndarray.from_numpy(np.array([1, 0.5, 0], dtype=np.float32)))
-array([0.        , 1.04719755, 1.57079633])
+>>> ap.arccos(ap.ndarray.from_numpy(np.array([1, 0.5, 0], dtype=np.float32))).to_numpy()
+array([0.       , 1.0471976, 1.5707964], dtype=float32)
 ```
 
 ### asnumpy.arctan
@@ -187,11 +187,10 @@ asnumpy.arctan(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arctan(ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32)))
-array([0.        , 0.78539816])
+>>> ap.arctan(ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32))).to_numpy()
+array([0.       , 0.7853982], dtype=float32)
 ```
 
-<!--
 ### asnumpy.arctan2
 
 ```python
@@ -218,10 +217,10 @@ asnumpy.arctan2(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> y = ap.ndarray.from_numpy(np.array([0, 1]))
->>> x = ap.ndarray.from_numpy(np.array([-1, 1]))
->>> ap.arctan2(y, x)
-array([3.14159265, 0.78539816])
+>>> y = ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32))
+>>> x = ap.ndarray.from_numpy(np.array([-1, 1], dtype=np.float32))
+>>> ap.arctan2(y, x).to_numpy()
+array([3.1415927, 0.7853982], dtype=float32)
 ```
 
 ### asnumpy.hypot
@@ -248,8 +247,10 @@ asnumpy.hypot(x1: ArrayLike, x2: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.hypot(3*ap.ones(2), 4*ap.ones(2))
-array([5., 5.])
+>>> a = ap.ndarray.from_numpy(np.array([3.0, 4.0], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([4.0, 3.0], dtype=np.float32))
+>>> ap.hypot(a, b).to_numpy()
+array([5., 5.], dtype=float32)
 ```
 
 ### asnumpy.radians
@@ -261,6 +262,8 @@ asnumpy.radians(x: ArrayLike) -> ndarray
 将角度从度转换为弧度。
 
 此函数将输入数组 `x` 中的每个元素从度转换为弧度。操作按元素进行。
+
+当前实现只接受浮点输入（`float16`、`float32` 或 `float64`）；整数输入会抛出 `ValueError`。
 
 **参数**
 - `x` (ArrayLike): 以度为单位的输入数组。
@@ -278,8 +281,8 @@ asnumpy.radians(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.radians(ap.ndarray.from_numpy(np.array([0, 90, 180])))
-array([0.        , 1.57079633, 3.14159265])
+>>> ap.radians(ap.ndarray.from_numpy(np.array([0, 90, 180], dtype=np.float32))).to_numpy()
+array([0.       , 1.5707964, 3.1415927], dtype=float32)
 ```
 
 ### asnumpy.deg2rad
@@ -291,6 +294,8 @@ asnumpy.deg2rad(x: ArrayLike) -> ndarray
 将角度从度转换为弧度。
 
 此函数将输入角度逐元素从度转换为弧度。它是 `radians` 的别名。
+
+当前实现只接受浮点输入（`float16`、`float32` 或 `float64`）；整数输入会抛出 `ValueError`。
 
 **参数**
 - `x` (ArrayLike): 以度为单位的输入数组。
@@ -308,8 +313,8 @@ asnumpy.deg2rad(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.deg2rad(ap.ndarray.from_numpy(np.array([0, 90, 180])))
-array([0.        , 1.57079633, 3.14159265])
+>>> ap.deg2rad(ap.ndarray.from_numpy(np.array([0, 90, 180], dtype=np.float32))).to_numpy()
+array([0.       , 1.5707964, 3.1415927], dtype=float32)
 ```
 
 ### asnumpy.degrees
@@ -321,6 +326,8 @@ asnumpy.degrees(x: ArrayLike) -> ndarray
 将角度从弧度转换为度。
 
 此函数将输入数组 `x` 中的每个元素从弧度转换为度。操作按元素进行。
+
+整数输入会提升为 `float64`，该行为已有测试覆盖。
 
 **参数**
 - `x` (ArrayLike): 以弧度为单位的输入数组。
@@ -338,8 +345,8 @@ asnumpy.degrees(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.degrees(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi])))
-array([  0.,  90., 180.])
+>>> ap.degrees(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi], dtype=np.float32))).to_numpy()
+array([  0.,  90., 180.], dtype=float32)
 ```
 
 ### asnumpy.rad2deg
@@ -368,10 +375,11 @@ asnumpy.rad2deg(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rad2deg(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi])))
-array([  0.,  90., 180.])
+>>> ap.rad2deg(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi], dtype=np.float32))).to_numpy()
+array([  0.,  90., 180.], dtype=float32)
 ```
 
+<!--
 ## 双曲函数
 
 ### asnumpy.sinh

@@ -18,7 +18,7 @@ Calculate the sine of each element.
 
 This function computes the sine for every element in the input array `x`. Input values are assumed to be in radians.
 
-The current implementation promotes int32 input to float64 before evaluating sine. The corresponding int32 regression is no longer marked as an expected failure; numerical behavior should be validated against your installed CANN and AsNumpy versions.
+The current implementation promotes non-floating input before evaluation: `bool`, `int8`, `int16`, `uint8`, and `uint16` become `float32`, while wider integers such as `int32` become `float64`. The int32 case is covered by the tests and is no longer marked as an expected failure; numerical behavior should be validated against your installed CANN and AsNumpy versions.
 
 **Arguments**
 - `x` (ArrayLike): Input array containing angles in radians.
@@ -35,8 +35,8 @@ The current implementation promotes int32 input to float64 before evaluating sin
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sin(ap.ndarray.from_numpy(np.array([0, np.pi/6, np.pi/2], dtype=np.float32)))
-array([0. , 0.5, 1. ])
+>>> ap.sin(ap.ndarray.from_numpy(np.array([0, np.pi/6, np.pi/2], dtype=np.float32))).to_numpy()
+array([0. , 0.5, 1. ], dtype=float32)
 ```
 
 ### asnumpy.cos
@@ -66,8 +66,8 @@ The current implementation promotes bool input to float32 before evaluating cosi
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cos(ap.ndarray.from_numpy(np.array([0, np.pi], dtype=np.float32)))
-array([ 1., -1.])
+>>> ap.cos(ap.ndarray.from_numpy(np.array([0, np.pi], dtype=np.float32))).to_numpy()
+array([ 1., -1.], dtype=float32)
 ```
 
 ### asnumpy.tan
@@ -95,8 +95,8 @@ This function computes the tangent for every element in the input array `x`. Inp
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tan(ap.ndarray.from_numpy(np.array([-np.pi/4, 0, np.pi/4], dtype=np.float32)))
-array([-1.,  0.,  1.])
+>>> ap.tan(ap.ndarray.from_numpy(np.array([-np.pi/4, 0, np.pi/4], dtype=np.float32))).to_numpy()
+array([-1.,  0.,  1.], dtype=float32)
 ```
 
 ### asnumpy.arcsin
@@ -125,8 +125,8 @@ This function computes the inverse sine (arcsine) for every element in `x`. The 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arcsin(ap.ndarray.from_numpy(np.array([0, 0.5, 1], dtype=np.float32)))
-array([0.        , 0.52359878, 1.57079633])
+>>> ap.arcsin(ap.ndarray.from_numpy(np.array([0, 0.5, 1], dtype=np.float32))).to_numpy()
+array([0.       , 0.5235988, 1.5707964], dtype=float32)
 ```
 
 ### asnumpy.arccos
@@ -139,10 +139,10 @@ Calculate the inverse cosine of each element.
 
 This function computes the inverse cosine (arccosine) for every element in `x`. The domain is defined on [-1, 1]. The returned values are in radians, ranging from 0 to pi.
 
-Current test coverage indicates out-of-domain input (|x| > 1) may throw a RuntimeError.
+Out-of-domain input (|x| > 1) produces `NaN`, matching NumPy; a runtime warning may be emitted.
 
 **Arguments**
-- `x` (ArrayLike): Input array. Elements must be within [-1, 1].
+- `x` (ArrayLike): Input array. Elements outside [-1, 1] produce `NaN` (see the note above).
 
 **Returns**
 - `ndarray`: The inverse cosine of each element in `x`.
@@ -157,8 +157,8 @@ Current test coverage indicates out-of-domain input (|x| > 1) may throw a Runtim
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arccos(ap.ndarray.from_numpy(np.array([1, 0.5, 0], dtype=np.float32)))
-array([0.        , 1.04719755, 1.57079633])
+>>> ap.arccos(ap.ndarray.from_numpy(np.array([1, 0.5, 0], dtype=np.float32))).to_numpy()
+array([0.       , 1.0471976, 1.5707964], dtype=float32)
 ```
 
 ### asnumpy.arctan
@@ -187,10 +187,10 @@ This function computes the inverse tangent (arctangent) for every element in `x`
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arctan(ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32)))
-array([0.        , 0.78539816])
+>>> ap.arctan(ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32))).to_numpy()
+array([0.       , 0.7853982], dtype=float32)
 ```
-<!--
+
 ### asnumpy.arctan2
 
 ```python
@@ -217,10 +217,10 @@ This function computes the inverse tangent of `x1/x2`, using the signs of both a
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> y = ap.ndarray.from_numpy(np.array([0, 1]))
->>> x = ap.ndarray.from_numpy(np.array([-1, 1]))
->>> ap.arctan2(y, x)
-array([3.14159265, 0.78539816])
+>>> y = ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32))
+>>> x = ap.ndarray.from_numpy(np.array([-1, 1], dtype=np.float32))
+>>> ap.arctan2(y, x).to_numpy()
+array([3.1415927, 0.7853982], dtype=float32)
 ```
 
 ### asnumpy.hypot
@@ -247,8 +247,10 @@ This function computes the hypotenuse for the legs `x1` and `x2`. It is mathemat
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.hypot(3*ap.ones(2), 4*ap.ones(2))
-array([5., 5.])
+>>> a = ap.ndarray.from_numpy(np.array([3.0, 4.0], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([4.0, 3.0], dtype=np.float32))
+>>> ap.hypot(a, b).to_numpy()
+array([5., 5.], dtype=float32)
 ```
 
 ### asnumpy.radians
@@ -260,6 +262,8 @@ asnumpy.radians(x: ArrayLike) -> ndarray
 Convert angles from degrees to radians.
 
 This function converts each element in the input array `x` from degrees to radians. The operation is performed element-wise.
+
+The current implementation accepts only floating-point input (`float16`, `float32`, or `float64`); integer input raises `ValueError`.
 
 **Arguments**
 - `x` (ArrayLike): Input array in degrees.
@@ -277,8 +281,8 @@ This function converts each element in the input array `x` from degrees to radia
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.radians(ap.ndarray.from_numpy(np.array([0, 90, 180])))
-array([0.        , 1.57079633, 3.14159265])
+>>> ap.radians(ap.ndarray.from_numpy(np.array([0, 90, 180], dtype=np.float32))).to_numpy()
+array([0.       , 1.5707964, 3.1415927], dtype=float32)
 ```
 
 ### asnumpy.deg2rad
@@ -290,6 +294,8 @@ asnumpy.deg2rad(x: ArrayLike) -> ndarray
 Convert angles from degrees to radians.
 
 This function converts input angles from degrees to radians element-wise. It is an alias for `radians`.
+
+The current implementation accepts only floating-point input (`float16`, `float32`, or `float64`); integer input raises `ValueError`.
 
 **Arguments**
 - `x` (ArrayLike): Input array in degrees.
@@ -307,8 +313,8 @@ This function converts input angles from degrees to radians element-wise. It is 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.deg2rad(ap.ndarray.from_numpy(np.array([0, 90, 180])))
-array([0.        , 1.57079633, 3.14159265])
+>>> ap.deg2rad(ap.ndarray.from_numpy(np.array([0, 90, 180], dtype=np.float32))).to_numpy()
+array([0.       , 1.5707964, 3.1415927], dtype=float32)
 ```
 
 ### asnumpy.degrees
@@ -320,6 +326,8 @@ asnumpy.degrees(x: ArrayLike) -> ndarray
 Convert angles from radians to degrees.
 
 This function converts each element in the input array `x` from radians to degrees. The operation is performed element-wise.
+
+Integer input is promoted to `float64`, a behavior covered by the tests.
 
 **Arguments**
 - `x` (ArrayLike): Input array in radians.
@@ -337,8 +345,8 @@ This function converts each element in the input array `x` from radians to degre
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.degrees(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi])))
-array([  0.,  90., 180.])
+>>> ap.degrees(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi], dtype=np.float32))).to_numpy()
+array([  0.,  90., 180.], dtype=float32)
 ```
 
 ### asnumpy.rad2deg
@@ -367,10 +375,11 @@ This function converts each element in the input array `x` from radians to degre
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rad2deg(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi])))
-array([  0.,  90., 180.])
+>>> ap.rad2deg(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi], dtype=np.float32))).to_numpy()
+array([  0.,  90., 180.], dtype=float32)
 ```
 
+<!--
 ## Hyperbolic Functions
 
 ### asnumpy.sinh
