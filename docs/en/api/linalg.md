@@ -252,7 +252,9 @@ asnumpy.linalg.norm(
 
 Measure the magnitude or size of a vector or matrix according to a specified order.
 
-The current implementation mainly computes the result on the host via NumPy.
+::: warning
+The current frontend first converts the input to a Host NumPy array, computes with `numpy.linalg.norm`, then converts the result back to an AsNumpy ndarray. With a device-array input, this includes device-to-Host and Host-to-device copies. This is normally Host computation, not native NPU norm execution. Only if NumPy raises `TypeError` with both `axis=None` and `ord=None` does the wrapper attempt its native norm fallback.
+:::
 
 **Arguments**
 - `a` (ArrayLike): Input vector or matrix.
@@ -371,7 +373,9 @@ asnumpy.linalg.matrix_power(a: ArrayLike, n: int) -> ndarray
 
 Raise a matrix to a specified integer exponent through repeated multiplication.
 
-The current implementation copies the input to the host, computes via `numpy.linalg.matrix_power`, and transfers the result back to the device; a negative power of a singular matrix raises an exception.
+::: warning
+The current frontend computes this operation on the Host using `numpy.linalg.matrix_power`, then converts the result to an AsNumpy ndarray. Device-array inputs are copied to the Host first, and the result is copied back to the device; this wrapper does not perform native NPU matrix multiplication. Negative powers also perform the singularity check with Host `numpy.linalg.slogdet`.
+:::
 
 **Arguments**
 - `a` (ArrayLike): Input square matrix.
