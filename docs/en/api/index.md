@@ -1,28 +1,28 @@
 # API Reference
 
-::: info
-This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes.This document is for reference only.
-:::
+Welcome to the asnumpy API reference documentation! This section provides detailed information about the asnumpy modules and functions.
 
-Welcome to the asnumpy API reference documentation! This section provides detailed information about the currently selected asnumpy modules and functions.
+::: tip
+This API reference is based on asnumpy v0.4.0. The number in parentheses is the number of API entries documented for that module.
+:::
 
 ## Core Modules
 
-- [ndarray](./ndarray.md) - The N-dimensional array object
-- [Array Manipulation](./array.md) - Array creation and manipulation functions
+- [ndarray](./ndarray.md) - The N-dimensional array object (11 APIs)
+- [Array Manipulation](./array.md) - Array creation and manipulation functions (11 APIs)
 
 ## Mathematical Functions
 
-- [Mathematical Functions](./math.md) - Mathematical operations
-- [Linear Algebra](./linalg.md) - Linear algebra operations
-- [Statistics](./statistics.md) - Statistical functions
+- [Mathematical Functions](./math.md) - Mathematical operations (85 APIs)
+- [Linear Algebra](./linalg.md) - Linear algebra operations (12 APIs)
+- [Statistics](./statistics.md) - Statistical functions (1 API)
 
 ## Specialized Modules
 
-- [Logic Functions](./logic.md) - Logical operations and comparisons
-- [Random Sampling](./random.md) - Random number generation
-- [Sorting Functions](./sorting.md) - Sorting operations
-- [Neural Network Functions](./nn.md) - Neural network activation functions
-- [I/O Operations](./io.md) - Input/output functions
-- [CANN Interfaces](./cann.md) - CANN backend interfaces
-- [Utilities](./utils.md) - Utility functions
+- [Logic Functions](./logic.md) - Logical operations and comparisons (16 APIs)
+- [Random Sampling](./random.md) - Random number generation (14 APIs)
+- [Sorting Functions](./sorting.md) - Sorting operations (1 API)
+- [Neural Network Functions](./nn.md) - Neural network activation functions (1 API)
+- [I/O Operations](./io.md) - Input/output functions (4 APIs)
+- [CANN Interfaces](./cann.md) - CANN backend interfaces (5 APIs)
+- [Utilities](./utils.md) - Utility functions (1 API)

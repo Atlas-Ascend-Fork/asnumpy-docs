@@ -1,10 +1,6 @@
 # 随机抽样函数
 
-::: info
-当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
-:::
-
-本模块提供各种概率分布的随机数生成功能。所有样本在加速器设备上生成。
+本模块提供各种概率分布的随机数生成功能。所有样本在加速器设备上生成。所有函数都必须提供 `size` 参数（与 NumPy 不同，当前实现不支持省略该参数）；样本 dtype 由分布决定：`normal`、`uniform`、`standard_normal`、`standard_cauchy` 为 `float64`；`binomial` 为 `int32`；其余分布为 `float32`。
 
 ## 连续分布
 
@@ -32,7 +28,7 @@ asnumpy.random.uniform(low: float, high: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.uniform(low=1.0, high=5.0, size=4)
+>>> ap.random.uniform(low=1.0, high=5.0, size=4).to_numpy()
 array([2.34, 4.12, 1.56, 3.89])  # 随机
 ```
 
@@ -60,7 +56,7 @@ asnumpy.random.normal(loc: float, scale: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.normal(loc=5.0, scale=2.0, size=3)
+>>> ap.random.normal(loc=5.0, scale=2.0, size=3).to_numpy()
 array([4.21, 6.83, 3.45])  # 随机
 ```
 
@@ -86,11 +82,11 @@ asnumpy.random.standard_normal(size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.standard_normal(size=(2, 3))
+>>> ap.random.standard_normal(size=(2, 3)).to_numpy()
 array([[ 0.42, -1.15,  0.78],
        [-0.33,  1.02, -0.67]])  # 随机
 ```
-<!--
+
 ### asnumpy.random.exponential
 
 ```python
@@ -114,8 +110,8 @@ asnumpy.random.exponential(scale: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.exponential(scale=3.0, size=4)
-array([2.15, 0.78, 5.42, 1.33])  # 随机
+>>> ap.random.exponential(scale=3.0, size=4).to_numpy()
+array([2.15, 0.78, 5.42, 1.33], dtype=float32)  # 随机
 ```
 
 ### asnumpy.random.lognormal
@@ -142,8 +138,8 @@ asnumpy.random.lognormal(mean: float, sigma: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.lognormal(mean=0.5, sigma=0.8, size=3)
-array([2.14, 0.92, 3.56])  # 随机
+>>> ap.random.lognormal(mean=0.5, sigma=0.8, size=3).to_numpy()
+array([2.14, 0.92, 3.56], dtype=float32)  # 随机
 ```
 
 ### asnumpy.random.laplace
@@ -170,8 +166,8 @@ asnumpy.random.laplace(loc: float, scale: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.laplace(loc=2.0, scale=1.5, size=3)
-array([1.82, 3.45, 0.67])  # 随机
+>>> ap.random.laplace(loc=2.0, scale=1.5, size=3).to_numpy()
+array([1.82, 3.45, 0.67], dtype=float32)  # 随机
 ```
 
 ### asnumpy.random.logistic
@@ -198,8 +194,8 @@ asnumpy.random.logistic(loc: float, scale: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.logistic(loc=0.0, scale=2.0, size=3)
-array([1.23, -2.45, 0.89])  # 随机
+>>> ap.random.logistic(loc=0.0, scale=2.0, size=3).to_numpy()
+array([1.23, -2.45, 0.89], dtype=float32)  # 随机
 ```
 
 ### asnumpy.random.gumbel
@@ -226,8 +222,8 @@ asnumpy.random.gumbel(loc: float, scale: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.gumbel(loc=1.0, scale=2.0, size=3)
-array([2.34, -0.56, 1.89])  # 随机
+>>> ap.random.gumbel(loc=1.0, scale=2.0, size=3).to_numpy()
+array([2.34, -0.56, 1.89], dtype=float32)  # 随机
 ```
 
 ### asnumpy.random.standard_cauchy
@@ -252,7 +248,7 @@ asnumpy.random.standard_cauchy(size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.standard_cauchy(size=4)
+>>> ap.random.standard_cauchy(size=4).to_numpy()
 array([ 0.45, -2.31,  0.12,  5.67])  # 随机
 ```
 
@@ -279,9 +275,9 @@ asnumpy.random.rayleigh(scale: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.rayleigh(scale=1.5, size=(2, 2))
+>>> ap.random.rayleigh(scale=1.5, size=(2, 2)).to_numpy()
 array([[1.23, 2.45],
-       [0.89, 1.67]])  # 随机
+       [0.89, 1.67]], dtype=float32)  # 随机
 ```
 
 ### asnumpy.random.pareto
@@ -307,8 +303,8 @@ asnumpy.random.pareto(a: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.pareto(a=2.5, size=4)
-array([0.34, 1.23, 0.56, 0.89])  # 随机
+>>> ap.random.pareto(a=2.5, size=4).to_numpy()
+array([0.34, 1.23, 0.56, 0.89], dtype=float32)  # 随机
 ```
 
 ### asnumpy.random.weibull
@@ -334,8 +330,8 @@ asnumpy.random.weibull(a: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.weibull(a=1.5, size=4)
-array([0.78, 1.23, 0.45, 2.11])  # 随机
+>>> ap.random.weibull(a=1.5, size=4).to_numpy()
+array([0.78, 1.23, 0.45, 2.11], dtype=float32)  # 随机
 ```
 
 ## 离散分布
@@ -356,7 +352,7 @@ asnumpy.random.binomial(n: int, p: float, size: ShapeLike) -> ndarray
 - `size` (ShapeLike, int 或 int 序列): 输出数组的维度。
 
 **返回值**
-- `ndarray`: 填充从 0 到 n 的整数计数的数组。
+- `ndarray`: 填充从 0 到 n 的 `int32` 整数计数的数组。
 
 **参见**
 - [`numpy.random.binomial`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.binomial.html): NumPy 等效函数。
@@ -364,8 +360,8 @@ asnumpy.random.binomial(n: int, p: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.binomial(n=20, p=0.4, size=5)
-array([7, 9, 6, 8, 5])  # 随机
+>>> ap.random.binomial(n=20, p=0.4, size=5).to_numpy()
+array([7, 9, 6, 8, 5], dtype=int32)  # 随机
 ```
 
 ### asnumpy.random.geometric
@@ -383,7 +379,7 @@ asnumpy.random.geometric(p: float, size: ShapeLike) -> ndarray
 - `size` (ShapeLike, int 或 int 序列): 输出数组的维度。
 
 **返回值**
-- `ndarray`: 填充正整数的数组（最小值为 1）。
+- `ndarray`: 填充正整数样本（最小值为 1）的数组，存储为 `float32`。
 
 **参见**
 - [`numpy.random.geometric`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.geometric.html): NumPy 等效函数。
@@ -391,7 +387,6 @@ asnumpy.random.geometric(p: float, size: ShapeLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.random.geometric(p=0.25, size=5)
-array([3, 1, 7, 2, 4])  # 随机
+>>> ap.random.geometric(p=0.25, size=5).to_numpy()
+array([3., 1., 7., 2., 4.], dtype=float32)  # 随机
 ```
--->

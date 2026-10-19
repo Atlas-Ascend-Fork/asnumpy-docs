@@ -1,9 +1,5 @@
 # Logic Functions
 
-::: info
-This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
-:::
-
 Host values and NumPy arrays are not transferred to the NPU automatically.
 Convert array operands with `ap.ndarray.from_numpy()` first.
 
@@ -23,7 +19,7 @@ Check whether all elements evaluate to True.
 - `keepdims` (bool, optional): Retains reduced axes when `axis` is explicitly provided. In the current implementation, `axis=None` uses the global reduction overload, which ignores `keepdims` and returns a 0-D ndarray.
 
 **Returns**
-- `ndarray`: A boolean array or scalar indicating whether all elements evaluate to True.
+- `ndarray`: A boolean array indicating whether all elements evaluate to True; the global reduction (`axis=None`) returns a 0-D array.
 
 **See Also**
 - [`numpy.all`](https://numpy.org/doc/stable/reference/generated/numpy.all.html)
@@ -36,9 +32,11 @@ To retain every axis during a full reduction, pass the explicit non-negative axi
 >>> import asnumpy as ap
 >>> import numpy as np
 >>> a = ap.ndarray.from_numpy(np.array([True, True, True]))
->>> ap.all(a)
+>>> ap.all(a).to_numpy()
+array(True)
 >>> b = ap.ndarray.from_numpy(np.array([True, False, True]))
->>> ap.all(b)
+>>> ap.all(b).to_numpy()
+array(False)
 ```
 
 ### asnumpy.any
@@ -55,7 +53,7 @@ Check whether any element evaluates to True.
 - `keepdims` (bool, optional): Retains reduced axes when `axis` is explicitly provided. In the current implementation, `axis=None` uses the global reduction overload, which ignores `keepdims` and returns a 0-D ndarray.
 
 **Returns**
-- `ndarray`: A boolean array or scalar indicating whether any element evaluates to True.
+- `ndarray`: A boolean array indicating whether any element evaluates to True; the global reduction (`axis=None`) returns a 0-D array.
 
 **See Also**
 - [`numpy.any`](https://numpy.org/doc/stable/reference/generated/numpy.any.html)
@@ -68,9 +66,11 @@ To retain every axis during a full reduction, pass the explicit non-negative axi
 >>> import asnumpy as ap
 >>> import numpy as np
 >>> a = ap.ndarray.from_numpy(np.array([False, False, True]))
->>> ap.any(a)
+>>> ap.any(a).to_numpy()
+array(True)
 >>> b = ap.ndarray.from_numpy(np.array([False, False, False]))
->>> ap.any(b)
+>>> ap.any(b).to_numpy()
+array(False)
 ```
 
 ## Logical Operations
@@ -99,11 +99,11 @@ Apply boolean AND logic across corresponding elements of two arrays.
 >>> import asnumpy as ap
 >>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
 >>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
->>> ap.logical_and(x1, x2)
+>>> ap.logical_and(x1, x2).to_numpy()
 array(False)
 >>> x1 = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
 >>> x2 = ap.ndarray.from_numpy(np.array([True, True], dtype=np.bool_))
->>> ap.logical_and(x1, x2)
+>>> ap.logical_and(x1, x2).to_numpy()
 array([ True, False])
 ```
 
@@ -131,7 +131,7 @@ Apply boolean OR logic across corresponding elements of two arrays.
 >>> import asnumpy as ap
 >>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
 >>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
->>> ap.logical_or(x1, x2)
+>>> ap.logical_or(x1, x2).to_numpy()
 array(True)
 ```
 
@@ -157,10 +157,10 @@ Invert the boolean value of each array element.
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
->>> ap.logical_not(x)
+>>> ap.logical_not(x).to_numpy()
 array(False)
 >>> x = ap.ndarray.from_numpy(np.array([True, False], dtype=np.bool_))
->>> ap.logical_not(x)
+>>> ap.logical_not(x).to_numpy()
 array([False,  True])
 ```
 
@@ -188,7 +188,7 @@ Apply exclusive OR logic across corresponding elements of two arrays.
 >>> import asnumpy as ap
 >>> x1 = ap.ndarray.from_numpy(np.array(True, dtype=np.bool_))
 >>> x2 = ap.ndarray.from_numpy(np.array(False, dtype=np.bool_))
->>> ap.logical_xor(x1, x2)
+>>> ap.logical_xor(x1, x2).to_numpy()
 array(True)
 ```
 
@@ -219,7 +219,7 @@ Determine whether elements of x1 are greater than those of x2.
 >>> import asnumpy as ap
 >>> x1 = ap.ndarray.from_numpy(np.array([4, 2], dtype=np.int32))
 >>> x2 = ap.ndarray.from_numpy(np.array([2, 2], dtype=np.int32))
->>> ap.greater(x1, x2)
+>>> ap.greater(x1, x2).to_numpy()
 array([ True, False])
 ```
 
@@ -246,7 +246,7 @@ Determine whether elements of x1 are greater than or equal to those of x2.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.greater_equal(ap.ndarray.from_numpy(np.array([4, 2, 1], dtype=np.int32)), ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32)))
+>>> ap.greater_equal(ap.ndarray.from_numpy(np.array([4, 2, 1], dtype=np.int32)), ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32))).to_numpy()
 array([ True,  True, False])
 ```
 
@@ -275,7 +275,7 @@ Determine whether elements of x1 are less than those of x2.
 >>> import asnumpy as ap
 >>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
 >>> x2 = ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32))
->>> ap.less(x1, x2)
+>>> ap.less(x1, x2).to_numpy()
 array([ True, False, False])
 ```
 
@@ -302,7 +302,7 @@ Determine whether elements of x1 are less than or equal to those of x2.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.less_equal(ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32)))
+>>> ap.less_equal(ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([2, 2, 2], dtype=np.int32))).to_numpy()
 array([ True,  True, False])
 ```
 
@@ -331,7 +331,7 @@ Compare two arrays for equality element by element.
 >>> import asnumpy as ap
 >>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
 >>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
->>> ap.equal(x1, x2)
+>>> ap.equal(x1, x2).to_numpy()
 array([ True, False,  True])
 ```
 
@@ -360,7 +360,7 @@ Compare two arrays for inequality element by element.
 >>> import asnumpy as ap
 >>> x1 = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
 >>> x2 = ap.ndarray.from_numpy(np.array([1, 4, 3], dtype=np.int32))
->>> ap.not_equal(x1, x2)
+>>> ap.not_equal(x1, x2).to_numpy()
 array([False,  True, False])
 ```
 
@@ -388,7 +388,7 @@ Identify which array elements are regular numbers (not infinity or NaN).
 >>> import numpy as np
 >>> import asnumpy as ap
 >>> x = ap.ndarray.from_numpy(np.array([1, np.inf, np.nan], dtype=np.float32))
->>> ap.isfinite(x)
+>>> ap.isfinite(x).to_numpy()
 array([ True, False, False])
 ```
 
@@ -413,7 +413,7 @@ Detect infinite values (both positive and negative) in the input array.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isinf(ap.ndarray.from_numpy(np.array([1, np.inf, -np.inf], dtype=np.float32)))
+>>> ap.isinf(ap.ndarray.from_numpy(np.array([1, np.inf, -np.inf], dtype=np.float32))).to_numpy()
 array([False,  True,  True])
 ```
 
@@ -438,7 +438,7 @@ Identify occurrences of negative infinity within the array.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isneginf(ap.ndarray.from_numpy(np.array([1, -np.inf, np.inf], dtype=np.float32)))
+>>> ap.isneginf(ap.ndarray.from_numpy(np.array([1, -np.inf, np.inf], dtype=np.float32))).to_numpy()
 array([False,  True, False])
 ```
 
@@ -463,6 +463,6 @@ Identify occurrences of positive infinity within the array.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.isposinf(ap.ndarray.from_numpy(np.array([1, np.inf, -np.inf], dtype=np.float32)))
+>>> ap.isposinf(ap.ndarray.from_numpy(np.array([1, np.inf, -np.inf], dtype=np.float32))).to_numpy()
 array([False,  True, False])
 ```

@@ -1,9 +1,5 @@
 # 输入输出操作
 
-::: info
-当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
-:::
-
 ## asnumpy.save
 
 ```python
@@ -16,7 +12,7 @@ asnumpy.save(file, arr, allow_pickle=False)
 
 **参数**
 - `file` (str 或类文件对象): 保存数据的文件路径或文件对象。
-- `arr` (NPUArray 或 numpy.ndarray): 要保存的数组。NPUArray 对象在保存前会自动转换为 numpy 数组。
+- `arr` (asnumpy.ndarray 或 numpy.ndarray): 要保存的数组。`asnumpy.ndarray` 对象在保存前会自动转换为 numpy 数组。
 - `allow_pickle` (bool, 默认 False): 是否允许使用 pickle 保存对象数组。
 
 **参见**
@@ -25,7 +21,7 @@ asnumpy.save(file, arr, allow_pickle=False)
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(10)
+>>> x = ap.ones(10, dtype=ap.float32)
 >>> ap.save('output.npy', x)
 ```
 
@@ -53,7 +49,7 @@ asnumpy.savez(file, *args, **kwargs)
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(5)
+>>> x = ap.ones(5, dtype=ap.float32)
 >>> y = ap.ones(5, dtype=ap.float32)
 >>> ap.savez('data.npz', x, y)  # 保存为 arr_0, arr_1
 >>> ap.savez('data.npz', a=x, b=y)  # 保存为 a, b
@@ -82,12 +78,11 @@ asnumpy.savez_compressed(file, *args, **kwargs)
 **示例**
 ```python
 >>> import asnumpy as ap
->>> x = ap.arange(100)
+>>> x = ap.ones(100, dtype=ap.float32)
 >>> y = ap.ones(100, dtype=ap.float32)
 >>> ap.savez_compressed('compressed.npz', a=x, b=y)
 ```
 
-<!--
 ## asnumpy.load
 
 ```python
@@ -96,7 +91,7 @@ asnumpy.load(file, mmap_mode=None, allow_pickle=False, **kwargs)
 
 从先前保存的二进制文件读取数组数据。
 
-对于 `.npy` 文件，返回存储在设备上的 NPUArray。
+对于 `.npy` 文件，返回设备上的数组（核心 `ndarray` 类的实例）。
 对于 `.npz` 文件，返回类似字典的延迟加载容器。
 
 **参数**
@@ -106,8 +101,8 @@ asnumpy.load(file, mmap_mode=None, allow_pickle=False, **kwargs)
 - `**kwargs`: 传递给 numpy.load 的额外关键字参数。
 
 **返回值**
-- `NPUArray`: 加载 `.npy` 文件时，返回设备上的数组。
-- `_AsnpNpz`: 加载 `.npz` 文件时，返回类似字典的容器，在访问时延迟加载数组到设备。
+- `asnumpy._core.ndarray`: 加载 `.npy` 文件时，返回设备上的数组。它是绑定的核心 `ndarray` 类实例（不是公开的 `asnumpy.ndarray` 子类）；可用 `to_numpy()` 复制到主机。
+- `_AsnpNpz`: 加载 `.npz` 文件时，返回类似字典的容器，在访问时延迟加载数组到设备；容器返回的每个值同样是核心 `ndarray`。
 
 **参见**
 - [`numpy.load`](https://numpy.org/doc/stable/reference/generated/numpy.load.html)
@@ -120,7 +115,7 @@ asnumpy.load(file, mmap_mode=None, allow_pickle=False, **kwargs)
 >>> import asnumpy as ap
 >>> x = ap.load('output.npy')
 >>> type(x)
-<class 'asnumpy.ndarray'>
+<class 'asnumpy._core.ndarray'>
 ```
 
 从 .npz 文件加载多个数组：
@@ -130,6 +125,5 @@ asnumpy.load(file, mmap_mode=None, allow_pickle=False, **kwargs)
 ...     a = data['a']
 ...     b = data['b']
 >>> type(a)
-<class 'asnumpy.ndarray'>
+<class 'asnumpy._core.ndarray'>
 ```
--->
