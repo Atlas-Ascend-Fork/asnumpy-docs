@@ -1,9 +1,5 @@
 # Array Manipulation
 
-::: info
-This API section currently keeps a curated subset of representative APIs that have been validated against unit tests. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes.This document is for reference only.
-:::
-
 ::: tip
 The public `asnumpy.ndarray` display is `ndarray(shape=..., dtype=...)`. The examples below call `.to_numpy()` to display array values; this copies data from the device to the host. The examples specify dtypes explicitly and include the matching NumPy dtype annotation. Uninitialized values in `empty` and `empty_like` remain illustrative.
 :::
@@ -11,7 +7,7 @@ The public `asnumpy.ndarray` display is `ndarray(shape=..., dtype=...)`. The exa
 ## asnumpy.zeros
 
 ```python
-asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.zeros(shape: ShapeLike, dtype: DTypeLike) -> ndarray
 ```
 
 Create an array initialized with zero values.
@@ -22,7 +18,7 @@ current execution device used by asnumpy.
 
 **Arguments**
 - `shape` (ShapeLike, int or sequence of ints): Specifies the dimensions of the output array. A single integer creates a one-dimensional array, while a sequence defines a multi-dimensional shape.
-- `dtype` (DTypeLike, optional): Data type of the returned array. If not provided, the default numeric type is used.
+- `dtype` (DTypeLike): Data type of the returned array. The native binding declares this argument as required: omitting it (i.e. passing None) is rejected instead of falling back to a NumPy-style default type.
 
 **Returns**
 - `ndarray`: An array whose elements are all set to zero and whose shape matches the given `shape` argument.
@@ -31,7 +27,7 @@ current execution device used by asnumpy.
 - [`numpy.zeros`](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html): NumPy equivalent for creating an array of zeros.
 
 ::: tip
-The returned array is allocated by asnumpy and may reside on an accelerator device depending on the runtime configuration.
+The returned array is allocated by asnumpy on the current execution device (NPU).
 :::
 
 **Examples**
@@ -47,7 +43,7 @@ array([[0, 0],
 ## asnumpy.zeros_like
 
 ```python
-asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.zeros_like(other: ArrayLike, dtype: DTypeLike) -> ndarray
 ```
 
 Return a zero-initialized array with dimensions matching the input.
@@ -56,7 +52,7 @@ This function returns a new `asnumpy.ndarray` whose shape matches the input obje
 
 **Arguments**
 - `other` (ArrayLike): Reference object that provides the shape of the output array.
-- `dtype` (DTypeLike, optional): Data type of the returned array. The current frontend forwards this argument to the native function, which constructs the result from `other.shape` and the supplied dtype without selecting `other.dtype`. To preserve the input dtype, pass `dtype=other.dtype` explicitly as in the example; do not assume NumPy-style dtype inheritance when omitting it.
+- `dtype` (DTypeLike): Data type of the returned array. The native binding declares no default, so omitting it (i.e. passing None) is rejected; the result dtype is always the supplied `dtype`, never `other`'s. To preserve the input dtype, pass `dtype=other.dtype` explicitly as in the example.
 
 **Returns**
 - `ndarray`: An array filled with zeros and having the same shape as `other`.
@@ -78,7 +74,7 @@ array([[0, 0],
 ## asnumpy.full
 
 ```python
-asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.full(shape: ShapeLike, value: ScalarLike, dtype: DTypeLike) -> ndarray
 ```
 
 Create an array filled with a specific value.
@@ -88,7 +84,7 @@ Returns a new `asnumpy.ndarray` where all elements are set to `value`. Shape and
 **Arguments**
 - `shape` (ShapeLike, int or sequence of ints): Shape of the output array.
 - `value` (ScalarLike): Value to fill the array with.
-- `dtype` (DTypeLike, optional): Desired data type of the array.
+- `dtype` (DTypeLike): Desired data type of the array. The native binding declares this argument as required: omitting it (i.e. passing None) is rejected instead of falling back to a NumPy-style default type.
 
 **Returns**
 - `asnumpy.ndarray`: Array filled with the specified value.
@@ -117,7 +113,7 @@ array([[3.5, 3.5, 3.5],
 ## asnumpy.full_like
 
 ```python
-asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.full_like(other: ArrayLike, value: ScalarLike, dtype: DTypeLike) -> ndarray
 ```
 
 Return a new array populated with a scalar value, inheriting shape from the provided array.
@@ -125,7 +121,7 @@ Return a new array populated with a scalar value, inheriting shape from the prov
 **Arguments**
 - `other` (ArrayLike): Array whose shape is used for the output.
 - `value` (ScalarLike): Value to fill the array.
-- `dtype` (DTypeLike, optional): Desired data type of the output array. In current AsNumpy test cases, `full_like` is typically called with this argument explicitly.
+- `dtype` (DTypeLike): Desired data type of the output array. The native binding declares no default, so omitting it (i.e. passing None) is rejected; the result dtype is always the supplied `dtype`, never `other`'s. To preserve the input dtype, pass `dtype=x.dtype` explicitly as in the example.
 
 **Returns**
 - `asnumpy.ndarray`: Array filled with `value` matching the shape of `other`.
@@ -150,7 +146,7 @@ array([9, 9, 9, 9], dtype=int32)
 ## asnumpy.empty
 
 ```python
-asnumpy.empty(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.empty(shape: ShapeLike, dtype: DTypeLike) -> ndarray
 ```
 
 Allocate a new array without initializing element values.
@@ -160,7 +156,7 @@ The array shape and dtype are determined by the parameters.
 
 **Arguments**
 - `shape` (ShapeLike, int or sequence of ints): Shape of the output array.
-- `dtype` (DTypeLike, optional): Desired data type of the array.
+- `dtype` (DTypeLike): Desired data type of the array. The native binding declares this argument as required: omitting it (i.e. passing None) is rejected instead of falling back to a NumPy-style default type.
 
 **Returns**
 - `asnumpy.ndarray`: Array with uninitialized values (may contain random memory data).
@@ -183,14 +179,14 @@ The output above is illustrative only. Values returned by `empty` are undefined 
 ## asnumpy.empty_like
 
 ```python
-asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.empty_like(prototype: ArrayLike, dtype: DTypeLike) -> ndarray
 ```
 
 Allocate an uninitialized array with dimensions copied from the input.
 
 **Arguments**
 - `prototype` (ArrayLike): Array whose shape is used for the output.
-- `dtype` (DTypeLike, optional): Desired data type of the output array. In current AsNumpy test cases, `empty_like` is typically called with this argument explicitly.
+- `dtype` (DTypeLike): Desired data type of the output array. The native binding declares no default, so this argument must be provided on every call: omitting it (i.e. passing None) is rejected. To keep the input dtype, pass `dtype=a.dtype` explicitly as in the example.
 
 **Returns**
 - `asnumpy.ndarray`: Array with uninitialized values and same shape as `prototype`.
@@ -215,7 +211,7 @@ The output above is illustrative only. Values returned by `empty_like` are undef
 ## asnumpy.eye
 
 ```python
-asnumpy.eye(n: int, dtype: DTypeLike = None) -> ndarray
+asnumpy.eye(n: int, dtype: DTypeLike) -> ndarray
 ```
 
 Generate a 2-D array with ones on the diagonal and zeros elsewhere.
@@ -225,7 +221,7 @@ and all other positions contain 0.
 
 **Arguments**
 - `n` (int): Number of rows (and columns) of the matrix.
-- `dtype` (DTypeLike, optional): Desired data type of the matrix.
+- `dtype` (DTypeLike): Desired data type of the matrix. The native binding declares this argument as required: omitting it (i.e. passing None) is rejected instead of falling back to a NumPy-style default type.
 
 **Returns**
 - `asnumpy.ndarray`: Identity matrix of shape (n, n).
@@ -250,14 +246,14 @@ array([[1, 0, 0],
 ## asnumpy.ones
 
 ```python
-asnumpy.ones(shape: ShapeLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.ones(shape: ShapeLike, dtype: DTypeLike) -> ndarray
 ```
 
 Create an array filled with ones.
 
 **Arguments**
 - `shape` (ShapeLike, int or sequence of ints): Shape of the output array.
-- `dtype` (DTypeLike, optional): Desired data type of the array.
+- `dtype` (DTypeLike): Desired data type of the array. The native binding declares this argument as required: omitting it (i.e. passing None) is rejected instead of falling back to a NumPy-style default type.
 
 **Returns**
 - `asnumpy.ndarray`: Array of ones with specified shape and dtype.
@@ -279,14 +275,14 @@ array([1., 1., 1., 1.], dtype=float32)
 ## asnumpy.ones_like
 
 ```python
-asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.ones_like(other: ArrayLike, dtype: DTypeLike) -> ndarray
 ```
 
 Return a ones-filled array with dimensions matching the input.
 
 **Arguments**
 - `other` (ArrayLike): Array whose shape is used for output.
-- `dtype` (DTypeLike, optional): Desired data type of the output array. In current AsNumpy test cases, `ones_like` is typically called with this argument explicitly.
+- `dtype` (DTypeLike): Desired data type of the output array. The native binding declares no default, so omitting it (i.e. passing None) is rejected; the result dtype is always the supplied `dtype`, never `other`'s. To preserve the input dtype, pass `dtype=x.dtype` explicitly as in the example.
 
 **Returns**
 - `asnumpy.ndarray`: Array of ones with same shape (and optionally dtype) as `other`.
@@ -311,14 +307,14 @@ array([[1, 1, 1],
 ## asnumpy.identity
 
 ```python
-asnumpy.identity(n: int, dtype: DTypeLike = None) -> ndarray
+asnumpy.identity(n: int, dtype: DTypeLike) -> ndarray
 ```
 
 Generate the identity matrix of given size.
 
 **Arguments**
 - `n` (int): Number of rows and columns.
-- `dtype` (DTypeLike, optional): Desired data type of the matrix.
+- `dtype` (DTypeLike): Desired data type of the matrix. The native binding declares this argument as required: omitting it (i.e. passing None) is rejected instead of falling back to a NumPy-style default type.
 
 **Returns**
 - `asnumpy.ndarray`: Identity matrix of shape (n, n).
@@ -336,7 +332,6 @@ array([[1, 0, 0],
        [0, 0, 1]], dtype=int32)
 ```
 
-<!--
 ## asnumpy.linspace
 
 ```python
@@ -350,14 +345,16 @@ asnumpy.linspace(
 
 Produce a sequence of values linearly interpolated between two endpoints.
 
+The parameter names differ from `numpy.linspace`: the endpoint parameter here is `end`, and the sample-count parameter is `steps` (NumPy uses `stop` and `num`).
+
 **Arguments**
 - `start` (ScalarLike, int or float): Starting value of the sequence.
 - `end` (ScalarLike, int or float): End value of the sequence.
-- `steps` (int, optional): Number of samples to generate. Default is 50.
-- `dtype` (DTypeLike, optional): Desired data type of the output array.
+- `steps` (int, optional): Number of samples to generate; must be a positive integer. Defaults to 50.
+- `dtype` (DTypeLike, optional): Desired data type of the output array. When omitted (i.e. None), a float64 array is returned; an explicitly supplied dtype (including int64) is preserved.
 
 **Returns**
-- `asnumpy.ndarray`: Array of evenly spaced samples between start and end.
+- `asnumpy.ndarray`: Array of shape `(steps,)` with evenly spaced samples between start and end.
 
 **See Also**
 - [`numpy.linspace`](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html)
@@ -365,7 +362,8 @@ Produce a sequence of values linearly interpolated between two endpoints.
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.linspace(0, 1, 5)
+>>> ap.linspace(0, 1, 5).to_numpy()
 array([0.  , 0.25, 0.5 , 0.75, 1.  ])
+>>> ap.linspace(0, 1, 5, dtype=ap.float32).to_numpy()
+array([0.  , 0.25, 0.5 , 0.75, 1.  ], dtype=float32)
 ```
--->

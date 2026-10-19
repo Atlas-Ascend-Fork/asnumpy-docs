@@ -1,15 +1,11 @@
 # Statistics Functions
 
-::: info
-This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
-:::
-
 ## Averages and Variances
 
 ### asnumpy.mean
 
 ```python
-asnumpy.mean(a: ArrayLike, axis: Optional[int] = None, keepdims: bool = False, dtype: DTypeLike = None) -> Union[ndarray, float]
+asnumpy.mean(a: ArrayLike, axis: Optional[int] = None, keepdims: bool = False, dtype: DTypeLike = None) -> ndarray | float
 ```
 
 Calculate the average value of array elements.
@@ -23,7 +19,11 @@ This function determines the central tendency of values within an array. When no
 - `dtype` (DTypeLike, optional): Numerical precision for the calculation. When omitted, the current implementation uses the input dtype, including for integer inputs. It does not automatically promote integers to float64. Use floating-point input or specify a floating-point dtype (for example, np.float32) when a fractional mean is required.
 
 **Returns**
-- `ndarray` or `float`: The computed average value(s).
+- `ndarray` or NumPy scalar: Returns a NumPy scalar (e.g. `np.float32`) when no axis is specified; returns an `ndarray` when an axis is given.
+
+::: tip
+Current tests cover `axis` (including negative axes), `keepdims`, the `dtype` parameter, empty-array inputs, NaN propagation, and invalid-axis exceptions.
+:::
 
 **See Also**
 - [`numpy.mean`](https://numpy.org/doc/stable/reference/generated/numpy.mean.html): NumPy equivalent for mean calculation.
@@ -34,11 +34,11 @@ This function determines the central tendency of values within an array. When no
 >>> import numpy as np
 >>> data = ap.ndarray.from_numpy(np.array([[5, 8], [2, 9]], dtype=np.float32))
 >>> ap.mean(data)
-6.0
->>> ap.mean(data, axis=0)
-array([3.5, 8.5])
->>> ap.mean(data, axis=1)
-array([6.5, 5.5])
->>> ap.mean(data, axis=0, keepdims=True)
-array([[3.5, 8.5]])
+np.float32(6.0)
+>>> ap.mean(data, axis=0).to_numpy()
+array([3.5, 8.5], dtype=float32)
+>>> ap.mean(data, axis=1).to_numpy()
+array([6.5, 5.5], dtype=float32)
+>>> ap.mean(data, axis=0, keepdims=True).to_numpy()
+array([[3.5, 8.5]], dtype=float32)
 ```
