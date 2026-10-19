@@ -252,7 +252,9 @@ asnumpy.linalg.norm(
 
 根据指定阶数测量向量或矩阵的大小或尺寸。
 
-当前实现主要在 Host 侧通过 NumPy 计算结果。
+::: warning
+当前前端先将输入转换为 Host NumPy 数组，调用 `numpy.linalg.norm` 计算，再将结果转换为 AsNumpy ndarray。设备数组输入会包含设备到 Host 和 Host 到设备的复制；正常路径在 Host 计算，并非原生 NPU 范数执行。仅当 NumPy 抛出 `TypeError` 且 `axis=None`、`ord=None` 同时成立时，包装函数才尝试原生 norm 回退。
+:::
 
 **参数**
 - `a` (ArrayLike): 输入向量或矩阵。
@@ -371,7 +373,9 @@ asnumpy.linalg.matrix_power(a: ArrayLike, n: int) -> ndarray
 
 通过重复乘法将矩阵提升到指定的整数幂。
 
-当前实现将输入复制到 Host 侧并通过 `numpy.linalg.matrix_power` 计算后把结果传回设备；负幂遇到奇异矩阵会抛出异常。
+::: warning
+当前前端使用 Host `numpy.linalg.matrix_power` 计算，再将结果转换为 AsNumpy ndarray。设备数组输入先复制到 Host，结果再复制回设备；此包装函数不执行原生 NPU 矩阵乘法。负指数的奇异性检查也调用 Host `numpy.linalg.slogdet`。
+:::
 
 **参数**
 - `a` (ArrayLike): 输入方阵。
