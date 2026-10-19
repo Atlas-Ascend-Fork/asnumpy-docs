@@ -1,9 +1,5 @@
 # Mathematical Functions
 
-::: info
-This API section currently keeps a curated subset of representative APIs. Additional API documentation is temporarily hidden while the AsNumpy frontend and documentation system are still undergoing major restructuring, and it will be expanded after the frontend stabilizes. This document is for reference only.
-:::
-
 This module provides mathematical functions including trigonometric, hyperbolic, exponential, logarithmic, and other mathematical operations.
 
 ## Trigonometric Functions
@@ -18,7 +14,7 @@ Calculate the sine of each element.
 
 This function computes the sine for every element in the input array `x`. Input values are assumed to be in radians.
 
-The current implementation promotes int32 input to float64 before evaluating sine. The corresponding int32 regression is no longer marked as an expected failure; numerical behavior should be validated against your installed CANN and AsNumpy versions.
+The current implementation promotes non-floating input before evaluation: `bool`, `int8`, `int16`, `uint8`, and `uint16` become `float32`, while wider integers such as `int32` become `float64`. The int32 case is covered by the tests and is no longer marked as an expected failure; numerical behavior should be validated against your installed CANN and AsNumpy versions.
 
 **Arguments**
 - `x` (ArrayLike): Input array containing angles in radians.
@@ -35,8 +31,8 @@ The current implementation promotes int32 input to float64 before evaluating sin
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sin(ap.ndarray.from_numpy(np.array([0, np.pi/6, np.pi/2], dtype=np.float32)))
-array([0. , 0.5, 1. ])
+>>> ap.sin(ap.ndarray.from_numpy(np.array([0, np.pi/6, np.pi/2], dtype=np.float32))).to_numpy()
+array([0. , 0.5, 1. ], dtype=float32)
 ```
 
 ### asnumpy.cos
@@ -66,8 +62,8 @@ The current implementation promotes bool input to float32 before evaluating cosi
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cos(ap.ndarray.from_numpy(np.array([0, np.pi], dtype=np.float32)))
-array([ 1., -1.])
+>>> ap.cos(ap.ndarray.from_numpy(np.array([0, np.pi], dtype=np.float32))).to_numpy()
+array([ 1., -1.], dtype=float32)
 ```
 
 ### asnumpy.tan
@@ -95,8 +91,8 @@ This function computes the tangent for every element in the input array `x`. Inp
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tan(ap.ndarray.from_numpy(np.array([-np.pi/4, 0, np.pi/4], dtype=np.float32)))
-array([-1.,  0.,  1.])
+>>> ap.tan(ap.ndarray.from_numpy(np.array([-np.pi/4, 0, np.pi/4], dtype=np.float32))).to_numpy()
+array([-1.,  0.,  1.], dtype=float32)
 ```
 
 ### asnumpy.arcsin
@@ -125,8 +121,8 @@ This function computes the inverse sine (arcsine) for every element in `x`. The 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arcsin(ap.ndarray.from_numpy(np.array([0, 0.5, 1], dtype=np.float32)))
-array([0.        , 0.52359878, 1.57079633])
+>>> ap.arcsin(ap.ndarray.from_numpy(np.array([0, 0.5, 1], dtype=np.float32))).to_numpy()
+array([0.       , 0.5235988, 1.5707964], dtype=float32)
 ```
 
 ### asnumpy.arccos
@@ -139,10 +135,10 @@ Calculate the inverse cosine of each element.
 
 This function computes the inverse cosine (arccosine) for every element in `x`. The domain is defined on [-1, 1]. The returned values are in radians, ranging from 0 to pi.
 
-Current test coverage indicates out-of-domain input (|x| > 1) may throw a RuntimeError.
+Out-of-domain input (|x| > 1) produces `NaN`, matching NumPy; a runtime warning may be emitted.
 
 **Arguments**
-- `x` (ArrayLike): Input array. Elements must be within [-1, 1].
+- `x` (ArrayLike): Input array. Elements outside [-1, 1] produce `NaN` (see the note above).
 
 **Returns**
 - `ndarray`: The inverse cosine of each element in `x`.
@@ -157,8 +153,8 @@ Current test coverage indicates out-of-domain input (|x| > 1) may throw a Runtim
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arccos(ap.ndarray.from_numpy(np.array([1, 0.5, 0], dtype=np.float32)))
-array([0.        , 1.04719755, 1.57079633])
+>>> ap.arccos(ap.ndarray.from_numpy(np.array([1, 0.5, 0], dtype=np.float32))).to_numpy()
+array([0.       , 1.0471976, 1.5707964], dtype=float32)
 ```
 
 ### asnumpy.arctan
@@ -187,10 +183,10 @@ This function computes the inverse tangent (arctangent) for every element in `x`
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arctan(ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32)))
-array([0.        , 0.78539816])
+>>> ap.arctan(ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32))).to_numpy()
+array([0.       , 0.7853982], dtype=float32)
 ```
-<!--
+
 ### asnumpy.arctan2
 
 ```python
@@ -217,10 +213,10 @@ This function computes the inverse tangent of `x1/x2`, using the signs of both a
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> y = ap.ndarray.from_numpy(np.array([0, 1]))
->>> x = ap.ndarray.from_numpy(np.array([-1, 1]))
->>> ap.arctan2(y, x)
-array([3.14159265, 0.78539816])
+>>> y = ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32))
+>>> x = ap.ndarray.from_numpy(np.array([-1, 1], dtype=np.float32))
+>>> ap.arctan2(y, x).to_numpy()
+array([3.1415927, 0.7853982], dtype=float32)
 ```
 
 ### asnumpy.hypot
@@ -247,8 +243,10 @@ This function computes the hypotenuse for the legs `x1` and `x2`. It is mathemat
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> ap.hypot(3*ap.ones(2), 4*ap.ones(2))
-array([5., 5.])
+>>> a = ap.ndarray.from_numpy(np.array([3.0, 4.0], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([4.0, 3.0], dtype=np.float32))
+>>> ap.hypot(a, b).to_numpy()
+array([5., 5.], dtype=float32)
 ```
 
 ### asnumpy.radians
@@ -260,6 +258,8 @@ asnumpy.radians(x: ArrayLike) -> ndarray
 Convert angles from degrees to radians.
 
 This function converts each element in the input array `x` from degrees to radians. The operation is performed element-wise.
+
+The current implementation accepts only floating-point input (`float16`, `float32`, or `float64`); integer input raises `ValueError`.
 
 **Arguments**
 - `x` (ArrayLike): Input array in degrees.
@@ -277,8 +277,8 @@ This function converts each element in the input array `x` from degrees to radia
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.radians(ap.ndarray.from_numpy(np.array([0, 90, 180])))
-array([0.        , 1.57079633, 3.14159265])
+>>> ap.radians(ap.ndarray.from_numpy(np.array([0, 90, 180], dtype=np.float32))).to_numpy()
+array([0.       , 1.5707964, 3.1415927], dtype=float32)
 ```
 
 ### asnumpy.deg2rad
@@ -290,6 +290,8 @@ asnumpy.deg2rad(x: ArrayLike) -> ndarray
 Convert angles from degrees to radians.
 
 This function converts input angles from degrees to radians element-wise. It is an alias for `radians`.
+
+The current implementation accepts only floating-point input (`float16`, `float32`, or `float64`); integer input raises `ValueError`.
 
 **Arguments**
 - `x` (ArrayLike): Input array in degrees.
@@ -307,8 +309,8 @@ This function converts input angles from degrees to radians element-wise. It is 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.deg2rad(ap.ndarray.from_numpy(np.array([0, 90, 180])))
-array([0.        , 1.57079633, 3.14159265])
+>>> ap.deg2rad(ap.ndarray.from_numpy(np.array([0, 90, 180], dtype=np.float32))).to_numpy()
+array([0.       , 1.5707964, 3.1415927], dtype=float32)
 ```
 
 ### asnumpy.degrees
@@ -320,6 +322,8 @@ asnumpy.degrees(x: ArrayLike) -> ndarray
 Convert angles from radians to degrees.
 
 This function converts each element in the input array `x` from radians to degrees. The operation is performed element-wise.
+
+Integer input is promoted to `float64`, a behavior covered by the tests.
 
 **Arguments**
 - `x` (ArrayLike): Input array in radians.
@@ -337,8 +341,8 @@ This function converts each element in the input array `x` from radians to degre
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.degrees(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi])))
-array([  0.,  90., 180.])
+>>> ap.degrees(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi], dtype=np.float32))).to_numpy()
+array([  0.,  90., 180.], dtype=float32)
 ```
 
 ### asnumpy.rad2deg
@@ -367,8 +371,8 @@ This function converts each element in the input array `x` from radians to degre
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rad2deg(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi])))
-array([  0.,  90., 180.])
+>>> ap.rad2deg(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi], dtype=np.float32))).to_numpy()
+array([  0.,  90., 180.], dtype=float32)
 ```
 
 ## Hyperbolic Functions
@@ -399,7 +403,7 @@ This function computes the hyperbolic sine for every element in the input array 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sinh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.sinh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([0.        , 1.17520119])
 ```
 
@@ -429,7 +433,7 @@ This function computes the hyperbolic cosine for every element in the input arra
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cosh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.cosh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([1.        , 1.54308063])
 ```
 
@@ -459,7 +463,7 @@ This function computes the hyperbolic tangent for every element in the input arr
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tanh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.tanh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([0.        , 0.76159416])
 ```
 
@@ -488,7 +492,7 @@ This function computes the inverse hyperbolic sine for every element in the inpu
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arcsinh(ap.ndarray.from_numpy(np.array([0., 1.17520119])))
+>>> ap.arcsinh(ap.ndarray.from_numpy(np.array([0., 1.17520119], dtype=np.float64))).to_numpy()
 array([0., 1.])
 ```
 
@@ -501,6 +505,8 @@ asnumpy.arccosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Calculate the inverse hyperbolic cosine of each element.
 
 This function computes the inverse hyperbolic cosine for every element in the input array `x`.
+
+Input values below 1 produce `NaN`, matching NumPy (covered by the tests).
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -517,7 +523,7 @@ This function computes the inverse hyperbolic cosine for every element in the in
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arccosh(ap.ndarray.from_numpy(np.array([1., 1.54308063])))
+>>> ap.arccosh(ap.ndarray.from_numpy(np.array([1., 1.54308063], dtype=np.float64))).to_numpy()
 array([0., 1.])
 ```
 
@@ -530,6 +536,8 @@ asnumpy.arctanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Calculate the inverse hyperbolic tangent of each element.
 
 This function computes the inverse hyperbolic tangent for every element in the input array `x`.
+
+Inputs with |x| = 1 return `inf`, while |x| > 1 returns `NaN`, matching NumPy (covered by the tests).
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -546,8 +554,8 @@ This function computes the inverse hyperbolic tangent for every element in the i
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arctanh(ap.ndarray.from_numpy(np.array([0., 0.76159416])))
-array([0., 1.])
+>>> ap.arctanh(ap.ndarray.from_numpy(np.array([0., 0.76159416], dtype=np.float64))).to_numpy()
+array([0.        , 1.00000001])
 ```
 
 ## Arithmetic Operations
@@ -555,17 +563,18 @@ array([0., 1.])
 ### asnumpy.add
 
 ```python
-asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.add(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```
 
 Calculate the sum of two inputs element-wise.
 
 This function adds `x1` and `x2` element by element.
 
+As a ufunc, the float32/float64 kernels do not accept a `dtype` argument (passing one raises `TypeError`); other input dtypes fall back to the native implementation, which does accept `dtype`.
+
 **Arguments**
 - `x1` (ArrayLike): First input array or scalar.
 - `x2` (ArrayLike): Second input array or scalar.
-- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The sum of `x1` and `x2`.
@@ -578,8 +587,8 @@ This function adds `x1` and `x2` element by element.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.add(ap.ndarray.from_numpy(np.array([10, 20])), ap.ndarray.from_numpy(np.array([5, 5])))
-array([15, 25])
+>>> ap.add(ap.ndarray.from_numpy(np.array([10, 20], dtype=np.int32)), ap.ndarray.from_numpy(np.array([5, 5], dtype=np.int32))).to_numpy()
+array([15, 25], dtype=int32)
 ```
 
 ### asnumpy.subtract
@@ -608,8 +617,8 @@ This function subtracts `x2` from `x1` element by element.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.subtract(ap.ndarray.from_numpy(np.array([10, 5])), ap.ndarray.from_numpy(np.array([2, 2])))
-array([8, 3])
+>>> ap.subtract(ap.ndarray.from_numpy(np.array([10, 5], dtype=np.float32)), ap.ndarray.from_numpy(np.array([2, 2], dtype=np.float32))).to_numpy()
+array([8., 3.], dtype=float32)
 ```
 
 ### asnumpy.multiply
@@ -638,8 +647,8 @@ This function multiplies `x1` and `x2` element by element.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.multiply(ap.ndarray.from_numpy(np.array([2.0, 4.0])), ap.ndarray.from_numpy(np.array([3.0, 0.5])))
-array([6., 2.])
+>>> ap.multiply(ap.ndarray.from_numpy(np.array([2.0, 4.0], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3.0, 0.5], dtype=np.float32))).to_numpy()
+array([6., 2.], dtype=float32)
 ```
 
 ### asnumpy.divide
@@ -670,8 +679,8 @@ This function divides `x1` by `x2` element by element, performing true division.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.divide(ap.ndarray.from_numpy(np.array([6, 12])), ap.ndarray.from_numpy(np.array([3, 4])))
-array([2., 3.])
+>>> ap.divide(ap.ndarray.from_numpy(np.array([6, 12], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.float32))).to_numpy()
+array([2., 3.], dtype=float32)
 ```
 
 ### asnumpy.true_divide
@@ -701,7 +710,7 @@ This function divides `x1` by `x2` element by element. It is an alias for `divid
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.true_divide(ap.ndarray.from_numpy(np.array([6, 12])), ap.ndarray.from_numpy(np.array([3, 4])))
+>>> ap.true_divide(ap.ndarray.from_numpy(np.array([6, 12], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.int32))).to_numpy()
 array([2., 3.])
 ```
 
@@ -733,8 +742,8 @@ This function divides `x1` by `x2` and rounds the quotient down to the nearest i
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.floor_divide(ap.ndarray.from_numpy(np.array([10, 10])), ap.ndarray.from_numpy(np.array([3, 4])))
-array([3, 2])
+>>> ap.floor_divide(ap.ndarray.from_numpy(np.array([10, 10], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.float32))).to_numpy()
+array([3., 2.], dtype=float32)
 ```
 
 ### asnumpy.power
@@ -764,8 +773,8 @@ This function raises elements of `x1` to the power of elements of `x2`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.power(ap.ndarray.from_numpy(np.array([2, 5])), ap.ndarray.from_numpy(np.array([3, 2])))
-array([ 8, 25])
+>>> ap.power(ap.ndarray.from_numpy(np.array([2, 5], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 2], dtype=np.int32))).to_numpy()
+array([ 8, 25], dtype=int32)
 ```
 
 ### asnumpy.float_power
@@ -776,7 +785,7 @@ asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 
 Calculate the power of bases raised to exponents, promoting to float.
 
-This function raises elements of `x1` to the power of elements of `x2`. It ensures at least float64 precision for the calculation.
+This function raises elements of `x1` to the power of elements of `x2`, casting the inputs to floating point first. Unlike NumPy, a float32 input returns a float32 result when `dtype` is omitted; pass `dtype=float64` to get a float64 result (the no-dtype difference is tracked as a known failing case).
 
 **Arguments**
 - `x1` (ArrayLike): The bases.
@@ -794,23 +803,26 @@ This function raises elements of `x1` to the power of elements of `x2`. It ensur
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.float_power(ap.ndarray.from_numpy(np.array([2, 5])), ap.ndarray.from_numpy(np.array([3, 2])))
+>>> a = ap.ndarray.from_numpy(np.array([2, 5], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([3, 2], dtype=np.float32))
+>>> ap.float_power(a, b, dtype=ap.float64).to_numpy()
 array([ 8., 25.])
 ```
 
 ### asnumpy.negative
 
 ```python
-asnumpy.negative(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.negative(x: ArrayLike) -> ndarray
 ```
 
 Calculate the numerical negative element-wise.
 
 This function negates each element in the input array, returning `-x`.
 
+As a ufunc, the float32/float64/int32 kernels do not accept a `dtype` argument (passing one raises `TypeError`); other input dtypes fall back to the native implementation, which does accept `dtype`.
+
 **Arguments**
 - `x` (ArrayLike): Input array.
-- `dtype` (DTypeLike, optional): Desired data type for the output array.
 
 **Returns**
 - `ndarray`: The negative of the input array.
@@ -823,8 +835,8 @@ This function negates each element in the input array, returning `-x`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.negative(ap.ndarray.from_numpy(np.array([10, -10])))
-array([-10,  10])
+>>> ap.negative(ap.ndarray.from_numpy(np.array([10, -10], dtype=np.int32))).to_numpy()
+array([-10,  10], dtype=int32)
 ```
 
 ### asnumpy.positive
@@ -852,8 +864,8 @@ This function returns `+x` for each element. It effectively returns a copy of th
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.positive(ap.ndarray.from_numpy(np.array([-5, 5])))
-array([-5,  5])
+>>> ap.positive(ap.ndarray.from_numpy(np.array([-5, 5], dtype=np.float32))).to_numpy()
+array([-5.,  5.], dtype=float32)
 ```
 
 ### asnumpy.reciprocal
@@ -865,6 +877,8 @@ asnumpy.reciprocal(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Calculate the reciprocal of each element.
 
 This function computes the multiplicative inverse, `1 / x`, for every element in the input array.
+
+Integer input is not supported by the current native kernel (tracked as a known failing case); use a floating-point array.
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -881,8 +895,8 @@ This function computes the multiplicative inverse, `1 / x`, for every element in
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.reciprocal(ap.ndarray.from_numpy(np.array([1., 2., 4.])))
-array([1.  , 0.5 , 0.25])
+>>> ap.reciprocal(ap.ndarray.from_numpy(np.array([1., 2., 4.], dtype=np.float32))).to_numpy()
+array([1.  , 0.5 , 0.25], dtype=float32)
 ```
 
 ### asnumpy.mod
@@ -912,8 +926,8 @@ This function computes the remainder of `x1` divided by `x2`. It behaves like th
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.mod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4])), ap.ndarray.from_numpy(np.array([3, -3, 3, -3])))
-array([ 2, -1,  1, -2])
+>>> ap.mod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, -3, 3, -3], dtype=np.int32))).to_numpy()
+array([ 2, -1,  1, -2], dtype=int32)
 ```
 
 ### asnumpy.remainder
@@ -943,8 +957,8 @@ This function computes the remainder of `x1` divided by `x2`. It is an alias for
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.remainder(ap.ndarray.from_numpy(np.array([5, -5])), ap.ndarray.from_numpy(np.array([3, 3])))
-array([2, 1])
+>>> ap.remainder(ap.ndarray.from_numpy(np.array([5, -5], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 3], dtype=np.int32))).to_numpy()
+array([2, 1], dtype=int32)
 ```
 
 ### asnumpy.fmod
@@ -974,8 +988,8 @@ This function computes the remainder of `x1` divided by `x2`. The result carries
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4])), ap.ndarray.from_numpy(np.array([3, -3, 3, -3])))
-array([-1, -1,  1,  1])
+>>> ap.fmod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, -3, 3, -3], dtype=np.float32))).to_numpy()
+array([-1., -1.,  1.,  1.], dtype=float32)
 ```
 
 ### asnumpy.modf
@@ -986,7 +1000,7 @@ asnumpy.modf(x: ArrayLike) -> tuple
 
 Separate the fractional and integral parts of elements.
 
-This function splits each element of `x` into its fractional and integral components. Both returned parts have the same sign as the input.
+This function splits each element of `x` into its fractional and integral components and returns them as `(fractional, integral)`. Negative inputs currently round toward negative infinity instead of toward zero, which differs from NumPy (tracked as a known failing case); `float16` and integer inputs are not supported.
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -1002,8 +1016,11 @@ This function splits each element of `x` into its fractional and integral compon
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.modf(ap.ndarray.from_numpy(np.array([1.5, -2.5])))
-(array([ 0.5, -0.5]), array([ 1., -2.]))
+>>> frac, integral = ap.modf(ap.ndarray.from_numpy(np.array([1.5, 2.5], dtype=np.float32)))
+>>> frac.to_numpy()
+array([0.5, 0.5], dtype=float32)
+>>> integral.to_numpy()
+array([1., 2.], dtype=float32)
 ```
 
 ### asnumpy.divmod
@@ -1033,8 +1050,11 @@ This function performs floor division and modulus simultaneously. It returns the
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.divmod(ap.ndarray.from_numpy(np.array([10, 11])), ap.ndarray.from_numpy(np.array([3, 3])))
-(array([3, 3]), array([1, 2]))
+>>> quotient, rem = ap.divmod(ap.ndarray.from_numpy(np.array([10, 11], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 3], dtype=np.float32)))
+>>> quotient.to_numpy()
+array([3., 3.], dtype=float32)
+>>> rem.to_numpy()
+array([1., 2.], dtype=float32)
 ```
 
 ## Exponents and Logarithms
@@ -1063,7 +1083,7 @@ This function computes `e` raised to the power of each element in `x`, where `e`
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.exp(ap.ndarray.from_numpy(np.array([1., 2.])))
+>>> ap.exp(ap.ndarray.from_numpy(np.array([1., 2.], dtype=np.float64))).to_numpy()
 array([2.71828183, 7.3890561 ])
 ```
 
@@ -1091,7 +1111,7 @@ This function computes the base-2 exponential for every element in the input arr
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.exp2(ap.ndarray.from_numpy(np.array([3])))
+>>> ap.exp2(ap.ndarray.from_numpy(np.array([3], dtype=np.int32))).to_numpy()
 array([8.])
 ```
 
@@ -1119,8 +1139,8 @@ This function computes the exponential of each element minus one. It is designed
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.expm1(ap.ndarray.from_numpy(np.array([1e-10])))
-array([1.0000000e-10])
+>>> ap.expm1(ap.ndarray.from_numpy(np.array([1e-10], dtype=np.float64))).to_numpy()
+array([1.e-10])
 ```
 
 ### asnumpy.log
@@ -1132,6 +1152,8 @@ asnumpy.log(x: ArrayLike) -> ndarray
 Calculate the natural logarithm of each element.
 
 This function computes the logarithm to the base `e` for every element in the input array `x`.
+
+Input 0 returns `-inf` and negative input returns `NaN`, matching NumPy (covered by the tests).
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -1149,7 +1171,7 @@ This function computes the logarithm to the base `e` for every element in the in
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log(ap.ndarray.from_numpy(np.array([np.e])))
+>>> ap.log(ap.ndarray.from_numpy(np.array([np.e], dtype=np.float64))).to_numpy()
 array([1.])
 ```
 
@@ -1178,7 +1200,7 @@ This function computes the binary logarithm (base 2) for every element in the in
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log2(ap.ndarray.from_numpy(np.array([8.])))
+>>> ap.log2(ap.ndarray.from_numpy(np.array([8.], dtype=np.float64))).to_numpy()
 array([3.])
 ```
 
@@ -1207,7 +1229,7 @@ This function computes the common logarithm (base 10) for every element in the i
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log10(ap.ndarray.from_numpy(np.array([100.])))
+>>> ap.log10(ap.ndarray.from_numpy(np.array([100.], dtype=np.float64))).to_numpy()
 array([2.])
 ```
 
@@ -1235,7 +1257,7 @@ This function computes `log(1 + x)` element-wise. It is designed to provide bett
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log1p(ap.ndarray.from_numpy(np.array([1e-99])))
+>>> ap.log1p(ap.ndarray.from_numpy(np.array([1e-99], dtype=np.float64))).to_numpy()
 array([1.e-99])
 ```
 
@@ -1264,7 +1286,7 @@ This function computes `log(exp(x1) + exp(x2))`. It is numerically stable and us
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp(ap.ndarray.from_numpy(np.array([0])), ap.ndarray.from_numpy(np.array([0])))
+>>> ap.logaddexp(ap.ndarray.from_numpy(np.array([0], dtype=np.int32)), ap.ndarray.from_numpy(np.array([0], dtype=np.int32))).to_numpy()
 array([0.69314718])
 ```
 
@@ -1293,7 +1315,7 @@ This function computes `log2(2**x1 + 2**x2)`. It is a base-2 analog of `logaddex
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp2(ap.ndarray.from_numpy(np.array([1])), ap.ndarray.from_numpy(np.array([1])))
+>>> ap.logaddexp2(ap.ndarray.from_numpy(np.array([1], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1], dtype=np.int32))).to_numpy()
 array([2.])
 ```
 
@@ -1307,7 +1329,9 @@ asnumpy.absolute(x: ArrayLike) -> ndarray
 
 Calculate the absolute value of each element.
 
-This function computes the absolute value for every element in the input array `x`. If the input is complex, the magnitude is returned.
+This function computes the absolute value for every element in the input array `x`.
+
+Complex input is not supported by the current native kernel (tracked as a known failing case).
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -1323,10 +1347,8 @@ This function computes the absolute value for every element in the input array `
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.absolute(ap.ndarray.from_numpy(np.array([-2.5, 2.5])))
-array([2.5, 2.5])
->>> ap.absolute(ap.ndarray.from_numpy(np.array([3+4j])))
-array([5.])
+>>> ap.absolute(ap.ndarray.from_numpy(np.array([-2.5, 2.5], dtype=np.float32))).to_numpy()
+array([2.5, 2.5], dtype=float32)
 ```
 
 ### asnumpy.fabs
@@ -1353,8 +1375,8 @@ This function computes the absolute value of each element in `x`. It is designed
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fabs(ap.ndarray.from_numpy(np.array([-2.5, 2.5])))
-array([2.5, 2.5])
+>>> ap.fabs(ap.ndarray.from_numpy(np.array([-2.5, 2.5], dtype=np.float32))).to_numpy()
+array([2.5, 2.5], dtype=float32)
 ```
 
 ### asnumpy.sign
@@ -1380,10 +1402,8 @@ This function returns an element-wise indication of the sign of a number: -1 for
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sign(ap.ndarray.from_numpy(np.array([-3., 2.])))
-array([-1.,  1.])
->>> ap.sign(0)
-0
+>>> ap.sign(ap.ndarray.from_numpy(np.array([-5, 0, 5], dtype=np.float32))).to_numpy()
+array([-1.,  0.,  1.], dtype=float32)
 ```
 
 ### asnumpy.heaviside
@@ -1410,8 +1430,10 @@ This function calculates the Heaviside step function for each element in `x1`. T
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.heaviside(ap.ndarray.from_numpy(np.array([-2.0, 0, 1.0])), 0.5)
-array([0. , 0.5, 1. ])
+>>> x1 = ap.ndarray.from_numpy(np.array([-1.5, 0, 1.5], dtype=np.float32))
+>>> x2 = ap.ndarray.from_numpy(np.array([0.5, 0.5, 0.5], dtype=np.float32))
+>>> ap.heaviside(x1, x2).to_numpy()
+array([0. , 0.5, 1. ], dtype=float32)
 ```
 
 ### asnumpy.sqrt
@@ -1438,7 +1460,7 @@ This function computes the square root for every element in the input array `x`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sqrt(ap.ndarray.from_numpy(np.array([1, 4, 16])))
+>>> ap.sqrt(ap.ndarray.from_numpy(np.array([1, 4, 16], dtype=np.int32))).to_numpy()
 array([1., 2., 4.])
 ```
 
@@ -1467,8 +1489,8 @@ This function computes the square of the input `x` element-wise.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.square(ap.ndarray.from_numpy(np.array([2, 3, 4])))
-array([ 4,  9, 16])
+>>> ap.square(ap.ndarray.from_numpy(np.array([2, 3, 4], dtype=np.int32))).to_numpy()
+array([ 4,  9, 16], dtype=int32)
 ```
 
 ### asnumpy.clip
@@ -1495,9 +1517,10 @@ This function limits the values in `a` to be within the interval [`a_min`, `a_ma
 **Examples**
 ```python
 >>> import asnumpy as ap
->>> a = ap.arange(5)
->>> ap.clip(a, 1, 3)
-array([1, 1, 2, 3, 3])
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([1, 5, 10], dtype=np.float32))
+>>> ap.clip(a, 3, 8).to_numpy()
+array([3., 5., 8.], dtype=float32)
 ```
 
 ### asnumpy.nan_to_num
@@ -1509,6 +1532,8 @@ asnumpy.nan_to_num(x: ArrayLike, nan: float = 0.0, posinf: Optional[float] = Non
 Replace NaN and infinity with finite values.
 
 This function replaces NaN with zero (or a specified value) and infinity with large finite numbers (or specified values).
+
+The current native implementation always uses the float32 maximum/minimum as the default `posinf`/`neginf` replacements, regardless of the input dtype; pass explicit values when a different replacement is required.
 
 **Arguments**
 - `x` (ArrayLike): Input data.
@@ -1526,8 +1551,8 @@ This function replaces NaN with zero (or a specified value) and infinity with la
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nan_to_num(ap.ndarray.from_numpy(np.array([np.inf, -np.inf, np.nan])))
-array([ 1.79769313e+308, -1.79769313e+308,  0.00000000e+000])
+>>> ap.nan_to_num(ap.ndarray.from_numpy(np.array([np.inf, -np.inf, np.nan], dtype=np.float32))).to_numpy()
+array([ 3.4028235e+38, -3.4028235e+38,  0.0000000e+00], dtype=float32)
 ```
 
 ### asnumpy.relu
@@ -1540,6 +1565,8 @@ Calculate the Rectified Linear Unit (ReLU) activation.
 
 This function applies the ReLU operation element-wise, returning `x` if positive and 0 otherwise.
 
+`float32` and integer inputs are covered by the tests; `float64` is not supported by the current native kernel (tracked as a known failing case).
+
 **Arguments**
 - `x` (ArrayLike): Input array.
 - `dtype` (DTypeLike, optional): The desired data type for the output array.
@@ -1551,8 +1578,8 @@ This function applies the ReLU operation element-wise, returning `x` if positive
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.relu(ap.ndarray.from_numpy(np.array([-2, 0, 2])))
-array([0, 0, 2])
+>>> ap.relu(ap.ndarray.from_numpy(np.array([-2, 0, 2], dtype=np.int32))).to_numpy()
+array([0, 0, 2], dtype=int32)
 ```
 
 ### asnumpy.gelu
@@ -1565,6 +1592,8 @@ Calculate the Gaussian Error Linear Unit (GELU) activation.
 
 This function applies the GELU operation, which weights inputs by their probability under a Gaussian distribution.
 
+Only `float32` is supported by the current native kernel; `float64` and integer inputs are not (tracked as known failing cases).
+
 **Arguments**
 - `x` (ArrayLike): Input array.
 - `dtype` (DTypeLike, optional): The desired data type for the output array.
@@ -1576,8 +1605,8 @@ This function applies the GELU operation, which weights inputs by their probabil
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.gelu(ap.ndarray.from_numpy(np.array([-1.0, 0.0, 1.0])))
-array([-0.15865525,  0.        ,  0.84134475])
+>>> ap.gelu(ap.ndarray.from_numpy(np.array([-1.0, 0.0, 1.0], dtype=np.float32))).to_numpy()
+array([-0.15865526,  0.        ,  0.8413447 ], dtype=float32)
 ```
 
 ### asnumpy.sinc
@@ -1604,7 +1633,7 @@ This function computes the normalized sinc function, `sin(pi * x) / (pi * x)`, f
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sinc(ap.ndarray.from_numpy(np.array([0., 0.5])))
+>>> ap.sinc(ap.ndarray.from_numpy(np.array([0., 0.5], dtype=np.float64))).to_numpy()
 array([1.        , 0.63661977])
 ```
 
@@ -1638,7 +1667,7 @@ This function rounds each element in `x` to the given number of decimals.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.around(ap.ndarray.from_numpy(np.array([0.55, 1.55])), decimals=1)
+>>> ap.around(ap.ndarray.from_numpy(np.array([0.55, 1.55], dtype=np.float64)), decimals=1).to_numpy()
 array([0.6, 1.6])
 ```
 
@@ -1670,7 +1699,7 @@ This function rounds each element in `x` to the given number of decimals. It is 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.round_(ap.ndarray.from_numpy(np.array([0.55, 1.55])), decimals=1)
+>>> ap.round_(ap.ndarray.from_numpy(np.array([0.55, 1.55], dtype=np.float64)), decimals=1).to_numpy()
 array([0.6, 1.6])
 ```
 
@@ -1701,7 +1730,7 @@ This function rounds each element in the input array `x` to the closest integer 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rint(ap.ndarray.from_numpy(np.array([-1.2, 1.2])))
+>>> ap.rint(ap.ndarray.from_numpy(np.array([-1.2, 1.2], dtype=np.float64))).to_numpy()
 array([-1.,  1.])
 ```
 
@@ -1732,7 +1761,7 @@ This function rounds each floating-point element to the nearest integer closer t
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fix(ap.ndarray.from_numpy(np.array([2.9, -2.9])))
+>>> ap.fix(ap.ndarray.from_numpy(np.array([2.9, -2.9], dtype=np.float64))).to_numpy()
 array([ 2., -2.])
 ```
 
@@ -1745,6 +1774,8 @@ asnumpy.floor(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 Calculate the floor of each element.
 
 This function returns the largest integer less than or equal to each element in `x`.
+
+`float16` and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `x` (ArrayLike): Input data.
@@ -1762,7 +1793,7 @@ This function returns the largest integer less than or equal to each element in 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.floor(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.floor(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-2.,  1.])
 ```
 
@@ -1792,7 +1823,7 @@ This function returns the smallest integer greater than or equal to each element
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.ceil(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.ceil(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-1.,  2.])
 ```
 
@@ -1822,7 +1853,7 @@ This function returns the integer portion of each element in `x`, effectively di
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.trunc(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.trunc(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-1.,  1.])
 ```
 
@@ -1838,7 +1869,7 @@ Calculate the product of elements.
 
 This function multiplies elements in the input array `a`. If an `axis` is provided, the multiplication is performed along that axis.
 
-Current test coverage requires explicitly specifying the `axis` parameter.
+Tests cover the `axis` reduction, and a no-axis global product is also exercised with float64 input. Integer input keeps the input dtype instead of NumPy's promotion, and `float16`, wide unsigned integers and complex inputs are not supported (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -1857,9 +1888,9 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]]))
->>> ap.prod(a, axis=0)
-array([3., 8.])
+>>> a = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
+>>> ap.prod(a, axis=0).to_numpy()
+array([3., 8.], dtype=float32)
 ```
 
 ### asnumpy.sum
@@ -1872,7 +1903,7 @@ Calculate the sum of elements.
 
 This function adds up elements in the input array `a`. If an `axis` is provided, the summation is performed along that axis.
 
-Current test coverage requires explicitly specifying the `axis` parameter.
+Current test coverage requires explicitly specifying the `axis` parameter. Integer input keeps the input dtype instead of NumPy's promotion; `float16`, unsigned integers wider than 8 bits and complex inputs are not supported (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -1891,9 +1922,9 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([[0.5, 1.5], [2., 3.]]))
->>> ap.sum(a, axis=0)
-array([2.5, 4.5])
+>>> a = ap.ndarray.from_numpy(np.array([[0.5, 1.5], [2., 3.]], dtype=np.float32))
+>>> ap.sum(a, axis=0).to_numpy()
+array([2.5, 4.5], dtype=float32)
 ```
 
 ### asnumpy.nanprod
@@ -1906,7 +1937,7 @@ Calculate the product of elements, replacing NaNs with one.
 
 This function multiplies elements in the input array `a`, treating any NaN values as 1. This ensures that NaNs do not propagate into the result.
 
-Current test coverage indicates `float64` is a known failing scenario.
+`float16`, `float64`, unsigned integers and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -1925,8 +1956,9 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nanprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
-1.0
+>>> a = ap.ndarray.from_numpy(np.array([[1.0, np.nan], [3.0, 4.0]], dtype=np.float32))
+>>> ap.nanprod(a, axis=0).to_numpy()
+array([3., 4.], dtype=float32)
 ```
 
 ### asnumpy.nansum
@@ -1939,7 +1971,7 @@ Calculate the sum of elements, replacing NaNs with zero.
 
 This function adds up elements in the input array `a`, treating any NaN values as 0. This ensures that NaNs do not propagate into the result.
 
-Current test coverage indicates `float64` is a known failing scenario.
+`float16`, `float64`, unsigned integers and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -1958,8 +1990,9 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nansum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
-1.0
+>>> a = ap.ndarray.from_numpy(np.array([[1.0, np.nan], [3.0, 4.0]], dtype=np.float32))
+>>> ap.nansum(a, axis=0).to_numpy()
+array([4., 4.], dtype=float32)
 ```
 
 ### asnumpy.cumprod
@@ -1972,7 +2005,7 @@ Calculate the cumulative product of elements.
 
 This function computes the running product of elements along the specified axis.
 
-Current test coverage requires explicitly specifying the `axis` parameter.
+Current test coverage requires explicitly specifying the `axis` parameter. Integer input keeps the input dtype instead of NumPy's promotion, and `float16`, unsigned integers and complex inputs are not supported (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -1991,9 +2024,9 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> ap.cumprod(a, axis=0)
-array([1, 2, 6])
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> ap.cumprod(a, axis=0).to_numpy()
+array([1, 2, 6], dtype=int32)
 ```
 
 ### asnumpy.cumsum
@@ -2006,7 +2039,7 @@ Calculate the cumulative sum of elements.
 
 This function computes the running total of elements along the specified axis.
 
-Current test coverage requires explicitly specifying the `axis` parameter.
+Current test coverage requires explicitly specifying the `axis` parameter. Integer input keeps the input dtype instead of NumPy's promotion, and `float16`, unsigned integers and complex inputs are not supported (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -2025,9 +2058,9 @@ Current test coverage requires explicitly specifying the `axis` parameter.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> ap.cumsum(a, axis=0)
-array([1, 3, 6])
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> ap.cumsum(a, axis=0).to_numpy()
+array([1, 3, 6], dtype=int32)
 ```
 
 ### asnumpy.nancumprod
@@ -2040,7 +2073,7 @@ Calculate the cumulative product of elements, treating NaNs as one.
 
 This function computes the running product of elements along the specified axis. Any NaN values encountered are treated as 1.
 
-Current test coverage indicates `float64` is a known failing scenario.
+`float64`, unsigned integers and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -2059,8 +2092,9 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
-array([1., 1.])
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan], dtype=np.float32))
+>>> ap.nancumprod(a, axis=0).to_numpy()
+array([1., 1.], dtype=float32)
 ```
 
 ### asnumpy.nancumsum
@@ -2073,7 +2107,7 @@ Calculate the cumulative sum of elements, treating NaNs as zero.
 
 This function computes the running total of elements along the specified axis. Any NaN values encountered are treated as 0.
 
-Current test coverage indicates `float64` is a known failing scenario.
+`float64`, unsigned integers and complex inputs are not supported by the current native kernel (tracked as known failing cases).
 
 **Arguments**
 - `a` (ArrayLike): Input array.
@@ -2092,8 +2126,9 @@ Current test coverage indicates `float64` is a known failing scenario.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumsum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
-array([1., 1.])
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan], dtype=np.float32))
+>>> ap.nancumsum(a, axis=0).to_numpy()
+array([1., 1.], dtype=float32)
 ```
 
 ### asnumpy.cross
@@ -2109,7 +2144,7 @@ This function computes the vector cross product of `a` and `b`. It operates on v
 **Arguments**
 - `a` (ArrayLike): Components of the first vector(s).
 - `b` (ArrayLike): Components of the second vector(s).
-- `axis` (int, optional): Axis that defines the vector(s). By default, the last axis.
+- `axis` (int, required for the current implementation): Axis that defines the vector(s). The native binding requires an explicit integer axis; pass `-1` for the last axis.
 
 **Returns**
 - `ndarray`: Vector cross product(s).
@@ -2121,10 +2156,10 @@ This function computes the vector cross product of `a` and `b`. It operates on v
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> x = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> y = ap.ndarray.from_numpy(np.array([4, 5, 6]))
->>> ap.cross(x, y)
-array([-3,  6, -3])
+>>> x = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> y = ap.ndarray.from_numpy(np.array([4, 5, 6], dtype=np.int32))
+>>> ap.cross(x, y, axis=-1).to_numpy()
+array([-3,  6, -3], dtype=int32)
 ```
 
 ## Extrema Finding
@@ -2157,8 +2192,8 @@ This function compares `x1` and `x2` and returns the larger value for each eleme
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.maximum(ap.ndarray.from_numpy(np.array([2, 3])), ap.ndarray.from_numpy(np.array([1, 5])))
-array([2, 5])
+>>> ap.maximum(ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1, 5], dtype=np.int32))).to_numpy()
+array([2, 5], dtype=int32)
 ```
 
 ### asnumpy.minimum
@@ -2189,8 +2224,8 @@ This function compares `x1` and `x2` and returns the smaller value for each elem
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.minimum(ap.ndarray.from_numpy(np.array([2, 3])), ap.ndarray.from_numpy(np.array([1, 5])))
-array([1, 3])
+>>> ap.minimum(ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1, 5], dtype=np.int32))).to_numpy()
+array([1, 3], dtype=int32)
 ```
 
 ### asnumpy.fmax
@@ -2221,7 +2256,7 @@ This function compares `x1` and `x2` and returns the larger value. If a NaN is e
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmax(ap.ndarray.from_numpy(np.array([np.nan, 2])), ap.ndarray.from_numpy(np.array([1, np.nan])))
+>>> ap.fmax(ap.ndarray.from_numpy(np.array([np.nan, 2], dtype=np.float64)), ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float64))).to_numpy()
 array([1., 2.])
 ```
 
@@ -2253,7 +2288,7 @@ This function compares `x1` and `x2` and returns the smaller value. If a NaN is 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmin(ap.ndarray.from_numpy(np.array([np.nan, 2])), ap.ndarray.from_numpy(np.array([1, np.nan])))
+>>> ap.fmin(ap.ndarray.from_numpy(np.array([np.nan, 2], dtype=np.float64)), ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float64))).to_numpy()
 array([1., 2.])
 ```
 
@@ -2267,9 +2302,11 @@ Calculate the maximum value of the array.
 
 This function finds the largest value in the array `a`. If an `axis` is provided, the maximum is computed along that axis.
 
+The float32 global reduction (`axis=None`) is excluded from the tests because the returned dtype differs from NumPy's.
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2285,9 +2322,9 @@ This function finds the largest value in the array `a`. If an `axis` is provided
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int64))
 >>> ap.max(a)
-3
+np.int64(3)
 ```
 
 ### asnumpy.amax
@@ -2300,9 +2337,11 @@ Calculate the maximum value of the array.
 
 This function finds the largest value in the array `a`. It is an alias for `max`.
 
+The int64 global reduction is marked xfail for the `amax`/`amin` entries (it works through `max`/`min`); the float32 global reduction differs in dtype from NumPy.
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2318,9 +2357,9 @@ This function finds the largest value in the array `a`. It is an alias for `max`
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float64))
 >>> ap.amax(a)
-3
+np.float64(3.0)
 ```
 
 ### asnumpy.nanmax
@@ -2333,9 +2372,11 @@ Calculate the maximum value of the array, ignoring NaNs.
 
 This function finds the largest value in the array `a`, skipping any NaN values. If an `axis` is provided, the maximum is computed along that axis.
 
+`float64` input is not supported (tracked as xfail), and an all-NaN slice returns `-inf` instead of `NaN` (also tracked as xfail).
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2350,9 +2391,9 @@ This function finds the largest value in the array `a`, skipping any NaN values.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, np.nan]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan, 3.0], dtype=np.float32))
 >>> ap.nanmax(a)
-1.0
+np.float32(3.0)
 ```
 
 ### asnumpy.min
@@ -2365,9 +2406,11 @@ Calculate the minimum value of the array.
 
 This function finds the smallest value in the array `a`. If an `axis` is provided, the minimum is computed along that axis.
 
+The float32 global reduction (`axis=None`) is excluded from the tests because the returned dtype differs from NumPy's.
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2383,9 +2426,9 @@ This function finds the smallest value in the array `a`. If an `axis` is provide
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int64))
 >>> ap.min(a)
-1
+np.int64(1)
 ```
 
 ### asnumpy.amin
@@ -2398,9 +2441,11 @@ Calculate the minimum value of the array.
 
 This function finds the smallest value in the array `a`. It is an alias for `min`.
 
+The int64 global reduction is marked xfail for the `amax`/`amin` entries (it works through `max`/`min`).
+
 **Arguments**
 - `a` (ArrayLike): Input data.
-- `axis` (int or sequence of ints, optional): Axis or axes along which to operate. By default, flattened input is used.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
 - `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
 
 **Returns**
@@ -2416,9 +2461,9 @@ This function finds the smallest value in the array `a`. It is an alias for `min
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float64))
 >>> ap.amin(a)
-1
+np.float64(1.0)
 ```
 
 ## Floating Point Routines
@@ -2447,7 +2492,7 @@ This function returns True where the sign bit is set (indicating a negative numb
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.signbit(ap.ndarray.from_numpy(np.array([-2.5, 3.5])))
+>>> ap.signbit(ap.ndarray.from_numpy(np.array([-2.5, 3.5], dtype=np.float32))).to_numpy()
 array([ True, False])
 ```
 
@@ -2476,8 +2521,8 @@ This function returns a value with the magnitude of `x1` and the sign of `x2`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.copysign(ap.ndarray.from_numpy(np.array([1.5])), ap.ndarray.from_numpy(np.array([-1])))
-array([-1.5])
+>>> ap.copysign(ap.ndarray.from_numpy(np.array([1.5], dtype=np.float32)), ap.ndarray.from_numpy(np.array([-1.0], dtype=np.float32))).to_numpy()
+array([-1.5], dtype=float32)
 ```
 
 ### asnumpy.ldexp
@@ -2504,8 +2549,8 @@ This function computes the product of `x1` and 2 raised to the power of `x2`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.ldexp(ap.ndarray.from_numpy(np.array([3])), ap.ndarray.from_numpy(np.array([2])))
-array([12.])
+>>> ap.ldexp(ap.ndarray.from_numpy(np.array([3.0], dtype=np.float32)), ap.ndarray.from_numpy(np.array([2], dtype=np.int32))).to_numpy()
+array([12.], dtype=float32)
 ```
 
 ## Handling Complex Numbers
@@ -2518,7 +2563,7 @@ asnumpy.real(x: ArrayLike) -> ndarray
 
 Return the real part of the complex argument.
 
-This function extracts the real component of the elements in `x`.
+This function extracts the real component of the elements in `x`. The current native implementation always produces `float32` output, so `complex128` input loses precision.
 
 **Arguments**
 - `x` (ArrayLike): Input array.
@@ -2533,8 +2578,8 @@ This function extracts the real component of the elements in `x`.
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.real(ap.ndarray.from_numpy(np.array([1+5j])))
-array([1.])
+>>> ap.real(ap.ndarray.from_numpy(np.array([1+5j], dtype=np.complex64))).to_numpy()
+array([1.], dtype=float32)
 ```
 
 ## Rational Routines
@@ -2547,7 +2592,7 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 Calculate the greatest common divisor of the inputs.
 
-This function computes the greatest common divisor (GCD) of the absolute values of `x1` and `x2` element-wise.
+This function computes the greatest common divisor (GCD) element-wise. Only `int32`/`int64` inputs are supported; `int8`/`int16` and floating-point inputs are not (tracked as known failing cases), and negative-input handling currently differs from NumPy.
 
 **Arguments**
 - `x1` (ArrayLike): First input array.
@@ -2555,7 +2600,7 @@ This function computes the greatest common divisor (GCD) of the absolute values 
 - `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
-- `ndarray`: The greatest common divisor of the absolute values of the inputs.
+- `ndarray`: The greatest common divisor of the inputs.
 
 **See Also**
 - [`numpy.gcd`](https://numpy.org/doc/stable/reference/generated/numpy.gcd.html)
@@ -2565,8 +2610,8 @@ This function computes the greatest common divisor (GCD) of the absolute values 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.gcd(ap.ndarray.from_numpy(np.array([10])), ap.ndarray.from_numpy(np.array([25])))
-array([5])
+>>> ap.gcd(ap.ndarray.from_numpy(np.array([10], dtype=np.int32)), ap.ndarray.from_numpy(np.array([25], dtype=np.int32))).to_numpy()
+array([5], dtype=int32)
 ```
 
 ### asnumpy.lcm
@@ -2577,7 +2622,7 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 Calculate the least common multiple of the inputs.
 
-This function computes the least common multiple (LCM) of the absolute values of `x1` and `x2` element-wise.
+This function computes the least common multiple (LCM) element-wise. Only `int32`/`int64` inputs are supported; `int8`/`int16` and floating-point inputs are not (tracked as known failing cases).
 
 **Arguments**
 - `x1` (ArrayLike): First input array.
@@ -2585,7 +2630,7 @@ This function computes the least common multiple (LCM) of the absolute values of
 - `dtype` (DTypeLike, optional): The desired data type for the output array.
 
 **Returns**
-- `ndarray`: The least common multiple of the absolute values of the inputs.
+- `ndarray`: The least common multiple of the inputs.
 
 **See Also**
 - [`numpy.lcm`](https://numpy.org/doc/stable/reference/generated/numpy.lcm.html)
@@ -2595,7 +2640,6 @@ This function computes the least common multiple (LCM) of the absolute values of
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.lcm(ap.ndarray.from_numpy(np.array([4])), ap.ndarray.from_numpy(np.array([6])))
-array([12])
+>>> ap.lcm(ap.ndarray.from_numpy(np.array([4], dtype=np.int32)), ap.ndarray.from_numpy(np.array([6], dtype=np.int32))).to_numpy()
+array([12], dtype=int32)
 ```
--->

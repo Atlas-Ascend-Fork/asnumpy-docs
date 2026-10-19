@@ -1,9 +1,5 @@
 # 数学函数
 
-::: info
-当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
-:::
-
 本模块提供数学函数，包括三角函数、双曲函数、指数函数、对数函数以及其他数学运算。
 
 ## 三角函数
@@ -18,7 +14,7 @@ asnumpy.sin(x: ArrayLike) -> ndarray
 
 此函数计算输入数组 `x` 中每个元素的正弦值。输入值假设以弧度为单位。
 
-当前实现先将int32输入提升为float64，再计算正弦；相应int32回归已不再标记为预期失败。数值行为应结合所安装的CANN和AsNumpy版本验证。
+当前实现先提升非浮点输入再计算：`bool`、`int8`、`int16`、`uint8`、`uint16` 提升为 `float32`，更宽的整数（如 `int32`）提升为 `float64`。int32 场景已由测试覆盖，不再标记为预期失败；数值行为应结合所安装的 CANN 和 AsNumpy 版本验证。
 
 **参数**
 - `x` (ArrayLike): 包含弧度角度的输入数组。
@@ -35,8 +31,8 @@ asnumpy.sin(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sin(ap.ndarray.from_numpy(np.array([0, np.pi/6, np.pi/2], dtype=np.float32)))
-array([0. , 0.5, 1. ])
+>>> ap.sin(ap.ndarray.from_numpy(np.array([0, np.pi/6, np.pi/2], dtype=np.float32))).to_numpy()
+array([0. , 0.5, 1. ], dtype=float32)
 ```
 
 ### asnumpy.cos
@@ -66,8 +62,8 @@ asnumpy.cos(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cos(ap.ndarray.from_numpy(np.array([0, np.pi], dtype=np.float32)))
-array([ 1., -1.])
+>>> ap.cos(ap.ndarray.from_numpy(np.array([0, np.pi], dtype=np.float32))).to_numpy()
+array([ 1., -1.], dtype=float32)
 ```
 
 ### asnumpy.tan
@@ -95,8 +91,8 @@ asnumpy.tan(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tan(ap.ndarray.from_numpy(np.array([-np.pi/4, 0, np.pi/4], dtype=np.float32)))
-array([-1.,  0.,  1.])
+>>> ap.tan(ap.ndarray.from_numpy(np.array([-np.pi/4, 0, np.pi/4], dtype=np.float32))).to_numpy()
+array([-1.,  0.,  1.], dtype=float32)
 ```
 
 ### asnumpy.arcsin
@@ -125,8 +121,8 @@ asnumpy.arcsin(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arcsin(ap.ndarray.from_numpy(np.array([0, 0.5, 1], dtype=np.float32)))
-array([0.        , 0.52359878, 1.57079633])
+>>> ap.arcsin(ap.ndarray.from_numpy(np.array([0, 0.5, 1], dtype=np.float32))).to_numpy()
+array([0.       , 0.5235988, 1.5707964], dtype=float32)
 ```
 
 ### asnumpy.arccos
@@ -139,10 +135,10 @@ asnumpy.arccos(x: ArrayLike) -> ndarray
 
 此函数计算 `x` 中每个元素的反余弦值（arccosine）。定义域为 [-1, 1]。返回值以弧度为单位，范围为 0 到 pi。
 
-当前测试覆盖表明越界输入（|x| > 1）可能抛出 RuntimeError。
+越界输入（|x| > 1）返回 `NaN`，与 NumPy 一致；可能触发运行时警告。
 
 **参数**
-- `x` (ArrayLike): 输入数组。元素必须在 [-1, 1] 范围内。
+- `x` (ArrayLike): 输入数组。超出 [-1, 1] 的元素会产生 `NaN`（见上文说明）。
 
 **返回值**
 - `ndarray`: `x` 中每个元素的反余弦值。
@@ -157,8 +153,8 @@ asnumpy.arccos(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arccos(ap.ndarray.from_numpy(np.array([1, 0.5, 0], dtype=np.float32)))
-array([0.        , 1.04719755, 1.57079633])
+>>> ap.arccos(ap.ndarray.from_numpy(np.array([1, 0.5, 0], dtype=np.float32))).to_numpy()
+array([0.       , 1.0471976, 1.5707964], dtype=float32)
 ```
 
 ### asnumpy.arctan
@@ -187,11 +183,10 @@ asnumpy.arctan(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arctan(ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32)))
-array([0.        , 0.78539816])
+>>> ap.arctan(ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32))).to_numpy()
+array([0.       , 0.7853982], dtype=float32)
 ```
 
-<!--
 ### asnumpy.arctan2
 
 ```python
@@ -218,10 +213,10 @@ asnumpy.arctan2(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> y = ap.ndarray.from_numpy(np.array([0, 1]))
->>> x = ap.ndarray.from_numpy(np.array([-1, 1]))
->>> ap.arctan2(y, x)
-array([3.14159265, 0.78539816])
+>>> y = ap.ndarray.from_numpy(np.array([0, 1], dtype=np.float32))
+>>> x = ap.ndarray.from_numpy(np.array([-1, 1], dtype=np.float32))
+>>> ap.arctan2(y, x).to_numpy()
+array([3.1415927, 0.7853982], dtype=float32)
 ```
 
 ### asnumpy.hypot
@@ -248,8 +243,10 @@ asnumpy.hypot(x1: ArrayLike, x2: ArrayLike) -> ndarray
 **示例**
 ```python
 >>> import asnumpy as ap
->>> ap.hypot(3*ap.ones(2), 4*ap.ones(2))
-array([5., 5.])
+>>> a = ap.ndarray.from_numpy(np.array([3.0, 4.0], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([4.0, 3.0], dtype=np.float32))
+>>> ap.hypot(a, b).to_numpy()
+array([5., 5.], dtype=float32)
 ```
 
 ### asnumpy.radians
@@ -261,6 +258,8 @@ asnumpy.radians(x: ArrayLike) -> ndarray
 将角度从度转换为弧度。
 
 此函数将输入数组 `x` 中的每个元素从度转换为弧度。操作按元素进行。
+
+当前实现只接受浮点输入（`float16`、`float32` 或 `float64`）；整数输入会抛出 `ValueError`。
 
 **参数**
 - `x` (ArrayLike): 以度为单位的输入数组。
@@ -278,8 +277,8 @@ asnumpy.radians(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.radians(ap.ndarray.from_numpy(np.array([0, 90, 180])))
-array([0.        , 1.57079633, 3.14159265])
+>>> ap.radians(ap.ndarray.from_numpy(np.array([0, 90, 180], dtype=np.float32))).to_numpy()
+array([0.       , 1.5707964, 3.1415927], dtype=float32)
 ```
 
 ### asnumpy.deg2rad
@@ -291,6 +290,8 @@ asnumpy.deg2rad(x: ArrayLike) -> ndarray
 将角度从度转换为弧度。
 
 此函数将输入角度逐元素从度转换为弧度。它是 `radians` 的别名。
+
+当前实现只接受浮点输入（`float16`、`float32` 或 `float64`）；整数输入会抛出 `ValueError`。
 
 **参数**
 - `x` (ArrayLike): 以度为单位的输入数组。
@@ -308,8 +309,8 @@ asnumpy.deg2rad(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.deg2rad(ap.ndarray.from_numpy(np.array([0, 90, 180])))
-array([0.        , 1.57079633, 3.14159265])
+>>> ap.deg2rad(ap.ndarray.from_numpy(np.array([0, 90, 180], dtype=np.float32))).to_numpy()
+array([0.       , 1.5707964, 3.1415927], dtype=float32)
 ```
 
 ### asnumpy.degrees
@@ -321,6 +322,8 @@ asnumpy.degrees(x: ArrayLike) -> ndarray
 将角度从弧度转换为度。
 
 此函数将输入数组 `x` 中的每个元素从弧度转换为度。操作按元素进行。
+
+整数输入会提升为 `float64`，该行为已有测试覆盖。
 
 **参数**
 - `x` (ArrayLike): 以弧度为单位的输入数组。
@@ -338,8 +341,8 @@ asnumpy.degrees(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.degrees(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi])))
-array([  0.,  90., 180.])
+>>> ap.degrees(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi], dtype=np.float32))).to_numpy()
+array([  0.,  90., 180.], dtype=float32)
 ```
 
 ### asnumpy.rad2deg
@@ -368,8 +371,8 @@ asnumpy.rad2deg(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rad2deg(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi])))
-array([  0.,  90., 180.])
+>>> ap.rad2deg(ap.ndarray.from_numpy(np.array([0, np.pi/2, np.pi], dtype=np.float32))).to_numpy()
+array([  0.,  90., 180.], dtype=float32)
 ```
 
 ## 双曲函数
@@ -400,7 +403,7 @@ asnumpy.sinh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sinh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.sinh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([0.        , 1.17520119])
 ```
 
@@ -430,7 +433,7 @@ asnumpy.cosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.cosh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.cosh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([1.        , 1.54308063])
 ```
 
@@ -460,7 +463,7 @@ asnumpy.tanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.tanh(ap.ndarray.from_numpy(np.array([0., 1.])))
+>>> ap.tanh(ap.ndarray.from_numpy(np.array([0., 1.], dtype=np.float64))).to_numpy()
 array([0.        , 0.76159416])
 ```
 
@@ -489,7 +492,7 @@ asnumpy.arcsinh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arcsinh(ap.ndarray.from_numpy(np.array([0., 1.17520119])))
+>>> ap.arcsinh(ap.ndarray.from_numpy(np.array([0., 1.17520119], dtype=np.float64))).to_numpy()
 array([0., 1.])
 ```
 
@@ -502,6 +505,8 @@ asnumpy.arccosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 计算每个元素的反双曲余弦值。
 
 此函数计算输入数组 `x` 中每个元素的反双曲余弦值。
+
+小于 1 的输入会产生 `NaN`，与 NumPy 一致（已有测试覆盖）。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -518,7 +523,7 @@ asnumpy.arccosh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arccosh(ap.ndarray.from_numpy(np.array([1., 1.54308063])))
+>>> ap.arccosh(ap.ndarray.from_numpy(np.array([1., 1.54308063], dtype=np.float64))).to_numpy()
 array([0., 1.])
 ```
 
@@ -531,6 +536,8 @@ asnumpy.arctanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 计算每个元素的反双曲正切值。
 
 此函数计算输入数组 `x` 中每个元素的反双曲正切值。
+
+|x| = 1 的输入返回 `inf`，|x| > 1 返回 `NaN`，与 NumPy 一致（已有测试覆盖）。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -547,8 +554,8 @@ asnumpy.arctanh(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.arctanh(ap.ndarray.from_numpy(np.array([0., 0.76159416])))
-array([0., 1.])
+>>> ap.arctanh(ap.ndarray.from_numpy(np.array([0., 0.76159416], dtype=np.float64))).to_numpy()
+array([0.        , 1.00000001])
 ```
 
 ## 算术运算
@@ -556,17 +563,18 @@ array([0., 1.])
 ### asnumpy.add
 
 ```python
-asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.add(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```
 
 逐元素计算两个输入的和。
 
 此函数将 `x1` 和 `x2` 逐元素相加。
 
+该函数以 ufunc 形式实现：float32/float64 内核不接受 `dtype` 参数（传入会抛出 `TypeError`）；其他输入 dtype 会回退到原生实现，该路径接受 `dtype`。
+
 **参数**
 - `x1` (ArrayLike): 第一个输入数组或标量。
 - `x2` (ArrayLike): 第二个输入数组或标量。
-- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: `x1` 和 `x2` 的和。
@@ -579,8 +587,8 @@ asnumpy.add(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.add(ap.ndarray.from_numpy(np.array([10, 20])), ap.ndarray.from_numpy(np.array([5, 5])))
-array([15, 25])
+>>> ap.add(ap.ndarray.from_numpy(np.array([10, 20], dtype=np.int32)), ap.ndarray.from_numpy(np.array([5, 5], dtype=np.int32))).to_numpy()
+array([15, 25], dtype=int32)
 ```
 
 ### asnumpy.subtract
@@ -609,8 +617,8 @@ asnumpy.subtract(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarr
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.subtract(ap.ndarray.from_numpy(np.array([10, 5])), ap.ndarray.from_numpy(np.array([2, 2])))
-array([8, 3])
+>>> ap.subtract(ap.ndarray.from_numpy(np.array([10, 5], dtype=np.float32)), ap.ndarray.from_numpy(np.array([2, 2], dtype=np.float32))).to_numpy()
+array([8., 3.], dtype=float32)
 ```
 
 ### asnumpy.multiply
@@ -639,8 +647,8 @@ asnumpy.multiply(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarr
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.multiply(ap.ndarray.from_numpy(np.array([2.0, 4.0])), ap.ndarray.from_numpy(np.array([3.0, 0.5])))
-array([6., 2.])
+>>> ap.multiply(ap.ndarray.from_numpy(np.array([2.0, 4.0], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3.0, 0.5], dtype=np.float32))).to_numpy()
+array([6., 2.], dtype=float32)
 ```
 
 ### asnumpy.divide
@@ -671,8 +679,8 @@ asnumpy.divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.divide(ap.ndarray.from_numpy(np.array([6, 12])), ap.ndarray.from_numpy(np.array([3, 4])))
-array([2., 3.])
+>>> ap.divide(ap.ndarray.from_numpy(np.array([6, 12], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.float32))).to_numpy()
+array([2., 3.], dtype=float32)
 ```
 
 ### asnumpy.true_divide
@@ -702,7 +710,7 @@ asnumpy.true_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.true_divide(ap.ndarray.from_numpy(np.array([6, 12])), ap.ndarray.from_numpy(np.array([3, 4])))
+>>> ap.true_divide(ap.ndarray.from_numpy(np.array([6, 12], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.int32))).to_numpy()
 array([2., 3.])
 ```
 
@@ -734,8 +742,8 @@ asnumpy.floor_divide(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> n
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.floor_divide(ap.ndarray.from_numpy(np.array([10, 10])), ap.ndarray.from_numpy(np.array([3, 4])))
-array([3, 2])
+>>> ap.floor_divide(ap.ndarray.from_numpy(np.array([10, 10], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 4], dtype=np.float32))).to_numpy()
+array([3., 2.], dtype=float32)
 ```
 
 ### asnumpy.power
@@ -765,8 +773,8 @@ asnumpy.power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.power(ap.ndarray.from_numpy(np.array([2, 5])), ap.ndarray.from_numpy(np.array([3, 2])))
-array([ 8, 25])
+>>> ap.power(ap.ndarray.from_numpy(np.array([2, 5], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 2], dtype=np.int32))).to_numpy()
+array([ 8, 25], dtype=int32)
 ```
 
 ### asnumpy.float_power
@@ -777,7 +785,7 @@ asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 
 计算底数的指数幂，提升为浮点数。
 
-此函数将 `x1` 的元素提升到 `x2` 元素的幂。它确保计算时至少具有 float64 精度。
+此函数将 `x1` 的元素提升到 `x2` 元素的幂，并先将输入转换为浮点类型。与 NumPy 不同，省略 `dtype` 时 float32 输入会返回 float32 结果；如需 float64 结果请显式传入 `dtype=float64`（省略 dtype 的差异已记录为已知失败用例）。
 
 **参数**
 - `x1` (ArrayLike): 底数。
@@ -795,23 +803,26 @@ asnumpy.float_power(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> nd
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.float_power(ap.ndarray.from_numpy(np.array([2, 5])), ap.ndarray.from_numpy(np.array([3, 2])))
+>>> a = ap.ndarray.from_numpy(np.array([2, 5], dtype=np.float32))
+>>> b = ap.ndarray.from_numpy(np.array([3, 2], dtype=np.float32))
+>>> ap.float_power(a, b, dtype=ap.float64).to_numpy()
 array([ 8., 25.])
 ```
 
 ### asnumpy.negative
 
 ```python
-asnumpy.negative(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
+asnumpy.negative(x: ArrayLike) -> ndarray
 ```
 
 逐元素计算数值负值。
 
 此函数对输入数组中的每个元素取负，返回 `-x`。
 
+该函数以 ufunc 形式实现：float32/float64/int32 内核不接受 `dtype` 参数（传入会抛出 `TypeError`）；其他输入 dtype 会回退到原生实现，该路径接受 `dtype`。
+
 **参数**
 - `x` (ArrayLike): 输入数组。
-- `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
 - `ndarray`: 输入数组的负值。
@@ -824,8 +835,8 @@ asnumpy.negative(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.negative(ap.ndarray.from_numpy(np.array([10, -10])))
-array([-10,  10])
+>>> ap.negative(ap.ndarray.from_numpy(np.array([10, -10], dtype=np.int32))).to_numpy()
+array([-10,  10], dtype=int32)
 ```
 
 ### asnumpy.positive
@@ -853,8 +864,8 @@ asnumpy.positive(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.positive(ap.ndarray.from_numpy(np.array([-5, 5])))
-array([-5,  5])
+>>> ap.positive(ap.ndarray.from_numpy(np.array([-5, 5], dtype=np.float32))).to_numpy()
+array([-5.,  5.], dtype=float32)
 ```
 
 ### asnumpy.reciprocal
@@ -866,6 +877,8 @@ asnumpy.reciprocal(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 计算每个元素的倒数。
 
 此函数计算输入数组中每个元素的乘法逆元 `1 / x`。
+
+当前原生内核不支持整数输入（已记录为已知失败用例）；请使用浮点数组。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -882,8 +895,8 @@ asnumpy.reciprocal(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.reciprocal(ap.ndarray.from_numpy(np.array([1., 2., 4.])))
-array([1.  , 0.5 , 0.25])
+>>> ap.reciprocal(ap.ndarray.from_numpy(np.array([1., 2., 4.], dtype=np.float32))).to_numpy()
+array([1.  , 0.5 , 0.25], dtype=float32)
 ```
 
 ### asnumpy.mod
@@ -913,8 +926,8 @@ asnumpy.mod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.mod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4])), ap.ndarray.from_numpy(np.array([3, -3, 3, -3])))
-array([ 2, -1,  1, -2])
+>>> ap.mod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, -3, 3, -3], dtype=np.int32))).to_numpy()
+array([ 2, -1,  1, -2], dtype=int32)
 ```
 
 ### asnumpy.remainder
@@ -944,8 +957,8 @@ asnumpy.remainder(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndar
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.remainder(ap.ndarray.from_numpy(np.array([5, -5])), ap.ndarray.from_numpy(np.array([3, 3])))
-array([2, 1])
+>>> ap.remainder(ap.ndarray.from_numpy(np.array([5, -5], dtype=np.int32)), ap.ndarray.from_numpy(np.array([3, 3], dtype=np.int32))).to_numpy()
+array([2, 1], dtype=int32)
 ```
 
 ### asnumpy.fmod
@@ -975,8 +988,8 @@ asnumpy.fmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4])), ap.ndarray.from_numpy(np.array([3, -3, 3, -3])))
-array([-1, -1,  1,  1])
+>>> ap.fmod(ap.ndarray.from_numpy(np.array([-4, -4, 4, 4], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, -3, 3, -3], dtype=np.float32))).to_numpy()
+array([-1., -1.,  1.,  1.], dtype=float32)
 ```
 
 ### asnumpy.modf
@@ -987,7 +1000,7 @@ asnumpy.modf(x: ArrayLike) -> tuple
 
 分离元素的小数和整数部分。
 
-此函数将 `x` 的每个元素拆分为其小数和整数部分。返回的两部分都与输入具有相同的符号。
+此函数将 `x` 的每个元素拆分为小数和整数部分，并以 `(小数部分, 整数部分)` 返回。负数输入当前向负无穷取整而非向零取整，与 NumPy 不同（已记录为已知失败用例）；`float16` 与整数输入不受支持。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -1003,8 +1016,11 @@ asnumpy.modf(x: ArrayLike) -> tuple
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.modf(ap.ndarray.from_numpy(np.array([1.5, -2.5])))
-(array([ 0.5, -0.5]), array([ 1., -2.]))
+>>> frac, integral = ap.modf(ap.ndarray.from_numpy(np.array([1.5, 2.5], dtype=np.float32)))
+>>> frac.to_numpy()
+array([0.5, 0.5], dtype=float32)
+>>> integral.to_numpy()
+array([1., 2.], dtype=float32)
 ```
 
 ### asnumpy.divmod
@@ -1034,8 +1050,11 @@ asnumpy.divmod(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> tuple
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.divmod(ap.ndarray.from_numpy(np.array([10, 11])), ap.ndarray.from_numpy(np.array([3, 3])))
-(array([3, 3]), array([1, 2]))
+>>> quotient, rem = ap.divmod(ap.ndarray.from_numpy(np.array([10, 11], dtype=np.float32)), ap.ndarray.from_numpy(np.array([3, 3], dtype=np.float32)))
+>>> quotient.to_numpy()
+array([3., 3.], dtype=float32)
+>>> rem.to_numpy()
+array([1., 2.], dtype=float32)
 ```
 
 ## 指数和对数
@@ -1064,7 +1083,7 @@ asnumpy.exp(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.exp(ap.ndarray.from_numpy(np.array([1., 2.])))
+>>> ap.exp(ap.ndarray.from_numpy(np.array([1., 2.], dtype=np.float64))).to_numpy()
 array([2.71828183, 7.3890561 ])
 ```
 
@@ -1092,7 +1111,7 @@ asnumpy.exp2(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.exp2(ap.ndarray.from_numpy(np.array([3])))
+>>> ap.exp2(ap.ndarray.from_numpy(np.array([3], dtype=np.int32))).to_numpy()
 array([8.])
 ```
 
@@ -1120,8 +1139,8 @@ asnumpy.expm1(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.expm1(ap.ndarray.from_numpy(np.array([1e-10])))
-array([1.0000000e-10])
+>>> ap.expm1(ap.ndarray.from_numpy(np.array([1e-10], dtype=np.float64))).to_numpy()
+array([1.e-10])
 ```
 
 ### asnumpy.log
@@ -1133,6 +1152,8 @@ asnumpy.log(x: ArrayLike) -> ndarray
 计算每个元素的自然对数。
 
 此函数计算输入数组 `x` 中每个元素的以 `e` 为底的对数。
+
+输入为 0 时返回 `-inf`，输入为负数时返回 `NaN`，与 NumPy 一致（已有测试覆盖）。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -1150,7 +1171,7 @@ asnumpy.log(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log(ap.ndarray.from_numpy(np.array([np.e])))
+>>> ap.log(ap.ndarray.from_numpy(np.array([np.e], dtype=np.float64))).to_numpy()
 array([1.])
 ```
 
@@ -1179,7 +1200,7 @@ asnumpy.log2(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log2(ap.ndarray.from_numpy(np.array([8.])))
+>>> ap.log2(ap.ndarray.from_numpy(np.array([8.], dtype=np.float64))).to_numpy()
 array([3.])
 ```
 
@@ -1208,7 +1229,7 @@ asnumpy.log10(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log10(ap.ndarray.from_numpy(np.array([100.])))
+>>> ap.log10(ap.ndarray.from_numpy(np.array([100.], dtype=np.float64))).to_numpy()
 array([2.])
 ```
 
@@ -1236,7 +1257,7 @@ asnumpy.log1p(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.log1p(ap.ndarray.from_numpy(np.array([1e-99])))
+>>> ap.log1p(ap.ndarray.from_numpy(np.array([1e-99], dtype=np.float64))).to_numpy()
 array([1.e-99])
 ```
 
@@ -1265,7 +1286,7 @@ asnumpy.logaddexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp(ap.ndarray.from_numpy(np.array([0])), ap.ndarray.from_numpy(np.array([0])))
+>>> ap.logaddexp(ap.ndarray.from_numpy(np.array([0], dtype=np.int32)), ap.ndarray.from_numpy(np.array([0], dtype=np.int32))).to_numpy()
 array([0.69314718])
 ```
 
@@ -1294,7 +1315,7 @@ asnumpy.logaddexp2(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.logaddexp2(ap.ndarray.from_numpy(np.array([1])), ap.ndarray.from_numpy(np.array([1])))
+>>> ap.logaddexp2(ap.ndarray.from_numpy(np.array([1], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1], dtype=np.int32))).to_numpy()
 array([2.])
 ```
 
@@ -1308,7 +1329,9 @@ asnumpy.absolute(x: ArrayLike) -> ndarray
 
 计算每个元素的绝对值。
 
-此函数计算输入数组 `x` 中每个元素的绝对值。如果输入是复数，则返回模。
+此函数计算输入数组 `x` 中每个元素的绝对值。
+
+当前原生内核不支持复数输入（已记录为已知失败用例）。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -1324,10 +1347,8 @@ asnumpy.absolute(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.absolute(ap.ndarray.from_numpy(np.array([-2.5, 2.5])))
-array([2.5, 2.5])
->>> ap.absolute(ap.ndarray.from_numpy(np.array([3+4j])))
-array([5.])
+>>> ap.absolute(ap.ndarray.from_numpy(np.array([-2.5, 2.5], dtype=np.float32))).to_numpy()
+array([2.5, 2.5], dtype=float32)
 ```
 
 ### asnumpy.fabs
@@ -1354,8 +1375,8 @@ asnumpy.fabs(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fabs(ap.ndarray.from_numpy(np.array([-2.5, 2.5])))
-array([2.5, 2.5])
+>>> ap.fabs(ap.ndarray.from_numpy(np.array([-2.5, 2.5], dtype=np.float32))).to_numpy()
+array([2.5, 2.5], dtype=float32)
 ```
 
 ### asnumpy.sign
@@ -1381,10 +1402,8 @@ asnumpy.sign(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sign(ap.ndarray.from_numpy(np.array([-3., 2.])))
-array([-1.,  1.])
->>> ap.sign(0)
-0
+>>> ap.sign(ap.ndarray.from_numpy(np.array([-5, 0, 5], dtype=np.float32))).to_numpy()
+array([-1.,  0.,  1.], dtype=float32)
 ```
 
 ### asnumpy.heaviside
@@ -1411,8 +1430,10 @@ asnumpy.heaviside(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.heaviside(ap.ndarray.from_numpy(np.array([-2.0, 0, 1.0])), 0.5)
-array([0. , 0.5, 1. ])
+>>> x1 = ap.ndarray.from_numpy(np.array([-1.5, 0, 1.5], dtype=np.float32))
+>>> x2 = ap.ndarray.from_numpy(np.array([0.5, 0.5, 0.5], dtype=np.float32))
+>>> ap.heaviside(x1, x2).to_numpy()
+array([0. , 0.5, 1. ], dtype=float32)
 ```
 
 ### asnumpy.sqrt
@@ -1439,7 +1460,7 @@ asnumpy.sqrt(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sqrt(ap.ndarray.from_numpy(np.array([1, 4, 16])))
+>>> ap.sqrt(ap.ndarray.from_numpy(np.array([1, 4, 16], dtype=np.int32))).to_numpy()
 array([1., 2., 4.])
 ```
 
@@ -1468,8 +1489,8 @@ asnumpy.square(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.square(ap.ndarray.from_numpy(np.array([2, 3, 4])))
-array([ 4,  9, 16])
+>>> ap.square(ap.ndarray.from_numpy(np.array([2, 3, 4], dtype=np.int32))).to_numpy()
+array([ 4,  9, 16], dtype=int32)
 ```
 
 ### asnumpy.clip
@@ -1496,9 +1517,10 @@ asnumpy.clip(a: ArrayLike, a_min: Union[ArrayLike, float], a_max: Union[ArrayLik
 **示例**
 ```python
 >>> import asnumpy as ap
->>> a = ap.arange(5)
->>> ap.clip(a, 1, 3)
-array([1, 1, 2, 3, 3])
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([1, 5, 10], dtype=np.float32))
+>>> ap.clip(a, 3, 8).to_numpy()
+array([3., 5., 8.], dtype=float32)
 ```
 
 ### asnumpy.nan_to_num
@@ -1510,6 +1532,8 @@ asnumpy.nan_to_num(x: ArrayLike, nan: float = 0.0, posinf: Optional[float] = Non
 将 NaN 和无穷大替换为有限值。
 
 此函数将 NaN 替换为零（或指定值），将无穷大替换为大有限数（或指定值）。
+
+当前原生实现无论输入 dtype 如何，默认都用 float32 的最大值/最小值填充 `posinf`/`neginf`；需要其他替换值时请显式传入。
 
 **参数**
 - `x` (ArrayLike): 输入数据。
@@ -1527,8 +1551,8 @@ asnumpy.nan_to_num(x: ArrayLike, nan: float = 0.0, posinf: Optional[float] = Non
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nan_to_num(ap.ndarray.from_numpy(np.array([np.inf, -np.inf, np.nan])))
-array([ 1.79769313e+308, -1.79769313e+308,  0.00000000e+000])
+>>> ap.nan_to_num(ap.ndarray.from_numpy(np.array([np.inf, -np.inf, np.nan], dtype=np.float32))).to_numpy()
+array([ 3.4028235e+38, -3.4028235e+38,  0.0000000e+00], dtype=float32)
 ```
 
 ### asnumpy.relu
@@ -1541,6 +1565,8 @@ asnumpy.relu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 此函数逐元素应用 ReLU 操作，如果为正则返回 `x`，否则返回 0。
 
+测试覆盖 `float32` 与整数输入；当前原生内核不支持 `float64`（已记录为已知失败用例）。
+
 **参数**
 - `x` (ArrayLike): 输入数组。
 - `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
@@ -1552,8 +1578,8 @@ asnumpy.relu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.relu(ap.ndarray.from_numpy(np.array([-2, 0, 2])))
-array([0, 0, 2])
+>>> ap.relu(ap.ndarray.from_numpy(np.array([-2, 0, 2], dtype=np.int32))).to_numpy()
+array([0, 0, 2], dtype=int32)
 ```
 
 ### asnumpy.gelu
@@ -1566,6 +1592,8 @@ asnumpy.gelu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 此函数应用 GELU 操作，根据高斯分布下的概率对输入进行加权。
 
+当前原生内核仅支持 `float32`；`float64` 与整数输入不受支持（已记录为已知失败用例）。
+
 **参数**
 - `x` (ArrayLike): 输入数组。
 - `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
@@ -1577,8 +1605,8 @@ asnumpy.gelu(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.gelu(ap.ndarray.from_numpy(np.array([-1.0, 0.0, 1.0])))
-array([-0.15865525,  0.        ,  0.84134475])
+>>> ap.gelu(ap.ndarray.from_numpy(np.array([-1.0, 0.0, 1.0], dtype=np.float32))).to_numpy()
+array([-0.15865526,  0.        ,  0.8413447 ], dtype=float32)
 ```
 
 ### asnumpy.sinc
@@ -1605,7 +1633,7 @@ asnumpy.sinc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.sinc(ap.ndarray.from_numpy(np.array([0., 0.5])))
+>>> ap.sinc(ap.ndarray.from_numpy(np.array([0., 0.5], dtype=np.float64))).to_numpy()
 array([1.        , 0.63661977])
 ```
 
@@ -1639,7 +1667,7 @@ asnumpy.around(x: ArrayLike, decimals: int = 0, dtype: DTypeLike = None) -> ndar
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.around(ap.ndarray.from_numpy(np.array([0.55, 1.55])), decimals=1)
+>>> ap.around(ap.ndarray.from_numpy(np.array([0.55, 1.55], dtype=np.float64)), decimals=1).to_numpy()
 array([0.6, 1.6])
 ```
 
@@ -1671,7 +1699,7 @@ asnumpy.round_(x: ArrayLike, decimals: int = 0, dtype: DTypeLike = None) -> ndar
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.round_(ap.ndarray.from_numpy(np.array([0.55, 1.55])), decimals=1)
+>>> ap.round_(ap.ndarray.from_numpy(np.array([0.55, 1.55], dtype=np.float64)), decimals=1).to_numpy()
 array([0.6, 1.6])
 ```
 
@@ -1702,7 +1730,7 @@ asnumpy.rint(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.rint(ap.ndarray.from_numpy(np.array([-1.2, 1.2])))
+>>> ap.rint(ap.ndarray.from_numpy(np.array([-1.2, 1.2], dtype=np.float64))).to_numpy()
 array([-1.,  1.])
 ```
 
@@ -1733,7 +1761,7 @@ asnumpy.fix(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fix(ap.ndarray.from_numpy(np.array([2.9, -2.9])))
+>>> ap.fix(ap.ndarray.from_numpy(np.array([2.9, -2.9], dtype=np.float64))).to_numpy()
 array([ 2., -2.])
 ```
 
@@ -1746,6 +1774,8 @@ asnumpy.floor(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 计算每个元素的下取整。
 
 此函数返回小于或等于 `x` 中每个元素的最大整数。
+
+当前原生内核不支持 `float16` 与复数输入（已记录为已知失败用例）。
 
 **参数**
 - `x` (ArrayLike): 输入数据。
@@ -1763,7 +1793,7 @@ asnumpy.floor(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.floor(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.floor(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-2.,  1.])
 ```
 
@@ -1793,7 +1823,7 @@ asnumpy.ceil(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.ceil(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.ceil(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-1.,  2.])
 ```
 
@@ -1823,7 +1853,7 @@ asnumpy.trunc(x: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.trunc(ap.ndarray.from_numpy(np.array([-1.5, 1.5])))
+>>> ap.trunc(ap.ndarray.from_numpy(np.array([-1.5, 1.5], dtype=np.float64))).to_numpy()
 array([-1.,  1.])
 ```
 
@@ -1839,7 +1869,7 @@ asnumpy.prod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dt
 
 此函数将输入数组 `a` 中的元素相乘。 如果提供了 `axis`，沿该轴进行乘法运算。
 
-当前测试覆盖要求显式指定 `axis` 参数。
+测试覆盖了 `axis` 归约，并用 float64 覆盖了无 axis 的全局乘积。整数输入保持原 dtype（不同于 NumPy 的提升），且当前原生内核不支持 `float16`、宽无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -1859,9 +1889,9 @@ asnumpy.prod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dt
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]]))
->>> ap.prod(a, axis=0)
-array([3., 8.])
+>>> a = ap.ndarray.from_numpy(np.array([[1., 2.], [3., 4.]], dtype=np.float32))
+>>> ap.prod(a, axis=0).to_numpy()
+array([3., 8.], dtype=float32)
 ```
 
 ### asnumpy.sum
@@ -1874,7 +1904,7 @@ asnumpy.sum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dty
 
 此函数将输入数组 `a` 中的元素相加。如果提供了 `axis` 则沿该轴进行求和运算。
 
-当前测试覆盖要求显式指定 `axis` 参数。
+当前测试覆盖要求显式指定 `axis` 参数。 整数输入保持原 dtype（不同于 NumPy 的提升）；当前原生内核不支持 `float16`、16 位及更宽的无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -1895,9 +1925,9 @@ asnumpy.sum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, dty
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([[0.5, 1.5], [2., 3.]]))
->>> ap.sum(a, axis=0)
-array([2.5, 4.5])
+>>> a = ap.ndarray.from_numpy(np.array([[0.5, 1.5], [2., 3.]], dtype=np.float32))
+>>> ap.sum(a, axis=0).to_numpy()
+array([2.5, 4.5], dtype=float32)
 ```
 
 ### asnumpy.nanprod
@@ -1910,7 +1940,7 @@ asnumpy.nanprod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False,
 
 此函数将输入数组 `a` 中的元素相乘，如果提供了 `axis` 则沿该轴进行乘法运算， 任何 NaN 值都不会阻止结果传播。
 
-当前测试覆盖表明 `float64` 为已知不通过场景。
+当前原生内核不支持 `float16`、`float64`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -1928,8 +1958,9 @@ asnumpy.nanprod(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False,
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nanprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
-1.0
+>>> a = ap.ndarray.from_numpy(np.array([[1.0, np.nan], [3.0, 4.0]], dtype=np.float32))
+>>> ap.nanprod(a, axis=0).to_numpy()
+array([3., 4.], dtype=float32)
 ```
 
 ### asnumpy.nansum
@@ -1942,7 +1973,7 @@ asnumpy.nansum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, 
 
 此函数将输入数组 `a` 中的元素相加，如果提供了 `axis` 则沿该轴进行求和运算。任何 NaN 值都会被视为 0 进行计算。
 
-当前测试覆盖表明 `float64` 为已知不通过场景。
+当前原生内核不支持 `float16`、`float64`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -1963,8 +1994,9 @@ asnumpy.nansum(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False, 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nansum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)))
-1.0
+>>> a = ap.ndarray.from_numpy(np.array([[1.0, np.nan], [3.0, 4.0]], dtype=np.float32))
+>>> ap.nansum(a, axis=0).to_numpy()
+array([4., 4.], dtype=float32)
 ```
 
 ### asnumpy.cumprod
@@ -1977,7 +2009,7 @@ asnumpy.cumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None
 
 此函数计算沿指定轴的元素的运行乘积。
 
-当前测试覆盖要求显式指定 `axis` 参数。
+当前测试覆盖要求显式指定 `axis` 参数。 整数输入保持原 dtype（不同于 NumPy 的提升），且当前原生内核不支持 `float16`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -1996,9 +2028,9 @@ asnumpy.cumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> ap.cumprod(a, axis=0)
-array([1, 2, 6])
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> ap.cumprod(a, axis=0).to_numpy()
+array([1, 2, 6], dtype=int32)
 ```
 
 ### asnumpy.cumsum
@@ -2011,7 +2043,7 @@ asnumpy.cumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None)
 
 此函数计算沿指定轴的元素的运行总和。
 
-当前测试覆盖要求显式指定 `axis` 参数。
+当前测试覆盖要求显式指定 `axis` 参数。 整数输入保持原 dtype（不同于 NumPy 的提升），且当前原生内核不支持 `float16`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -2031,9 +2063,9 @@ asnumpy.cumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = None)
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> ap.cumsum(a, axis=0)
-array([1, 3, 6])
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> ap.cumsum(a, axis=0).to_numpy()
+array([1, 3, 6], dtype=int32)
 ```
 
 ### asnumpy.nancumprod
@@ -2046,7 +2078,7 @@ asnumpy.nancumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = N
 
 此函数计算沿指定轴的元素的运行乘积，任何 NaN 值都会被视为 1 进行计算。
 
-当前测试覆盖表明 `float64` 为已知不通过场景。
+当前原生内核不支持 `float64`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -2065,8 +2097,9 @@ asnumpy.nancumprod(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = N
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumprod(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
-array([1., 1.])
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan], dtype=np.float32))
+>>> ap.nancumprod(a, axis=0).to_numpy()
+array([1., 1.], dtype=float32)
 ```
 
 ### asnumpy.nancumsum
@@ -2079,7 +2112,7 @@ asnumpy.nancumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = No
 
 此函数计算沿指定轴的元素的运行总和，任何 NaN 值都会被视为 0 进行计算。
 
-当前测试覆盖表明 `float64` 为已知不通过场景。
+当前原生内核不支持 `float64`、无符号整数与复数输入（均已记录为已知失败用例）。
 
 **参数**
 - `a` (ArrayLike): 输入数组。
@@ -2099,8 +2132,9 @@ asnumpy.nancumsum(a: ArrayLike, axis: AxisOptional = None, dtype: DTypeLike = No
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.nancumsum(ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float32)), axis=0)
-array([1., 1.])
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan], dtype=np.float32))
+>>> ap.nancumsum(a, axis=0).to_numpy()
+array([1., 1.], dtype=float32)
 ```
 
 ### asnumpy.cross
@@ -2116,7 +2150,7 @@ asnumpy.cross(a: ArrayLike, b: ArrayLike, axis: AxisOptional = None) -> ndarray
 **参数**
 - `a` (ArrayLike): 第一个向量的分量。
 - `b` (ArrayLike): 第二个向量的分量。
-- `axis` (int, 可选): 定义向量的轴。默认为最后一个轴。
+- `axis` (int，当前实现必须显式指定): 定义向量的轴。原生绑定要求显式整数轴；最后一轴请传 `-1`。
 
 **返回值**
 - `ndarray`: 向量叉积。
@@ -2128,10 +2162,10 @@ asnumpy.cross(a: ArrayLike, b: ArrayLike, axis: AxisOptional = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> x = ap.ndarray.from_numpy(np.array([1, 2, 3]))
->>> y = ap.ndarray.from_numpy(np.array([4, 5, 6]))
->>> ap.cross(x, y)
-array([-3,  6, -3])
+>>> x = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int32))
+>>> y = ap.ndarray.from_numpy(np.array([4, 5, 6], dtype=np.int32))
+>>> ap.cross(x, y, axis=-1).to_numpy()
+array([-3,  6, -3], dtype=int32)
 ```
 
 ## 极值查找
@@ -2164,8 +2198,8 @@ asnumpy.maximum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.maximum(ap.ndarray.from_numpy(np.array([2, 3])), ap.ndarray.from_numpy(np.array([1, 5])))
-array([2, 5])
+>>> ap.maximum(ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1, 5], dtype=np.int32))).to_numpy()
+array([2, 5], dtype=int32)
 ```
 
 ### asnumpy.minimum
@@ -2196,8 +2230,8 @@ asnumpy.minimum(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarra
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.minimum(ap.ndarray.from_numpy(np.array([2, 3])), ap.ndarray.from_numpy(np.array([1, 5])))
-array([1, 3])
+>>> ap.minimum(ap.ndarray.from_numpy(np.array([2, 3], dtype=np.int32)), ap.ndarray.from_numpy(np.array([1, 5], dtype=np.int32))).to_numpy()
+array([1, 3], dtype=int32)
 ```
 
 ### asnumpy.fmax
@@ -2228,7 +2262,7 @@ asnumpy.fmax(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmax(ap.ndarray.from_numpy(np.array([np.nan, 2])), ap.ndarray.from_numpy(np.array([1, np.nan])))
+>>> ap.fmax(ap.ndarray.from_numpy(np.array([np.nan, 2], dtype=np.float64)), ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float64))).to_numpy()
 array([1., 2.])
 ```
 
@@ -2260,7 +2294,7 @@ asnumpy.fmin(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.fmin(ap.ndarray.from_numpy(np.array([np.nan, 2])), ap.ndarray.from_numpy(np.array([1, np.nan])))
+>>> ap.fmin(ap.ndarray.from_numpy(np.array([np.nan, 2], dtype=np.float64)), ap.ndarray.from_numpy(np.array([1, np.nan], dtype=np.float64))).to_numpy()
 array([1., 2.])
 ```
 
@@ -2274,9 +2308,11 @@ asnumpy.max(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 
 此函数查找数组 `a` 中的最大值。如果提供了 `axis`，则沿该轴计算最大值。
 
+测试未覆盖 float32 的全局归约（`axis=None`），因为其返回 dtype 与 NumPy 不一致。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2292,9 +2328,9 @@ asnumpy.max(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int64))
 >>> ap.max(a)
-3
+np.int64(3)
 ```
 
 ### asnumpy.amax
@@ -2307,9 +2343,11 @@ asnumpy.amax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 
 此函数查找数组 `a` 中的最大值。它是 `max` 的别名。
 
+`amax`/`amin` 入口的 int64 全局归约在测试中标记为 xfail（通过 `max`/`min` 入口可用）；float32 全局归约的 dtype 与 NumPy 不一致。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2325,9 +2363,9 @@ asnumpy.amax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float64))
 >>> ap.amax(a)
-3
+np.float64(3.0)
 ```
 
 ### asnumpy.nanmax
@@ -2340,9 +2378,11 @@ asnumpy.nanmax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) 
 
 此函数查找数组 `a` 中的最大值，跳过任何 NaN 值。如果提供了 `axis`，则沿该轴计算最大值。
 
+当前不支持 `float64` 输入（已标记 xfail）；全为 NaN 的切片返回 `-inf` 而非 `NaN`（同为 xfail）。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2357,9 +2397,9 @@ asnumpy.nanmax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, np.nan]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan, 3.0], dtype=np.float32))
 >>> ap.nanmax(a)
-1.0
+np.float32(3.0)
 ```
 
 ### asnumpy.min
@@ -2372,9 +2412,11 @@ asnumpy.min(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 
 此函数查找数组 `a` 中的最小值。如果提供了 `axis`，则沿该轴计算最小值。
 
+测试未覆盖 float32 的全局归约（`axis=None`），因为其返回 dtype 与 NumPy 不一致。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2390,9 +2432,9 @@ asnumpy.min(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> 
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1, 2, 3], dtype=np.int64))
 >>> ap.min(a)
-1
+np.int64(1)
 ```
 
 ### asnumpy.amin
@@ -2405,9 +2447,11 @@ asnumpy.amin(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 
 此函数查找数组 `a` 中的最小值。它是 `min` 的别名。
 
+`amax`/`amin` 入口的 int64 全局归约在测试中标记为 xfail（通过 `max`/`min` 入口可用）。
+
 **参数**
 - `a` (ArrayLike): 输入数据。
-- `axis` (int 或 int 序列, 可选): 操作的轴。默认使用展平的输入。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
 - `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
 
 **返回值**
@@ -2423,9 +2467,9 @@ asnumpy.amin(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) ->
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> a = ap.ndarray.from_numpy(np.array([1, 2, 3]))
+>>> a = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float64))
 >>> ap.amin(a)
-1
+np.float64(1.0)
 ```
 
 ## 浮点数例程
@@ -2454,7 +2498,7 @@ asnumpy.signbit(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.signbit(ap.ndarray.from_numpy(np.array([-2.5, 3.5])))
+>>> ap.signbit(ap.ndarray.from_numpy(np.array([-2.5, 3.5], dtype=np.float32))).to_numpy()
 array([ True, False])
 ```
 
@@ -2483,8 +2527,8 @@ asnumpy.copysign(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.copysign(ap.ndarray.from_numpy(np.array([1.5])), ap.ndarray.from_numpy(np.array([-1])))
-array([-1.5])
+>>> ap.copysign(ap.ndarray.from_numpy(np.array([1.5], dtype=np.float32)), ap.ndarray.from_numpy(np.array([-1.0], dtype=np.float32))).to_numpy()
+array([-1.5], dtype=float32)
 ```
 
 ### asnumpy.ldexp
@@ -2511,8 +2555,8 @@ asnumpy.ldexp(x1: ArrayLike, x2: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.ldexp(ap.ndarray.from_numpy(np.array([3])), ap.ndarray.from_numpy(np.array([2])))
-array([12.])
+>>> ap.ldexp(ap.ndarray.from_numpy(np.array([3.0], dtype=np.float32)), ap.ndarray.from_numpy(np.array([2], dtype=np.int32))).to_numpy()
+array([12.], dtype=float32)
 ```
 
 ## 复数处理
@@ -2525,7 +2569,7 @@ asnumpy.real(x: ArrayLike) -> ndarray
 
 返回复数参数的实部。
 
-此函数提取 `x` 中元素的实部。
+此函数提取 `x` 中元素的实部。当前原生实现固定输出 `float32`，因此 `complex128` 输入会损失精度。
 
 **参数**
 - `x` (ArrayLike): 输入数组。
@@ -2540,8 +2584,8 @@ asnumpy.real(x: ArrayLike) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.real(ap.ndarray.from_numpy(np.array([1+5j])))
-array([1.])
+>>> ap.real(ap.ndarray.from_numpy(np.array([1+5j], dtype=np.complex64))).to_numpy()
+array([1.], dtype=float32)
 ```
 
 ## 有理数例程
@@ -2554,7 +2598,7 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 计算输入的最大公约数。
 
-此函数逐元素计算 `x1` 和 `x2` 绝对值的最大公约数（GCD）。
+此函数逐元素计算最大公约数（GCD）。当前仅支持 `int32`/`int64` 输入；`int8`/`int16` 与浮点输入不受支持（已记录为已知失败用例），负数输入的处理当前与 NumPy 不一致。
 
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
@@ -2562,7 +2606,7 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 - `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
-- `ndarray`: 输入绝对值的最大公约数。
+- `ndarray`: 输入的最大公约数。
 
 **另请参阅**
 - [`numpy.gcd`](https://numpy.org/doc/stable/reference/generated/numpy.gcd.html)
@@ -2572,8 +2616,8 @@ asnumpy.gcd(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.gcd(ap.ndarray.from_numpy(np.array([10])), ap.ndarray.from_numpy(np.array([25])))
-array([5])
+>>> ap.gcd(ap.ndarray.from_numpy(np.array([10], dtype=np.int32)), ap.ndarray.from_numpy(np.array([25], dtype=np.int32))).to_numpy()
+array([5], dtype=int32)
 ```
 
 ### asnumpy.lcm
@@ -2584,7 +2628,7 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 
 计算输入的最小公倍数。
 
-此函数逐元素计算 `x1` 和 `x2` 绝对值的最小公倍数（LCM）。
+此函数逐元素计算最小公倍数（LCM）。当前仅支持 `int32`/`int64` 输入；`int8`/`int16` 与浮点输入不受支持（已记录为已知失败用例）。
 
 **参数**
 - `x1` (ArrayLike): 第一个输入数组。
@@ -2592,7 +2636,7 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 - `dtype` (DTypeLike, 可选): 输出数组的所需数据类型。
 
 **返回值**
-- `ndarray`: 输入绝对值的最小公倍数。
+- `ndarray`: 输入的最小公倍数。
 
 **另请参阅**
 - [`numpy.lcm`](https://numpy.org/doc/stable/reference/generated/numpy.lcm.html)
@@ -2602,7 +2646,6 @@ asnumpy.lcm(x1: ArrayLike, x2: ArrayLike, dtype: DTypeLike = None) -> ndarray
 ```python
 >>> import asnumpy as ap
 >>> import numpy as np
->>> ap.lcm(ap.ndarray.from_numpy(np.array([4])), ap.ndarray.from_numpy(np.array([6])))
-array([12])
+>>> ap.lcm(ap.ndarray.from_numpy(np.array([4], dtype=np.int32)), ap.ndarray.from_numpy(np.array([6], dtype=np.int32))).to_numpy()
+array([12], dtype=int32)
 ```
--->
