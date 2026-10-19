@@ -1,9 +1,5 @@
 # 神经网络函数
 
-::: info
-当前 API 文档站仅保留了一组代表性API。由于 AsNumpy 前端与文档体系仍在进行较大幅度整改，其余接口文档暂时隐藏，待前端稳定后再逐步补全。当前文档仅供参考。
-:::
-
 ## 激活函数
 
 ### asnumpy.softmax
@@ -34,8 +30,8 @@ softmax 函数通过计算每个元素的指数除以集合中所有元素指数
 >>> import asnumpy as ap
 >>> import numpy as np
 >>> x = ap.ndarray.from_numpy(np.array([1.0, 2.0, 3.0], dtype=np.float32))
->>> ap.softmax(x)
-array([0.09003057, 0.24472847, 0.66524096])
+>>> ap.softmax(x).to_numpy()
+array([0.09003057, 0.24472846, 0.66524094], dtype=float32)
 >>> ap.sum(ap.softmax(x))
-1.0
+np.float32(1.0)
 ```
