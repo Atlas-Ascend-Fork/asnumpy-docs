@@ -10,6 +10,7 @@
 
 - [ndarray](./ndarray.md) - N 维数组对象（11 个 API）
 - [数组操作](./array.md) - 数组创建和操作函数（11 个 API）
+- [数据类型](./dtype.md) - 数据类型处理（8 个 API）
 
 ## 数学函数
 

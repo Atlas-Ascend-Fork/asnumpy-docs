@@ -10,6 +10,7 @@ This API reference is based on asnumpy v0.4.0. The number in parentheses is the 
 
 - [ndarray](./ndarray.md) - The N-dimensional array object (11 APIs)
 - [Array Manipulation](./array.md) - Array creation and manipulation functions (11 APIs)
+- [Data Types](./dtype.md) - Data type routines (8 APIs)
 
 ## Mathematical Functions
 
