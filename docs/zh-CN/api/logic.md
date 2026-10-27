@@ -1,7 +1,8 @@
 # 逻辑函数
 
-主机端值和 NumPy 数组不会自动传到 NPU。
-数组操作数需先使用 `ap.ndarray.from_numpy()` 转换。
+主机端值和 NumPy 数组不会自动传到 NPU，数组操作数需先使用 `ap.ndarray.from_numpy()` 转换。
+
+**例外：** `ap.all` 与 `ap.any` 接受任意 `ArrayLike`，内部经 `_ensure_ndarray` 自动把主机数据复制到设备端。在性能敏感的循环中，预先转换仍更高效。
 
 ## 真值测试
 

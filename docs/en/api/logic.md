@@ -1,7 +1,8 @@
 # Logic Functions
 
-Host values and NumPy arrays are not transferred to the NPU automatically.
-Convert array operands with `ap.ndarray.from_numpy()` first.
+Host values and NumPy arrays are not transferred to the NPU automatically: convert array operands with `ap.ndarray.from_numpy()` first.
+
+**Exception:** `ap.all` and `ap.any` accept any `ArrayLike` and coerce it internally — `_ensure_ndarray` copies host data to the device for you. Pre-converting is still preferable in hot loops, where that implicit copy is pure overhead.
 
 ## Truth Value Testing
 
