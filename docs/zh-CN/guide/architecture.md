@@ -10,6 +10,8 @@ AsNumpy 建立在三层结构上，清晰地分离关注点：
 +------------------------------------------+
 |     Python 前端 (src/asnumpy/*.py)        |
 |  - __init__.py   149 个导出符号           |
+|  - utils.py      核心 ndarray 与数组适配  |
+|  - _dtype.py     数据类型与转换规则       |
 |  - array.py      数组创建 (11 个函数)     |
 |  - math.py       数学运算 (86 个函数)     |
 |  - linalg/       线性代数                 |
@@ -77,11 +79,11 @@ AsNumpy 的 API 分为**功能模块**和**基础模块**：
 | 模块 | Python | C++ 命名空间 | 状态 |
 |--------|--------|---------------|--------|
 | 数学（算术、三角、指数、对数） | `math.py` | `asnumpy::` | 完成 |
-| 线性代数 | `linalg/` | global | 开发中 |
-| 随机采样 | `random/` | global | 开发中 |
+| 线性代数 | `linalg/` | Python 实现（Host） | 开发中 |
+| 随机采样 | `random/` | `asnumpy::` / `asnumpy::random` | 开发中 |
 | 逻辑函数 | `logic.py` | `asnumpy::` | 完成 |
-| 数组创建 | `array.py` | global | 完成 |
-| 排序 | `sorting.py` | global | 完成 |
+| 数组创建 | `array.py` | `asnumpy::` | 完成 |
+| 排序 | `sorting.py` | `asnumpy::` | 完成 |
 | 神经网络 | `nn.py` | `asnumpy::` | 完成 (softmax) |
 | 统计 | `statistics.py` | `asnumpy::` | 完成 (mean) |
 | I/O | `io.py` | 委托给 NumPy | 完成 |

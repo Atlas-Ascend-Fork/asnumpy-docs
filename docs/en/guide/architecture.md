@@ -10,6 +10,8 @@ AsNumpy is built on three layers that cleanly separate concerns:
 +------------------------------------------+
 |     Python Frontend (src/asnumpy/*.py)    |
 |  - __init__.py   149 exported symbols     |
+|  - utils.py      core ndarray class       |
+|  - _dtype.py     dtype system & casting   |
 |  - array.py      array creation (11 fn)   |
 |  - math.py       math ops (86 fn)         |
 |  - linalg/       linear algebra           |
@@ -77,11 +79,11 @@ AsNumpy's API is divided into **functional modules** and **foundation modules**:
 | Module | Python | C++ namespace | Status |
 |--------|--------|---------------|--------|
 | Math (arithmetic, trig, exp, log) | `math.py` | `asnumpy::` | Complete |
-| Linear algebra | `linalg/` | global | In progress |
-| Random sampling | `random/` | global | In progress |
+| Linear algebra | `linalg/` | Python (Host) | In progress |
+| Random sampling | `random/` | `asnumpy::` / `asnumpy::random` | In progress |
 | Logic functions | `logic.py` | `asnumpy::` | Complete |
-| Array creation | `array.py` | global | Complete |
-| Sorting | `sorting.py` | global | Complete |
+| Array creation | `array.py` | `asnumpy::` | Complete |
+| Sorting | `sorting.py` | `asnumpy::` | Complete |
 | Neural network | `nn.py` | `asnumpy::` | Complete (softmax) |
 | Statistics | `statistics.py` | `asnumpy::` | Complete (mean) |
 | I/O | `io.py` | delegated to NumPy | Complete |
