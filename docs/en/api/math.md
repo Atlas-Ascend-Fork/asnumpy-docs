@@ -2396,6 +2396,38 @@ This function finds the largest value in the array `a`, skipping any NaN values.
 np.float32(3.0)
 ```
 
+### asnumpy.nanmin
+
+```python
+asnumpy.nanmin(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> Union[ndarray, float]
+```
+
+Calculate the minimum value of the array, ignoring NaNs.
+
+This function finds the smallest value in the array `a`, skipping any NaN values. If an `axis` is provided, the minimum is computed along that axis.
+
+**Arguments**
+- `a` (ArrayLike): Input data.
+- `axis` (int, optional): Axis along which to operate. The native binding accepts a single integer axis; by default the flattened input is reduced.
+- `keepdims` (bool, optional): If this is set to True, the axes which are reduced are left in the result as dimensions with size one.
+
+**Returns**
+- `ndarray or scalar`: Minimum of `a`.
+
+**See Also**
+- [`numpy.nanmin`](https://numpy.org/doc/stable/reference/generated/numpy.nanmin.html)
+- [`asnumpy.min`](#asnumpy-min)
+- [`asnumpy.nanmax`](#asnumpy-nanmax)
+
+**Examples**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan, 3.0], dtype=np.float32))
+>>> ap.nanmin(a)
+np.float32(1.0)
+```
+
 ### asnumpy.min
 
 ```python

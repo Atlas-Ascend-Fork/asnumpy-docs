@@ -14,7 +14,7 @@ This API reference is based on asnumpy v0.4.0. The number in parentheses is the 
 
 ## Mathematical Functions
 
-- [Mathematical Functions](./math.md) - Mathematical operations (85 APIs)
+- [Mathematical Functions](./math.md) - Mathematical operations (86 APIs)
 - [Linear Algebra](./linalg.md) - Linear algebra operations (12 APIs)
 - [Statistics](./statistics.md) - Statistical functions (1 API)
 

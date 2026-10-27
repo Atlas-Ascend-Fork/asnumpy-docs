@@ -2402,6 +2402,38 @@ asnumpy.nanmax(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) 
 np.float32(3.0)
 ```
 
+### asnumpy.nanmin
+
+```python
+asnumpy.nanmin(a: ArrayLike, axis: AxisOptional = None, keepdims: bool = False) -> Union[ndarray, float]
+```
+
+计算数组的最小值，忽略 NaN。
+
+此函数查找数组 `a` 中的最小值，跳过任何 NaN 值。如果提供了 `axis`，则沿该轴计算最小值。
+
+**参数**
+- `a` (ArrayLike): 输入数据。
+- `axis` (int, 可选): 操作的轴。原生绑定只接受单个整数轴；默认对展平后的输入做归约。
+- `keepdims` (bool, 可选): 如果设置为 True，则缩减的轴在结果中保留为大小为一的维度。
+
+**返回值**
+- `ndarray 或 标量`: `a` 的最小值。
+
+**另请参阅**
+- [`numpy.nanmin`](https://numpy.org/doc/stable/reference/generated/numpy.nanmin.html)
+- [`asnumpy.min`](#asnumpy-min)
+- [`asnumpy.nanmax`](#asnumpy-nanmax)
+
+**示例**
+```python
+>>> import asnumpy as ap
+>>> import numpy as np
+>>> a = ap.ndarray.from_numpy(np.array([1.0, np.nan, 3.0], dtype=np.float32))
+>>> ap.nanmin(a)
+np.float32(1.0)
+```
+
 ### asnumpy.min
 
 ```python
