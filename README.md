@@ -1,6 +1,6 @@
 # AsNumpy Documentation
 
-This is the official documentation site for [AsNumpy](https://gitcode.com/cann/asnumpy), a lightweight Python library for scientific computing on Ascend NPU, fully compatible with NumPy API.
+This is the official documentation site for [AsNumpy](https://gitcode.com/cann/asnumpy), a lightweight Python library for scientific computing on Huawei Ascend NPU, fully compatible with NumPy API.
 **Online documentation:** [https://asnumpy.gitcode.com/](https://asnumpy.gitcode.com/)
 
 ## About AsNumpy
@@ -8,7 +8,7 @@ This is the official documentation site for [AsNumpy](https://gitcode.com/cann/a
 AsNumpy accelerates NumPy workloads on Huawei Ascend 910B NPU through CANN operator bindings. It provides:
 
 - **NumPy-compatible API** — Functions named identically for easy migration
-- **Ascend NPU acceleration** — Up to 128× speedup on large arrays
+- **Huawei Ascend NPU acceleration** — Up to 128× speedup on large arrays
 - **Automatic resource management** — RAII-based memory handling
 - **Seamless data transfer** — `from_numpy()` and `to_numpy()` for CPU↔NPU exchange
 
