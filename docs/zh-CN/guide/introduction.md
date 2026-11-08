@@ -23,7 +23,7 @@ result = ap.multiply(a_npu, b_npu)
 
 ### Ascend NPU 加速
 
-算子通过 CANN ACLNN 直接在 NPU 上运行，无框架开销。以 `mean()` 归约算子为例（完整数据见[性能测试](./benchmarks.md)）：
+原生算子路径通过 CANN ACLNN 在 NPU 上运行。部分前端操作在 Host 计算：`linalg.norm` 通常使用 `numpy.linalg.norm`，`linalg.matrix_power` 使用 `numpy.linalg.matrix_power`。设备数组输入先复制到 Host，结果再复制回设备；这些路径的计算和传输成本与原生 NPU 路径不同。以 `mean()` 归约算子为例（完整数据见[性能测试](./benchmarks.md)）：
 
 | 形状 | AsNumpy (ms) | NumPy (ms) | 加速比 |
 |-------|--------------|------------|--------|
@@ -50,7 +50,7 @@ np_array = npu_array.to_numpy()
 | 特性 | 描述 |
 |---------|-------------|
 | **兼容 NumPy 的 API** | 函数名称和签名与 NumPy 一致 |
-| **Ascend 910B 原生加速** | 算子通过 CANN ACLNN 直接在 NPU 上运行 |
+| **Ascend 910B 原生加速** | 原生路径使用 CANN ACLNN；部分前端操作包含 Host 计算和数据传输 |
 | **自动资源管理** | 基于 RAII 的内存管理 |
 | **双向数据传输** | `from_numpy()` 和 `to_numpy()` 实现 CPU↔NPU 交换 |
 | **广播支持** | 遵循 NumPy 广播语义 |

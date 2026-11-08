@@ -23,7 +23,7 @@ result = ap.multiply(a_npu, b_npu)
 
 ### Ascend NPU Acceleration
 
-Operators run directly on NPU via CANN ACLNN without framework overhead. Taking the `mean()` reduction operator as an example (full data in [Benchmarks](./benchmarks.md)):
+Native operator paths run on NPU via CANN ACLNN. Some frontend operations compute on the Host: `linalg.norm` normally uses `numpy.linalg.norm`, and `linalg.matrix_power` uses `numpy.linalg.matrix_power`. Device-array inputs are copied to the Host and results are copied back; their execution and transfer costs differ from a native NPU path. Taking the `mean()` reduction operator as an example (full data in [Benchmarks](./benchmarks.md)):
 
 | Shape | AsNumpy (ms) | NumPy (ms) | Speedup |
 |-------|--------------|------------|---------|
@@ -50,7 +50,7 @@ np_array = npu_array.to_numpy()
 | Feature | Description |
 |---------|-------------|
 | **NumPy-compatible API** | Function names and signatures match NumPy |
-| **Ascend 910B native acceleration** | Operators run directly on NPU via CANN ACLNN |
+| **Ascend 910B native acceleration** | Native paths use CANN ACLNN; Host computation and transfers apply to some frontend operations |
 | **Automatic resource management** | RAII-based memory management |
 | **Bidirectional data transfer** | `from_numpy()` and `to_numpy()` for CPU↔NPU exchange |
 | **Broadcasting support** | Follows NumPy broadcasting semantics |
