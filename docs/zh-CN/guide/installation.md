@@ -73,6 +73,9 @@ cd asnumpy
 
 # 使用 uv 安装
 uv sync
+
+# 在项目环境中运行下文的安装验证示例
+uv run python
 ```
 
 ### 方式二：使用 pip

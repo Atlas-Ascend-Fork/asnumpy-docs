@@ -73,6 +73,9 @@ cd asnumpy
 
 # Install with uv
 uv sync
+
+# Run the verification examples below in the project environment
+uv run python
 ```
 
 ### Option 2: Using pip
